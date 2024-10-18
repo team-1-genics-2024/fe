@@ -7,7 +7,7 @@ import Link from "next/link";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormStatus as useFormStatus } from "react-dom";
 
-export default function SignUp() {
+export default function Page() {
   const { pending } = useFormStatus();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-500 dark:bg-gray-900 px-4">

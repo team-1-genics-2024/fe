@@ -7,7 +7,7 @@ import Link from "next/link";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormStatus as useFormStatus } from "react-dom";
 
-export default function Login() {
+export default function Page() {
   const { pending } = useFormStatus();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-500 dark:bg-gray-900 px-4">
@@ -100,7 +100,7 @@ export default function Login() {
 
             <p className="text-sm text-center text-gray-500 dark:text-gray-400">
               Don't have account yet?{" "}
-              <Link href="/SignUp" target='_blank' className="text-blue-400 underline font-bold">
+              <Link href="/signup" target='_blank' className="text-blue-400 underline font-bold">
                 Sign up
               </Link>
               <span className="text-gray-500"> first!</span>
