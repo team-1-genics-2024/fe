@@ -28,7 +28,7 @@ export default function Page() {
 
     if (existingEmails.includes(email)) {
       setError(
-        "You already have an account with that email address. Try to log in instead."
+        "Your email or password is incorrect."
       );
       return;
     }
