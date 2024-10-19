@@ -39,7 +39,7 @@ export default function Page() {
       <div className="w-full max-w-md lg:max-w-4xl lg:p-3 lg:h-[440px] lg:flex lg:items-center lg:justify-between p-0 bg-white rounded-xl shadow-lg relative lg:space-y-10">
         <button
           className="absolute top-6 lg:top-10 right-6 lg:right-8 text-black"
-          onClick={() => router.push("/")} // back to the home
+          onClick={() => router.push("/")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
