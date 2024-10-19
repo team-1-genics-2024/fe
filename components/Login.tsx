@@ -38,7 +38,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-500 dark:bg-gray-900 px-4">
-      <div className="w-full max-w-md lg:max-w-4xl lg:flex lg:items-center lg:justify-between p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative">
+      <div className="w-full max-w-md lg:max-w-4xl lg:flex lg:items-center lg:justify-between p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative overflow-hidden">
         <button className="absolute top-4 right-4 lg:right-12 lg:top-8 text-black hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -46,8 +46,10 @@ export default function Login() {
         </button>
 
         {/* layar device besar */}
-        <div className="hidden lg:block lg:w-1/2 text-white p-6">
+        <div className="hidden lg:block lg:w-1/2 text-white p-6 ">
           <CardHeader className="space-y-1 mb-40">
+            <Image src="/image/Star 5.png" alt="bintang" width={90} height={90} className="absolute bottom-[27%] left-[30%] hidden lg:block" />
+            <Image src="/image/Star 5.png" alt="bintang" width={180} height={180} className="absolute bottom-[-3%] left-[10%] hidden lg:block -rotate-45" />
             <CardTitle className="text-3xl font-bold text-black ">Log in</CardTitle>
             <p className="text-sm text-black dark:text-gray-400 ">to continue learning</p>
           </CardHeader>
@@ -61,7 +63,7 @@ export default function Login() {
           </CardHeader>
           <CardContent className="space-y-2 lg:mt-14">
             <form action="" onSubmit={handleSubmit}>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="Enter your email" className="w-full px-3 py-6 border rounded-lg border-gray-400 focus:ring-2 focus:ring-blue-500" />
                 <Input
                   value={password}
@@ -73,21 +75,21 @@ export default function Login() {
                 />
               </div>
 
-              <Button className="w-full bg-blue-500 rounded-lg hover:bg-blue-600 text-white py-2 transition-colors" disabled={pending} type="submit">
+              <Button className="w-full bg-blue-500 rounded-full hover:bg-blue-600 text-white py-2 transition-colors mt-4" disabled={pending} type="submit">
                 {pending ? <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div> : <>Log in</>}
               </Button>
             </form>
 
-            <div className="relative my-4">
+            <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t dark:border-gray-700" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
+              <div className="relative flex justify-center text-xs uppercase my-4">
                 <span className="bg-white dark:bg-gray-800 px-2 text-gray-500 dark:text-gray-400">or</span>
               </div>
             </div>
 
-            <Button variant="outline" className="w-full border border-gray-400 text-blue-500 dark:border-gray-700 rounded-lg p-2 flex items-center justify-center space-x-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600">
+            <Button variant="outline" className="w-full border border-gray-400 text-blue-500 dark:border-gray-700 rounded-full p-2 flex items-center justify-center space-x-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600">
               <Image src="/Google.png" width={20} height={20} alt="google" />
               <span>Log in with google</span>
             </Button>
