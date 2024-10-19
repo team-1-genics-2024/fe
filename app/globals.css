@@ -2,18 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-@layer base {
-  :root {
-    --radius: 0.5rem;
-  }
+.custom-shadow {
+  box-shadow:
+    0 -4px 6px rgba(0, 0, 0, 0.1),
+    /* top's shadow */
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    /* bottom's shadow */
+    -4px 0 6px rgba(0, 0, 0, 0.1),
+    /* left's shadow */
+    4px 0 6px rgba(0, 0, 0, 0.1);
+  /* right's shadow */
 }
