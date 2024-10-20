@@ -1,44 +1,127 @@
-'use server'
+'use server';
 
-export interface AuthResponse {
+export type SignUpResponse = {
   success: boolean;
-  error?: string;
-}
+  error: string;
+};
 
-export async function signupAction(prevState: AuthResponse, formData: FormData): Promise<AuthResponse> {
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  
-  // Check for existing emails (In production, this would be a DB query)
-  const existingEmails = ["test@example.com", "user@example.com"];
-  
-  if (existingEmails.includes(email)) {
-    return {
-      success: false,
-      error: "You already have an account with that email address. Try to log in instead."
-    };
-  }
 
+export type LoginResponse = {
+  success: boolean;
+  error: string;
+  // token?: string;
+};
+
+// -- SIGN UP --
+export async function signupAction(prevState: SignUpResponse, formData: FormData): Promise<SignUpResponse> {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/api/auth/login`, {
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    if (!name || !email || !password) {
+      return {
+        success: false,
+        error: 'All fields are required',
+      };
+    }
+
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const response = await fetch(`${apiBaseUrl}api/users/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
+    const responseData = await response.json();
+    console.log('Raw Response:', responseData);
+
+    if (Array.isArray(responseData) && responseData[1]?.success === false) {
+      return {
+        success: false,
+        error: responseData[1].error || 'Registration failed',
+      };
+    }
+
+    if (responseData.success === false) {
+      return {
+        success: false,
+        error: responseData.error || 'Registration failed',
+      };
     }
 
     return {
-      success: true
+      success: true,
+      error: '',
     };
+
   } catch (error) {
+    console.error('Signup error:', error);
     return {
       success: false,
-      error: 'Signup failed. Please try again.'
+      error: 'An unexpected error occurred. Please try again.',
     };
   }
 }
+
+
+// -- LOG IN --
+export async function loginAction(
+  prevState: LoginResponse,
+  formData: FormData
+): Promise<LoginResponse> {
+  try {
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    if (!email || !password) {
+      return {
+        success: false,
+        error: 'Email and password are required',
+      };
+    }
+
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const response = await fetch(`${apiBaseUrl}api/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const responseData = await response.json();
+    console.log('Raw Response:', responseData);
+
+    if (responseData.success === false) {
+      return {
+        success: false,
+        error: responseData.error || 'Login failed',
+      };
+    }
+
+    return {
+      success: true,
+      error: '',
+      // token: responseData.token, // include the token if present
+    };
+
+  } catch (error) {
+    console.error('Login error:', error);
+    return {
+      success: false,
+      error: 'An unexpected error occurred. Please try again.',
+    };
+  }
+}
+
+

@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
-import {Inter} from 'next/font/google'
+import { Lato, Poppins } from 'next/font/google';
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const lato = Lato({
+  weight: ['400', '700'], 
+  subsets: ['latin'],
+});
+
+const poppins = Poppins({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="!scroll-smooth">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${lato.className} ${poppins.className}`}
       >
         {children}
       </body>

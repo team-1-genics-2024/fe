@@ -9,7 +9,7 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { signupAction, AuthResponse } from "@/app/actions/auth";
+import { signupAction, SignUpResponse } from "@/app/actions/auth";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -29,7 +29,7 @@ function SubmitButton() {
   );
 }
 
-const initialState: AuthResponse = {
+const initialState: SignUpResponse = {
   success: false,
   error: "",
 };
@@ -38,16 +38,17 @@ export default function Signup() {
   const router = useRouter();
   const [state, formAction] = useFormState(signupAction, initialState);
 
-  // Redirect on success
-  if (state.success) {
-    router.push("/dashboard");
-  }
+  React.useEffect(() => {
+    if (state.success) {
+      router.push('/login');
+    }
+  }, [state.success, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md lg:max-w-4xl lg:p-2 lg:h-[470px] lg:flex lg:items-center lg:justify-between p-0 bg-white rounded-xl custom-shadow relative lg:space-y-16">
         <button
-          className="absolute top-6 lg:top-8 right-6 lg:right-8 text-black"
+          className="absolute top-6 lg:top-10 right-6 lg:right-8 text-black"
           onClick={() => router.push("/")}
         >
           <svg
@@ -83,10 +84,10 @@ export default function Signup() {
             className="absolute bottom-[1%] left-[8%] hidden lg:block -rotate-45"
           />
           <CardHeader className="space-y-2">
-            <CardTitle className="text-[32px] font-medium text-black font-['Poppins'] leading-10">
+            <CardTitle className="text-[32px] font-medium text-black leading-10">
               Sign up
             </CardTitle>
-            <p className="text-black text-base font-medium font-['Lato'] leading-normal tracking-tight">
+            <p className="text-black text-base font-medium leading-normal tracking-tight">
               to continue learning
             </p>
             {state.error && (
@@ -94,7 +95,7 @@ export default function Signup() {
                 variant="destructive"
                 className="text-xs bg-[#ffdad7] text-[#c5524c] rounded-xl inline-flex gap-4 p-4 h-auto items-center mt-2"
               >
-                <AlertDescription className="self-stretch text-[#c5524c] text-sm font-normal font-['Lato'] leading-[1.5] tracking-wide">
+                <AlertDescription className="self-stretch text-[#c5524c] text-sm font-normal leading-[1.5] tracking-wide">
                   {state.error}
                 </AlertDescription>
               </Alert>
@@ -105,7 +106,7 @@ export default function Signup() {
         {/* Small screen */}
         <div className="w-full lg:w-1/2">
           <CardHeader className="space-y-1 lg:hidden">
-            <CardTitle className="text-[32px] font-medium font-['Poppins'] leading-10 text-start">
+            <CardTitle className="text-[32px] font-medium leading-10 text-start">
               Sign up
             </CardTitle>
             <p className="text-sm text-black dark:text-gray-400 text-start">
@@ -119,7 +120,7 @@ export default function Signup() {
                   variant="destructive"
                   className="lg:hidden mb-4 bg-[#ffdad7] text-[#c5524c] rounded-xl inline-flex gap-4 p-4 h-auto items-center"
                 >
-                  <AlertDescription className="self-stretch text-[#c5524c] text-xs font-normal font-['Lato'] leading-[1.5] tracking-wide">
+                  <AlertDescription className="self-stretch text-[#c5524c] text-xs font-normal leading-[1.5] tracking-wide">
                     {state.error}
                   </AlertDescription>
                 </Alert>
@@ -130,21 +131,21 @@ export default function Signup() {
                   name="name"
                   required
                   placeholder="Enter your name"
-                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal font-['Lato'] leading-normal tracking-wide"
+                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
                 />
                 <Input
                   type="email"
                   name="email"
                   required
                   placeholder="Enter your email"
-                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal font-['Lato'] leading-normal tracking-wide"
+                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
                 />
                 <Input
                   type="password"
                   name="password"
                   required
                   placeholder="Enter your password"
-                  className="w-fullh-14  px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal font-['Lato'] leading-normal tracking-wide"
+                  className="w-fullh-14  px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
                 />
               </div>
 
@@ -156,36 +157,38 @@ export default function Signup() {
                 <span className="w-full border-t dark:border-gray-700" />
               </div>
               <div className="relative flex justify-center text-xs font-medium">
-                <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400 font-['Lato']">
+                <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400">
                   or
                 </span>
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium font-['Lato'] leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-            >
-              <Image
-                src="/Google.png"
-                width={20}
-                height={20}
-                alt="google"
-                className="p-[0.94px] w-[18px] h-[18px]"
-              />
-              <span>Sign up with google</span>
-            </Button>
-
-            <p className="text-[#747a7e] text-center text-[11px] font-medium font-['Lato'] leading-none tracking-wide lg:leading-10 mt-1">
-              Already have account?{" "}
-              <Link
-                href="/login"
-                className="text-[#3498db] text-[11px] font-bold font-['Lato'] underline leading-none tracking-wide"
+            <div className="space-y-2"> 
+              <Button
+                variant="outline"
+                className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
               >
-                Log in
-              </Link>
-              <span className="text-[#747a7e]"> instead!</span>
-            </p>
+                <Image
+                  src="/Google.png"
+                  width={20}
+                  height={20}
+                  alt="google"
+                  className="p-[0.94px] w-[18px] h-[18px]"
+                />
+                <span>Sign up with google</span>
+              </Button>
+
+              <p className="text-[#747a7e] text-center text-[11px] font-medium leading-none tracking-wide">
+                Already have account?{" "}
+                <Link
+                  href="/login"
+                  className="text-[#3498db] text-[11px] font-bold underline leading-none tracking-wide"
+                >
+                  Log in
+                </Link>
+                <span className="text-[#747a7e]"> instead!</span>
+              </p>
+            </div>
           </CardContent>
         </div>
       </div>
