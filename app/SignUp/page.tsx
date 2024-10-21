@@ -1,10 +1,9 @@
+import SignUpForm from '@/components/SignUp/page'
 
-import LoginForm from '@/components/SignUp'
-
-export default function Home() {
+export default function SignUpPage() {
   return (
     <main>
-      <LoginForm/>
+      <SignUpForm/>
     </main>
   );
 }
