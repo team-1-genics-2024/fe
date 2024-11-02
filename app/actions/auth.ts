@@ -1,10 +1,10 @@
-'use server';
+"use server";
 
-import { cookies } from 'next/headers';
-import { SessionData } from '@/lib/session';
-import { defaultSession, sessionOptions } from '@/lib/session';
-import { getIronSession } from 'iron-session';
-import { redirect } from 'next/navigation';
+import { cookies } from "next/headers";
+import { SessionData } from "@/lib/session";
+import { defaultSession, sessionOptions } from "@/lib/session";
+import { getIronSession } from "iron-session";
+import { redirect } from "next/navigation";
 
 export type SignUpResponse = {
   success: boolean;
@@ -52,6 +52,12 @@ export async function signupAction(prevState: SignUpResponse, formData: FormData
         success: false,
         error: responseData.error || 'Registration failed',
       };
+    }
+
+    if (responseData.resultCode === 200) {
+      // Store the accessToken in localStorage
+      localStorage.setItem("accessToken", responseData.data.accessToken);
+      console.log(localStorage.getItem("accessToken"));
     }
 
     return {
