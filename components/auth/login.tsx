@@ -1,28 +1,24 @@
-'use client'
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFormState, useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { loginAction, LoginResponse } from "../../app/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  
+function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
   return (
     <Button
       className="text-sm h-10 w-full bg-[#3498db] rounded-[100px] hover:bg-[#3498DB] text-white transition-colors font-medium font-['Lato'] leading-tight tracking-tight"
-      disabled={pending}
+      disabled={isSubmitting}
       type="submit"
-      aria-disabled={pending}
+      aria-disabled={isSubmitting}
     >
-      {pending ? (
+      {isSubmitting ? (
         <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
       ) : (
         "Log in"
@@ -31,20 +27,19 @@ function SubmitButton() {
   );
 }
 
-const initialState: LoginResponse = {
-  success: false,
-  error: "",
-};
-
 export default function LoginForm() {
-  const router = useRouter();
-  const [state, formAction] = useFormState(loginAction, initialState);
-  const [showPassword, setShowPassword] = useState(false);
+  const searchParams = useSearchParams();
+  const googleLogin = "https://api.beteam1genics.my.id/api/auth/google";
+  const [showPassword, setShowPassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [error, setError] = useState("");
 
-  const showToast = (message: string, type: 'error' | 'success' = 'error') => {
+  const showToast = (message: string, type: "error" | "success" = "error") => {
     toast[type](message, {
       position: "top-center",
       autoClose: 3000,
@@ -57,44 +52,50 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !password) {
-      showToast("Email and password are required");
-      return;
+  useEffect(() => {
+    if (authenticated) {
+      // Redirect to previous page or home page
+      setTimeout(() => {
+        const next = searchParams.get("next") || "/dashboard";
+        window.location.href = next;
+      }, 1000);
     }
+  }, [authenticated]);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      await formAction(formData);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, type: "credentials" }),
+      });
+
+      if (res.ok) {
+        showToast("Successfully logged in", "success");
+        setAuthenticated(true);
+      } else {
+        showToast("Error occur");
+        setError;
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      showToast("An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  useEffect(() => {
-    if (state.success) {
-      showToast("You're successfully logged in!", 'success');
-      setTimeout(() => {
-        router.push("/dashboard");
-        router.refresh();
-      }, 1000);
-    } else if (state.error) {
-      showToast(state.error);
-    }
-  }, [state, router]);
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md lg:max-w-4xl lg:p-2 lg:h-[470px] lg:flex lg:items-center lg:justify-between p-0 bg-white rounded-xl custom-shadow relative lg:space-y-10">
         <button
           type="button"
           className="absolute top-6 lg:top-10 right-6 lg:right-8 text-black"
-          onClick={() => router.push("/")}
+          onClick={() => router.replace("/")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +151,7 @@ export default function LoginForm() {
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form action={formAction} className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-2">
               <Input
                 type="email"
                 name="email"
@@ -161,10 +162,11 @@ export default function LoginForm() {
                 placeholder="Enter your email"
                 className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
               />
+
               <div className="space-y-2.5 lg:mt-relative">
                 <div className="relative">
                   <Input
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? "password" : "text"}
                     name="password"
                     required
                     value={password}
@@ -217,7 +219,8 @@ export default function LoginForm() {
                   </button>
                 </div>
               </div>
-              <SubmitButton />
+              <SubmitButton isSubmitting={isSubmitting} />
+              {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
 
             <div className="relative my-4">
@@ -232,20 +235,24 @@ export default function LoginForm() {
             </div>
 
             <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-              >
-                <Image
-                  src="/Google.png"
-                  width={20}
-                  height={20}
-                  alt="google"
-                  className="p-[0.94px] w-[18px] h-[18px]"
-                />
-                <span>Log in with google</span>
-              </Button>
-
+              <Link href={googleLogin}>
+                <Button
+                  variant="outline"
+                  type="button"
+                  className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                  disabled={isPending}
+                  aria-disabled={isPending}
+                >
+                  <Image
+                    src="/Google.png"
+                    width={20}
+                    height={20}
+                    alt="google"
+                    className="p-[0.94px] w-[18px] h-[18px]"
+                  />
+                  <span>{isPending ? "Loading..." : "Login with Google"}</span>
+                </Button>
+              </Link>
               <p className="text-[#747a7e] text-center text-[11px] font-medium leading-none tracking-wide">
                 Don't have account yet?{" "}
                 <Link

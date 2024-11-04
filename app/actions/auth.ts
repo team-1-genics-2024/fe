@@ -1,10 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { SessionData } from "@/lib/session";
-import { defaultSession, sessionOptions } from "@/lib/session";
-import { getIronSession } from "iron-session";
-import { redirect } from "next/navigation";
 
 export type SignUpResponse = {
   success: boolean;
@@ -13,7 +9,7 @@ export type SignUpResponse = {
 
 export type LoginResponse = {
   success: boolean;
-  error: string;
+  error: string | null;
   token?: string;
 };
 
@@ -87,6 +83,7 @@ export async function loginAction(
 
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const response = await fetch(`${apiBaseUrl}api/auth/login`, {
+      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -147,33 +144,3 @@ export async function loginAction(
     };
   }
 }
-
-function setCookie(
-  name: string,
-  value: string,
-  options: {
-    httpOnly?: boolean;
-    secure?: boolean;
-    maxAge?: number;
-    path?: string;
-  } = {}
-) {
-  cookies().set(name, value, {
-    httpOnly: options.httpOnly ?? true,
-    secure: options.secure ?? process.env.NODE_ENV === "production",
-    maxAge: options.maxAge ?? 15 * 60, // 15 menit default
-    path: options.path ?? "/",
-  });
-}
-
-// // -- GET SESSION --
-// export async function getSession() {
-//   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
-
-//   // If user visits for the first time session returns an empty object.
-//   // Let's add the isLoggedIn property to this object and its value will be the default value which is false
-//   if (!session.isLoggedIn) {
-//     session.isLoggedIn = defaultSession.isLoggedIn;
-//   }
-
-//   return session;

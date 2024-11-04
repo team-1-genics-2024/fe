@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Lato, Poppins } from 'next/font/google';
+import { Lato, Poppins } from "next/font/google";
 import "./globals.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const lato = Lato({
-  weight: ['400', '700'],
-  subsets: ['latin'],
+  weight: ["400", "700"],
+  subsets: ["latin"],
 });
 
 const poppins = Poppins({
-  weight: ['400', '700'],
-  subsets: ['latin'],
+  weight: ["400", "700"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -26,10 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="!scroll-smooth">
+      <link rel="icon" href="/image/homepage/icon.png" sizes="any" />
       <body className={`${lato.className} ${poppins.className}`}>
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -38,7 +39,7 @@ export default function RootLayout({
           draggable
           pauseOnHover
           theme="light"
-/>
+        />
         {children}
       </body>
     </html>

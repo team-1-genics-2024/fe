@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { SignUpResponse, signupAction } from "../app/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSearchParams } from "next/navigation";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -36,6 +37,8 @@ const initialState: SignUpResponse = {
 };
 
 export default function SignUpForm() {
+  const searchParams = useSearchParams();
+  const googleLogin = "https://api.beteam1genics.my.id/api/auth/google";
   const router = useRouter();
   const [state, formAction] = useFormState(signupAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
@@ -239,20 +242,21 @@ export default function SignUpForm() {
             </div>
 
             <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-              >
-                <Image
-                  src="/Google.png"
-                  width={20}
-                  height={20}
-                  alt="google"
-                  className="p-[0.94px] w-[18px] h-[18px]"
-                />
-                <span>Sign up with google</span>
-              </Button>
-
+              <Link href={googleLogin}>
+                <Button
+                  variant="outline"
+                  className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                >
+                  <Image
+                    src="/Google.png"
+                    width={20}
+                    height={20}
+                    alt="google"
+                    className="p-[0.94px] w-[18px] h-[18px]"
+                  />
+                  <span>Sign up with google</span>
+                </Button>
+              </Link>
               <p className="text-[#747a7e] text-center text-[11px] font-medium leading-none tracking-wide">
                 Already have account?{" "}
                 <Link
