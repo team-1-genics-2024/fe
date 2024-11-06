@@ -24,7 +24,7 @@ const loginSchema = z.object({
   email: z.string().min(5, "Email is required").email("Invalid email format"),
   password: z
     .string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .regex(/\d/, "Password must contain at least one number"),
 });
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -35,7 +35,7 @@ const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z
     .string()
-    .min(6, "Password must be at least 8 characters long")
+    .min(8, "Password must be at least 8 characters long")
     .regex(/\d/, "Password must contain at least one number"),
 });
 
@@ -202,7 +202,8 @@ export default function Navigation() {
         setError(result.error);
         showToast(result.error, "error");
       } else {
-        showToast("Successfully logged in", "success");
+        const successMessage = "Successfully logged in";
+        showToast(successMessage, "success");
         router.push("/dashboard");
       }
     } catch (error) {
@@ -211,9 +212,12 @@ export default function Navigation() {
         setError(errorMessage);
         showToast(errorMessage, "error");
       } else {
-        console.error("Login error:", error);
-        setError("An unexpected error occurred. Please try again.");
-        showToast("An unexpected error occurred. Please try again.", "error");
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "An error occurred during login";
+        setError(errorMessage);
+        showToast(errorMessage, "error");
       }
     } finally {
       setIsSubmittingLogin(false);
@@ -241,27 +245,38 @@ export default function Navigation() {
         body: JSON.stringify(signUpData),
       });
 
-      console.log(response);
-
       if (response.ok) {
+        const data = await response.json();
+        const successMessage =
+          data.message || "Registration completed successfully";
         setState({ success: true, error: "" });
-        toast.success("Successfully signed up");
+        showToast(successMessage, "success");
         switchToLogin();
       } else {
         const errorData = await response.json();
+        const errorMessage =
+          errorData.message || "Please double check your credential";
         setState({
           success: false,
-          error: errorData.message || "Registration failed",
+          error: errorMessage,
         });
-        showToast(errorData.message || "Registration failed");
+        showToast(errorMessage, "error");
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      let errorMessage: string;
+      if (error instanceof z.ZodError) {
+        errorMessage = error.errors.map((err) => err.message).join(", ");
+      } else {
+        errorMessage =
+          error instanceof Error
+            ? error.message
+            : "An error occurred during registration";
+      }
       setState({
         success: false,
-        error: "An unexpected error occurred. Please try again.",
+        error: errorMessage,
       });
-      showToast("An unexpected error occurred. Please try again.");
+      showToast(errorMessage, "error");
     } finally {
       setIsSubmittingSignUp(false);
     }
