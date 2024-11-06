@@ -55,10 +55,8 @@ export default function LoginForm() {
   useEffect(() => {
     if (authenticated) {
       // Redirect to previous page or home page
-      setTimeout(() => {
-        const next = searchParams.get("next") || "/dashboard";
-        window.location.href = next;
-      }, 1000);
+      const next = searchParams.get("next") || "/dashboard";
+      router.push(next);
     }
   }, [authenticated]);
 
@@ -67,8 +65,10 @@ export default function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const res = await fetch(`${baseApiUrl}api/auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -240,11 +240,9 @@ export default function LoginForm() {
                   variant="outline"
                   type="button"
                   className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-                  disabled={isPending}
-                  aria-disabled={isPending}
                 >
                   <Image
-                    src="/Google.png"
+                    src="/image/Google.png"
                     width={20}
                     height={20}
                     alt="google"

@@ -14,6 +14,7 @@ export type LoginResponse = {
 };
 
 // -- SIGN UP --
+// Alternatif jika tidak ada endpoint check-email
 export async function signupAction(
   prevState: SignUpResponse,
   formData: FormData
@@ -39,26 +40,26 @@ export async function signupAction(
     const responseData = await response.json();
     console.log("Raw Response:", responseData);
 
-    if (Array.isArray(responseData) && responseData[1]?.success === false) {
+    // Cek apakah response mengindikasikan email duplikat
+    if (
+      responseData.error?.toLowerCase().includes("email") ||
+      responseData.error?.toLowerCase().includes("duplicate") ||
+      responseData.message?.toLowerCase().includes("already exists")
+    ) {
       return {
         success: false,
-        error: responseData[1].error || "Registration failed",
+        error:
+          "Email already registered. Please use a different email or login.",
       };
     }
 
-    if (responseData.success === false) {
+    // Handle response error lainnya
+    if (!response.ok || responseData.success === false) {
       return {
         success: false,
         error: responseData.error || "Registration failed",
       };
     }
-
-    if (responseData.resultCode === 200) {
-      // Store the accessToken in localStorage
-      localStorage.setItem("accessToken", responseData.data.accessToken);
-      console.log(localStorage.getItem("accessToken"));
-    }
-
     return {
       success: true,
       error: "",

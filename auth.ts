@@ -5,6 +5,7 @@ import type { UserType, UserResponseType } from "@/types/user";
 import { AdapterUser } from "next-auth/adapters";
 import { CredentialsType, SocialCredentialsType } from "@/types/login";
 import { JWT } from "next-auth/jwt";
+import GoogleProvider from "next-auth/providers/google";
 
 declare module "next-auth" {
   interface User extends UserType {}
@@ -18,8 +19,47 @@ declare module "next-auth/jwt" {
   interface JWT extends UserType {}
 }
 
+async function refreshAccessToken(refreshToken: string) {
+  try {
+    const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const response = await fetch(`${baseApiUrl}api/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+    };
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    throw error;
+  }
+}
 const authOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
@@ -39,6 +79,35 @@ const authOptions = {
         } catch (error) {
           console.error("Error during authentication", error);
           return null;
+        }
+      },
+    }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "your email",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const response = await fetch(`${baseApiUrl}api/users/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        });
+
+        const user = await response.json();
+
+        if (response.ok) {
+          return user;
+        } else {
+          throw new Error(user.message || "Sign in failed");
         }
       },
     }),
@@ -75,11 +144,35 @@ const authOptions = {
         token.accessToken = user.accessToken;
         token.subId = user.subId;
         token.refreshToken = user.refreshToken;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60;
+      }
+      if (token.exp && Date.now() >= token.exp * 1000) {
+        try {
+          const { accessToken, refreshToken } = await refreshAccessToken(
+            token.refreshToken
+          );
+          return {
+            ...token,
+            accessToken,
+            refreshToken,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60, // or set based on accessToken's actual expiry
+          };
+        } catch (error) {
+          console.error("Error refreshing token:", error);
+          return { ...token, error: "RefreshAccessTokenError" };
+        }
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       // Create a user object with token properties
+      if (token.error) {
+        return {
+          ...session,
+          error: token.error,
+        };
+      }
+
       const userObject: AdapterUser = {
         id: token.id,
         avatar: token.avatar,
@@ -88,26 +181,21 @@ const authOptions = {
         accessToken: token.accessToken,
         subId: token.subId,
         refreshToken: token.refreshToken,
-        email: token.email ? token.email : "", // Ensure email is not undefined
-        emailVerified: null, // Required property, set to null if not used
+        email: token.email ? token.email : "",
+        emailVerified: null,
       };
-
-      // Add the user object to the session
-      session.user = userObject;
 
       return session;
     },
   },
   pages: {
-    signIn: "/login", // Custom sign-in page
-    // error: "/auth/error", // Custom error page
+    signIn: "/login",
   },
   session: {
     strategy: "jwt",
   },
 } satisfies NextAuthConfig;
 
-// Function to authenticate and fetch user details
 async function fetchUser(
   url: string,
   body: CredentialsType | SocialCredentialsType
@@ -135,7 +223,6 @@ async function fetchUser(
   }
 }
 
-// Function to create a user object
 function createUser(user: UserResponseType) {
   const userObject: UserType = {
     id: user.id,
@@ -144,8 +231,8 @@ function createUser(user: UserResponseType) {
     avatar: user.avatar,
     premiumSubscription: user.premium_subscription,
     accessToken: user.access_token,
-    refreshToken: "", //add subId from the auth service here
-    subId: "", // add refresh token here
+    refreshToken: user.refresh_token,
+    subId: user.sub_id,
   };
 
   return userObject;

@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Navigation from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
+import Navigation from "@/components/layout/modalAuth";
+import Footer from "@/components/layout/footer";
 
-import { LayoutProps } from '@/lib/layout';
+import { LayoutProps } from "@/lib/layout";
 
 export default function Layout({
   children,

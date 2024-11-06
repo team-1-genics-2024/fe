@@ -1,55 +1,32 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function Profile() {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { data: session } = useSession();
-
-  const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-  const [loadingProfile, setLoadingProfile] = useState(false);
-
+export default function Page() {
+  const [data, setData] = useState();
   useEffect(() => {
-    if (session?.user?.accessToken) {
-      // fetch user profile if access token is available
-      getUserProfile(session.user.accessToken);
-    } else {
-      // Redirect to `/login` if no access token or no session
-      router.push("/login?next=" + pathname);
-    }
+    (async () => {
+      const res = await fetch("/api/protected");
+      const json = await res.json();
+      setData(json);
+    })();
   }, []);
-
-  const getUserProfile = (token: string) => {
-    setLoadingProfile(true);
-    fetch(`${baseApiUrl}api/users`, {
-      headers: { Authorization: "Bearer " + token },
-    })
-      .then((response) => {
-        setLoadingProfile(false);
-      })
-      .catch((error) => {
-        // handle error here
-        console.error(error);
-      });
-  };
-
   return (
-    <>
-      {" "}
-      {loadingProfile ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <p>User Profile</p>
-          <p>Name: {session?.user?.name}</p>
-          <p>Email: {session?.user?.email}</p>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-3xl font-bold">Route Handler Usage</h1>
+      <p>
+        This page fetches data from an API Route Handler . The API is protected
+        using the universal <code>auth()</code>
+        method.
+      </p>
+      <div className="flex flex-col rounded-md bg-gray-100">
+        <div className="rounded-t-md bg-gray-200 p-4 font-bold">
+          Data from API Route
         </div>
-      )}
-    </>
+        <pre className="whitespace-pre-wrap break-all px-4 py-6">
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      </div>
+    </div>
   );
 }
