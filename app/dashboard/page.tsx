@@ -1,25 +1,17 @@
 'use client';
-import CardCourse from '@/components/dasboard/CardCourse';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { BurgerIcon, FavIcon, HomeIcon, SertivIcon } from '@/components/dasboard/Icon';
+import { BurgerIcon, HomeIcon, SertivIcon } from '@/components/dasboard/Icon';
 import SidebarMenu from '@/components/dasboard/SidebarMenu';
 import Image from 'next/image';
+import SearchInput from '@/components/dasboard/SearchInput';
 
-const MyCourse = () => {
+const MyCourse = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className=" h-[100vh] md:h-[80vh] md:max-w-[800px] bg-[#F7FCFF] lg:px-12 xl:px-14 pt-6 pb-14 ">
       <h1 className="text-4xl font-medium mb-8 px-7">My Course</h1>
       <ScrollArea className="px-7 h-[90%]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
-          <CardCourse />
-          <CardCourse />
-          <CardCourse />
-          <CardCourse />
-          <CardCourse />
-          <CardCourse />
-          <CardCourse />
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">{children}</div>
       </ScrollArea>
     </div>
   );
@@ -53,6 +45,10 @@ const Certificate = () => {
 };
 
 function Dashboard() {
+  const token = localStorage.getItem('accessToken');
+  console.log(token);
+  // const headers = { Authorization: `Bearer ${token}` };
+
   const [sideMenu, setSideMenu] = useState([true, false, false]);
   const [sideActive, setSideActive] = useState(false);
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
@@ -87,15 +83,23 @@ function Dashboard() {
           <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, true, false])} title="Certificate" active={sideMenu[1]}>
             <SertivIcon className={`${sideMenu[1] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} />
           </SidebarMenu>
-          <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, false, true])} title="Favorites" active={sideMenu[2]}>
-            <FavIcon className={`${sideMenu[2] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} />
-          </SidebarMenu>
+          {/* <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, false, true])} title="Favorites" active={sideMenu[2]}> */}
+          <SearchInput menuOpen={sideMenuOpen} onChange={(e) => console.log(e.target.value)} />
+          {/* <FavIcon className={`${sideMenu[2] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} /> */}
+          {/* </SidebarMenu> */}
         </div>
       </div>
       <div className="md:hidden block bg-[#EBF5FB]   pt-5  w-[70px] col-span-2   md:col-span-3"></div>
 
       <div className="col-span-10 md:col-span-9">
-        {sideMenu[0] && <MyCourse />}
+        {sideMenu[0] && (
+          <MyCourse>
+            p
+            {/* {classData?.map((data) => (
+              <CardCourse key={data.id} rating={data.rating} id={data.id} name={data.name} description={data.description} imageUrl={data.imageUrl} createdAt={data.createdAt} updatedAt={data.updatedAt} />
+            ))} */}
+          </MyCourse>
+        )}
         {sideMenu[1] && <Certificate />}
       </div>
     </div>

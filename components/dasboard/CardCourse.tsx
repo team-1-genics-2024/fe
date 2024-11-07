@@ -3,6 +3,15 @@ import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
 
+interface Class {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  rating: string;
+}
 const Star = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -14,19 +23,17 @@ const Star = () => {
   );
 };
 
-const CardDashboard = () => {
+const CardDashboard = ({ id, name, description, imageUrl, createAt, updatedAt, rating }: Class) => {
   return (
     <>
-      <Card className="overflow-hidden">
-        <div className="w-full h-[150px] md:h-[180px]">
-          <Image src="/image/courseimg.png" width={300} height={180} className="object-cover h-full w-full" alt="courseImg" />
-        </div>
+      <Card key={id} className="overflow-hidden">
+        <div className="w-full h-[150px] md:h-[180px]">{/* <Image src={imageUrl} width={300} height={180} className="object-cover h-full w-full" alt="courseImg" /> */}</div>
         <CardHeader>
           <CardTitle className="flex justify-between">
-            <div className="text-xl md:text-2xl font-[500]">Sejarah</div>
+            <div className="text-xl md:text-2xl font-[500]">{name}</div>
             <div className="flex items-center gap-1">
               <Star />
-              <p className="font-normal text-slate-400 text-xs md:text-sm"> 4.78/5</p>
+              <p className="font-normal text-slate-400 text-xs md:text-sm"> {rating}/5</p>
             </div>
           </CardTitle>
         </CardHeader>
