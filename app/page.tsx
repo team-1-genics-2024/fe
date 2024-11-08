@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import CardHomepage from "@/components/ui/CardHomepage";
 import { useEffect, useState } from "react";
-import { fetchClassData } from "@/app/actions/class";
+import { fetchClassData } from "./actions/class";
 import { useRouter } from "next/navigation";
 
 interface Class {

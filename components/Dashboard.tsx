@@ -109,7 +109,7 @@ export default function Dashboard() {
       </Button>
 
       <div className="flex flex-col bg-blue-500">
-        <Button disabled={!session?.accessToken} onClick={makeRequestWithToken}>
+        <Button onClick={makeRequestWithToken}>
           <p>Make API request</p>
         </Button>
       </div>
