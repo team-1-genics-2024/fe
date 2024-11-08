@@ -200,7 +200,7 @@ export default function Navigation() {
 
       if (result?.error) {
         setError(result.error);
-        showToast(result.error, "error");
+        showToast("Please double check your credentials");
       } else {
         const successMessage = "Successfully logged in";
         showToast(successMessage, "success");
@@ -215,7 +215,7 @@ export default function Navigation() {
         const errorMessage =
           error instanceof Error
             ? error.message
-            : "An error occurred during login";
+            : "Unexpected error occurred during login";
         setError(errorMessage);
         showToast(errorMessage, "error");
       }
@@ -252,10 +252,11 @@ export default function Navigation() {
         setState({ success: true, error: "" });
         showToast(successMessage, "success");
         switchToLogin();
+        console.log(data);
       } else {
         const errorData = await response.json();
         const errorMessage =
-          errorData.message || "Please double check your credential";
+          errorData.message || "Please double check your credentials";
         setState({
           success: false,
           error: errorMessage,
@@ -270,7 +271,7 @@ export default function Navigation() {
         errorMessage =
           error instanceof Error
             ? error.message
-            : "An error occurred during registration";
+            : "Unexpected error occurred during registration";
       }
       setState({
         success: false,

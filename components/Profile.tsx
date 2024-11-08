@@ -1,17 +1,66 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "./loading-screen";
+
+class ApiError extends Error {
+  constructor(message: string, public status?: number, public code?: string) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+type ApiResponse = {
+  data: string;
+  user?: any;
+};
 
 export default function Page() {
-  const [data, setData] = useState();
+  const router = useRouter();
+  const [data, setData] = useState<ApiResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/protected");
-      const json = await res.json();
-      setData(json);
-    })();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/protected");
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push("/");
+            return;
+          }
+          throw new ApiError(
+            "Failed to fetch data",
+            res.status,
+            res.statusText
+          );
+        }
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        if (err instanceof ApiError) {
+          setError(`${err.message} (Status: ${err.status})`);
+        } else if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      }
+    };
+
+    fetchData();
+  }, [router]);
+
+  if (error)
+    return (
+      <div className="text-red-600 p-4 bg-red-50 rounded-md">
+        Error: {error}
+      </div>
+    );
+
+  if (!data) return <LoadingScreen />;
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">Route Handler Usage</h1>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import CardHomepage from "@/components/ui/CardHomepage";
 import { useEffect, useState } from "react";
 import { fetchClassData } from "@/app/actions/class";
+import { useRouter } from "next/navigation";
 
 interface Class {
   id: number;
@@ -18,6 +19,7 @@ interface Class {
 export default function Home() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const loadClasses = async () => {
@@ -32,6 +34,10 @@ export default function Home() {
 
     loadClasses();
   }, []);
+
+  const handleClick = () => {
+    router.push("/classes");
+  };
 
   return (
     <Layout withNavbar={true} withFooter={true}>
@@ -94,7 +100,10 @@ export default function Home() {
           </div>
         </div>
         {/* Learning Path Section */}
-        <div className="mt-12 px-8 text-center h-full mb-6">
+        <div
+          className="mt-12 px-8 text-center h-full mb-6"
+          onClick={handleClick}
+        >
           <h2 className="text-3xl font-bold mb-16">
             Daftar Learning Path Rancangan Experts
           </h2>

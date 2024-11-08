@@ -5,7 +5,7 @@ export default function SessionData({ session }: { session: Session | null }) {
     return (
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
         <h2 className="text-xl font-bold">Current Session Data</h2>
-        {Object.keys(session.user).length > 3 ? (
+        {Object.keys(session.user).length > 0 ? (
           <p>
             In this example, the whole session object is passed to the page,
             including the raw user object. Our recommendation is to{" "}

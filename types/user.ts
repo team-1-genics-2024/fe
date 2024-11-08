@@ -4,10 +4,8 @@ interface UserType {
   name: string;
   email: string;
   avatar: string;
-  premiumSubscription: boolean;
   accessToken: string;
   refreshToken: string;
-  subId: string;
 }
 
 type UserResponseType = {
@@ -15,10 +13,8 @@ type UserResponseType = {
   name: string;
   email: string;
   avatar: string;
-  premium_subscription: boolean;
   access_token: string;
   refresh_token: string;
-  sub_id: string;
 };
 
 export type { UserType, UserResponseType };
@@ -31,10 +27,8 @@ declare module "next-auth" {
       name: string;
       email: string;
       avatar?: string;
-      premiumSubscription?: boolean;
+
       refreshToken?: string;
-      subId?: string;
-      // Add other custom properties here if needed
     } & DefaultSession["user"];
   }
 }

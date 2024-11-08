@@ -54,6 +54,17 @@ const UpdateForm = () => {
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [apiResponse, setApiResponse] = useState("");
+
+  const makeRequestWithToken = async () => {
+    try {
+      const response = await fetch("https://api.beteam1genics.my.id/api/users");
+      const data = await response.json();
+      setApiResponse(JSON.stringify(data, null, 2));
+    } catch (error) {
+      setApiResponse("Failed to fetch data: " + error);
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -96,6 +107,13 @@ export default function Dashboard() {
       <Button>
         <Link href="/profile">Profile</Link>
       </Button>
+
+      <div className="flex flex-col bg-blue-500">
+        <Button disabled={!session?.accessToken} onClick={makeRequestWithToken}>
+          <p>Make API request</p>
+        </Button>
+      </div>
+      <pre>{apiResponse}</pre>
     </Layout>
   );
 }
