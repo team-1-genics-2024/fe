@@ -97,6 +97,7 @@ const LoadingScreen: React.FC = () => {
                 alt="stars"
                 width={20}
                 height={20}
+                priority={true}
                 className="absolute rounded-full -top-2 left-1/2 transform -translate-x-1/2"
               />
             </div>
@@ -161,7 +162,7 @@ export const WithFullPageLoadingScreen: React.FC<
 
   useEffect(() => {
     setMounted(true);
-    const timer = setTimeout(() => setShowLoadingScreen(false), 2000);
+    const timer = setTimeout(() => setShowLoadingScreen(false), 1000 | 2000);
     return () => clearTimeout(timer);
   }, []);
 

@@ -4,13 +4,13 @@ import * as React from "react";
 
 import Navigation from "@/components/layout/modalAuth";
 import Footer from "@/components/layout/footer";
-import NavbarClassPage from "@/components/layout/navbar-authenticated";
+import NavbarAuthenticated from "@/components/layout/navbar-authenticated";
 
 interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
   withFooter?: boolean;
-  withClassesNavbar?: boolean;
+  withAuthenticated?: boolean;
   customClass?: string;
   withPadding?: boolean;
 }
@@ -19,6 +19,7 @@ export default function Layout({
   children,
   withNavbar,
   withFooter,
+  withAuthenticated,
   customClass = "",
   withPadding = true,
 }: LayoutProps) {
@@ -31,7 +32,7 @@ export default function Layout({
   return (
     <div className={`min-h-screen flex flex-col ${customClass}`}>
       {withNavbar && !isAuthenticated && <Navigation />}
-      {withNavbar && isAuthenticated && <NavbarClassPage />}
+      {withNavbar && isAuthenticated && <NavbarAuthenticated />}
 
       <main className={`flex-grow ${withPadding ? "px-4 py-8" : ""}`}>
         {children}
