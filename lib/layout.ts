@@ -5,8 +5,3 @@ export type LayoutProps = {
   withNavbar: boolean;
   withFooter: boolean;
 };
-export type LayoutDashboardProps = {
-  children: React.ReactNode;
-  withNavbarDashboard: boolean;
-  withFooterDashboard: boolean;
-};

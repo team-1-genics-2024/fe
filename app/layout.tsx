@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Lato, Poppins } from "next/font/google";
 import "./globals.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactDOM from "react-dom";
 
 const lato = Lato({
   weight: ["400", "700"],
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body className={`${lato.className} ${poppins.className}`}>
         <ToastContainer
           position="top-center"
-          autoClose={3000}
+          autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

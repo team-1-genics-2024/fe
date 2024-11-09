@@ -1,10 +1,12 @@
-// components/LoadingScreen.tsx
-import React from "react";
+import React, { useEffect, useState, ReactNode } from "react";
+
+interface WithFullPageLoadingScreenProps {
+  children: ReactNode;
+}
 
 const LoadingScreen = () => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center min-h-screen w-full bg-[#3498DB] bg-gradient-to-br from-[#3498DB] to-[#2980B9] overflow-hidden">
-      {/* Geometric background patterns */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center min-h-screen w-full h-full bg-[#3498DB] bg-gradient-to-br from-[#3498DB] to-[#2980B9] overflow-hidden">
       <div className="absolute inset-0 overflow-hidden opacity-20">
         {[...Array(20)].map((_, i) => (
           <div
@@ -21,9 +23,7 @@ const LoadingScreen = () => {
         ))}
       </div>
 
-      {/* Main loading animation */}
       <div className="relative">
-        {/* DNA Helix Animation */}
         <div className="relative w-40 h-40">
           {[...Array(8)].map((_, i) => (
             <React.Fragment key={i}>
@@ -73,12 +73,10 @@ const LoadingScreen = () => {
           ))}
         </div>
 
-        {/* Center element */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-16 h-16 bg-white rounded-full animate-pulse opacity-50" />
         </div>
 
-        {/* Loading text with gradient */}
         <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 w-full text-center">
           <div className="relative inline-block">
             <span className="relative text-white text-xl font-bold tracking-widest">
@@ -89,7 +87,6 @@ const LoadingScreen = () => {
         </div>
       </div>
 
-      {/* Floating particles */}
       {[...Array(15)].map((_, i) => (
         <div
           key={i}
@@ -127,11 +124,28 @@ const styles = `
   }
 `;
 
-export const WithLoadingScreen = () => {
+export const WithFullPageLoadingScreen: React.FC<
+  WithFullPageLoadingScreenProps
+> = ({ children }) => {
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoadingScreen(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <style>{styles}</style>
-      <LoadingScreen />
+      {showLoadingScreen && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
+          <LoadingScreen />
+        </div>
+      )}
+      {children}
     </>
   );
 };
