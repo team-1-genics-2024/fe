@@ -36,13 +36,13 @@ export default function NavbarHomePage() {
         const randomIndex = Math.floor(Math.random() * userAvatars.length);
         const selectedAvatar = userAvatars[randomIndex];
         setAvatarImage(selectedAvatar);
-        localStorage.setItem("avatarImage", selectedAvatar); // Store in localStorage
+        localStorage.setItem("avatarImage", selectedAvatar);
       }
       fetchUserProfile(token);
     }
   }, []);
 
-  // --USERNAME AND EMAIL USER
+  // --USERNAME AND EMAIL USER--  //  -- PAKE METHODE KEK GINI KLO MAU FETCH USER DI PAGE YG GA DILINDUNGI/GA DIDALEM PROTECTED ROUTE!--
   const fetchUserProfile = async (token: string) => {
     try {
       let response = await fetch(`${baseApiUrl}api/users`, {
@@ -102,6 +102,7 @@ export default function NavbarHomePage() {
       console.error("Error fetching user data:", error);
     }
   };
+  // --SAMPE SINI
 
   // --HANDLE LOGOUT--
   const handleSignOut = async () => {
