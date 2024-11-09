@@ -1,15 +1,11 @@
-"use client";
-import Layout from "@/components/layout/Layout";
 import React from "react";
+import Dashboard from "@/components/Dashboard";
+import ProtectedRoute from "../protected/route";
 
-function Dashboard() {
+export default async function DashboardPage() {
   return (
-    <Layout withNavbar={true} withFooter={true}>
-      <div>
-        <h1> this is a Dashboard</h1>
-      </div>
-    </Layout>
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
   );
 }
-
-export default Dashboard;
