@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { WithFullPageLoadingScreen } from "./loading-screen";
+
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import { Description } from "@radix-ui/react-dialog";
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "../hooks/useAuth";
 import { showToast } from "@/lib/toast";
+import { WithFullPageLoadingScreen } from "@/components/layout/loading-screen";
 
 // -- LOGIN VALIDATION --
 const loginSchema = z.object({
@@ -151,7 +152,6 @@ export default function Navigation() {
   const [state, setState] = useState({ success: false, error: "" });
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [toastShown, setToastShown] = useState(false);
 
   const switchToSignup = () => {
     setLoginDialogOpen(false);
@@ -192,8 +192,6 @@ export default function Navigation() {
 
           console.log("Token stored:", accessToken);
 
-          showToast("Successfully logged in", "success");
-          setToastShown(true);
           router.push("/dashboard");
         } else {
           console.error("AccessToken is missing in result.data.data");
@@ -201,18 +199,18 @@ export default function Navigation() {
         }
       } else {
         const errorMessage = result.error || "Login failed";
-        showToast(errorMessage, "error");
+
+        router.push("/");
+        return;
       }
       router.push("/dashboard");
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage = error.errors.map((err) => err.message).join(", ");
         setError(errorMessage);
-        showToast(errorMessage, "error");
       } else {
         console.error("Login error:", error);
         setError("An unexpected error occurred");
-        showToast("An unexpected error occurred", "error");
       }
     } finally {
       setIsSubmittingLogin(false);
@@ -276,16 +274,6 @@ export default function Navigation() {
     } finally {
       setIsSubmittingSignUp(false);
     }
-  };
-
-  // --HANDLE GOOGLE LOGIN--
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      window.open(googleLogin);
-      setLoading(false);
-    }, 3000);
   };
 
   return (
@@ -523,25 +511,26 @@ export default function Navigation() {
                           </div>
 
                           <div className="space-y-2 sm:bottom-[20%]">
-                            <Button
-                              variant="outline"
-                              type="button"
-                              onClick={handleGoogleLogin}
-                              className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-                            >
-                              <Image
-                                src="/image/Google.png"
-                                width={20}
-                                height={20}
-                                alt="google"
-                                className="p-[0.94px] w-[18px] h-[18px]"
-                              />
-                              <span>
-                                {isPending
-                                  ? "Redirecting..."
-                                  : "Log in with Google"}
-                              </span>
-                            </Button>
+                            <Link href={googleLogin}>
+                              <Button
+                                variant="outline"
+                                type="button"
+                                className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                              >
+                                <Image
+                                  src="/image/Google.png"
+                                  width={20}
+                                  height={20}
+                                  alt="google"
+                                  className="p-[0.94px] w-[18px] h-[18px]"
+                                />
+                                <span>
+                                  {isPending
+                                    ? "Redirecting..."
+                                    : "Log in with Google"}
+                                </span>
+                              </Button>
+                            </Link>
 
                             <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
                               Don't have account yet?{" "}
@@ -736,11 +725,12 @@ export default function Navigation() {
                                     />
                                     <span>
                                       {isPending
-                                        ? "Loading..."
+                                        ? "Redirecting..."
                                         : "Sign up with Google"}
                                     </span>
                                   </Button>
                                 </Link>
+
                                 <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
                                   Already have an account?{" "}
                                   <span
