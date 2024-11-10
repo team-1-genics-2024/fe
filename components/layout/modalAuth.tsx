@@ -194,9 +194,11 @@ export default function Navigation() {
           router.push("/dashboard");
         } else {
           console.error("AccessToken is missing in result.data.data");
+          showToast(error, "error");
         }
       } else {
         const errorMessage = result.error || "Login failed";
+        showToast(errorMessage, "error");
 
         router.push("/");
         return;

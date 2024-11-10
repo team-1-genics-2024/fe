@@ -16,7 +16,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   useEffect(() => {
     const validateAuth = async () => {
+      console.log("masuk sini");
       const token = getStoredToken();
+      console.log("masuk sini");
 
       const fetchUserProfile = async (token: string) => {
         try {
@@ -26,6 +28,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            credentials: "include",
           });
 
           const data = await response.json();
@@ -36,14 +39,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
           return data.resultCode;
         } catch (error) {
-          showToast("You may login first before accessing this page", "error");
           return null;
         }
       };
 
       const code = await fetchUserProfile(token as string);
 
-      if (!token || code != 200) {
+      if (code != 200) {
         const refreshResult = await refreshUserToken();
         console.log("refreshResult", refreshResult);
         if (!refreshResult) {
