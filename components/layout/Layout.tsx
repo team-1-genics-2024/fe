@@ -6,6 +6,7 @@ import Navigation from "@/components/layout/modalAuth";
 import Footer from "@/components/layout/footer";
 import NavbarAuthenticated from "@/components/layout/navbar-authenticated";
 import { useRouter } from "next/navigation";
+import { showToast } from "@/lib/toast";
 interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
@@ -23,6 +24,7 @@ export default function Layout({
 }: LayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const router = useRouter();
+
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   React.useEffect(() => {
@@ -38,11 +40,7 @@ export default function Layout({
           credentials: "include",
         });
 
-        console.log("Response:", response);
-
         if (response.ok) {
-          const data = await response.json();
-          console.log("User data:", data);
           setIsAuthenticated(true);
           return;
         }
@@ -56,11 +54,7 @@ export default function Layout({
         });
 
         if (!refreshResponse.ok) {
-          const errorData = await response.json();
-          console.error("Error response:", errorData);
-          localStorage.removeItem("accessToken");
-
-          router.replace("/");
+          setIsAuthenticated(false);
         }
 
         const refreshData = await refreshResponse.json();
@@ -77,20 +71,16 @@ export default function Layout({
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Error response:", errorData);
-          throw new Error(`Failed to fetch user data: ${response.status}`);
+          setIsAuthenticated(false);
         }
-
-        const data = await response.json();
         setIsAuthenticated(true);
-        console.log("User data:", data);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        return;
       }
     };
     fetchUserProfile(token as string);
   }, []);
+
   return (
     <div className={`min-h-screen flex flex-col ${customClass}`}>
       {withNavbar && !isAuthenticated && <Navigation />}

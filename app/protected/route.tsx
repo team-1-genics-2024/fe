@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredToken, refreshUserToken } from "@/lib/auth";
 import { showToast } from "@/lib/toast";
+import LoadingScreen, {
+  WithFullPageLoadingScreen,
+} from "@/components/layout/loading-screen";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -65,8 +68,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     validateAuth();
   }, [router]);
 
-  if (!isAuthenticated) {
-    return null;
+  if (isLoading) {
+    return <WithFullPageLoadingScreen>{children}</WithFullPageLoadingScreen>;
   }
 
   return children;
