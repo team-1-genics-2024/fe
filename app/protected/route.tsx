@@ -6,6 +6,7 @@ import { showToast } from "@/lib/toast";
 import LoadingScreen, {
   WithFullPageLoadingScreen,
 } from "@/components/layout/loading-screen";
+import { setAccessTokens, removeAccessTokens } from "@/lib/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -16,12 +17,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [avatarImage, setAvatarImage] = useState<string | null>(null);
 
   useEffect(() => {
     const validateAuth = async () => {
-      console.log("masuk sini");
+      setIsLoading(true);
+
       const token = getStoredToken();
-      console.log("masuk sini");
 
       const fetchUserProfile = async (token: string) => {
         try {
@@ -53,7 +55,12 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         console.log("refreshResult", refreshResult);
         if (!refreshResult) {
           showToast("Session expired, please login again", "error");
+          removeAccessTokens();
+          setIsAuthenticated(false);
+          setAvatarImage(null);
+          localStorage.removeItem("avatarImage");
           await router.push("/");
+          setIsLoading(false);
           return;
         }
 
@@ -72,7 +79,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <WithFullPageLoadingScreen>{children}</WithFullPageLoadingScreen>;
   }
 
-  return children;
+  return isAuthenticated ? <>{children}</> : null;
 };
 
 export default ProtectedRoute;
