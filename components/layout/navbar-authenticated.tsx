@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/data";
 import { useAuth } from "../hooks/useAuth";
+import { WithFullPageLoadingScreen } from "@/components/layout/loading-screen";
 
 export default function NavbarHomePage() {
   const router = useRouter();
@@ -207,21 +208,22 @@ export default function NavbarHomePage() {
                     <AvatarFallback>Profile</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-4 py-2">
-                    <p className="font-medium">{userName}</p>
-                    <p className="text-sm text-gray-500">{userEmail}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
+                <WithFullPageLoadingScreen>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <div className="px-4 py-2">
+                      <p className="font-medium">{userName}</p>
+                      <p className="text-sm text-gray-500">{userEmail}</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleSignOut}
+                      className="cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </WithFullPageLoadingScreen>
               </DropdownMenu>
             )}
           </div>

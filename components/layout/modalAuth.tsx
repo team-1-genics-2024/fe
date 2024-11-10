@@ -145,7 +145,6 @@ export default function Navigation() {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [signupDialogOpen, setSignupDialogOpen] = useState(false);
@@ -195,7 +194,6 @@ export default function Navigation() {
           router.push("/dashboard");
         } else {
           console.error("AccessToken is missing in result.data.data");
-          showToast("Login failed: Token is missing", "error");
         }
       } else {
         const errorMessage = result.error || "Login failed";
@@ -277,96 +275,95 @@ export default function Navigation() {
   };
 
   return (
-    <WithFullPageLoadingScreen>
-      <nav className="sticky top-0 z-20 bg-white shadow-sm dark:bg-gray-950/90">
-        <div className="w-full max-w-7xl mx-auto px-6">
-          <div className="flex justify-between h-16 items-center gap-8">
-            <Link href="/" className="flex flex-row items-center">
-              <Image
-                src="/image/homepage/icon.png"
-                alt="Left Star"
-                width={20}
-                height={20}
-              />
-              <span className="text-xl ml-2 font-bold text-[#3498DB]">
-                SinauPo'o
-              </span>
-            </Link>
+    <nav className="sticky top-0 z-20 bg-white shadow-sm dark:bg-gray-950/90">
+      <div className="w-full max-w-7xl mx-auto px-6">
+        <div className="flex justify-between h-16 items-center gap-8">
+          <Link href="/" className="flex flex-row items-center">
+            <Image
+              src="/image/homepage/icon.png"
+              alt="Left Star"
+              width={20}
+              height={20}
+            />
+            <span className="text-xl ml-2 font-bold text-[#3498DB]">
+              SinauPo'o
+            </span>
+          </Link>
 
-            <div className="hidden md:flex flex-1 justify-center">
-              <nav className="flex gap-12">
-                <Link
-                  href="/home"
-                  className="font-medium text-sm text-gray-600 hover:text-gray-900"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="font-medium text-sm text-gray-600 hover:text-gray-900"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/about"
-                  className="font-medium text-sm text-gray-600 hover:text-gray-900"
-                >
-                  About us
-                </Link>
-              </nav>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button
-                className="p-2 text-gray-600 hover:text-gray-900 hidden md:block lg:block"
-                aria-label="Search"
+          <div className="hidden md:flex flex-1 justify-center">
+            <nav className="flex gap-12">
+              <Link
+                href="/home"
+                className="font-medium text-sm text-gray-600 hover:text-gray-900"
               >
-                <Search className="w-5 h-5" />
-              </button>
+                Home
+              </Link>
+              <Link
+                href="/dashboard"
+                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/about"
+                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+              >
+                About us
+              </Link>
+            </nav>
+          </div>
 
-              {/* Apps Menu Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  {isAuthenticated && (
-                    <button
-                      className="p-2 text-gray-600 hover:text-gray-900"
-                      aria-label="Apps"
-                    >
-                      <LayoutGrid className="w-5 h-5 block sm:hidden" />
-                    </button>
-                  )}
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-56 lg:hidden sm:block "
-                >
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/home"
-                      className="flex items-center w-full cursor-pointer"
-                    >
-                      Home
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/dashboard"
-                      className="flex items-center w-full cursor-pointer"
-                    >
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/about"
-                      className="flex items-center w-full cursor-pointer"
-                    >
-                      About us
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+          <div className="flex items-center gap-4">
+            <button
+              className="p-2 text-gray-600 hover:text-gray-900 hidden md:block lg:block"
+              aria-label="Search"
+            >
+              <Search className="w-5 h-5" />
+            </button>
 
+            {/* Apps Menu Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                {isAuthenticated && (
+                  <button
+                    className="p-2 text-gray-600 hover:text-gray-900"
+                    aria-label="Apps"
+                  >
+                    <LayoutGrid className="w-5 h-5 block sm:hidden" />
+                  </button>
+                )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-56 lg:hidden sm:block "
+              >
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/home"
+                    className="flex items-center w-full cursor-pointer"
+                  >
+                    Home
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center w-full cursor-pointer"
+                  >
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/about"
+                    className="flex items-center w-full cursor-pointer"
+                  >
+                    About us
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <WithFullPageLoadingScreen>
               <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
                 <div className="flex items-center gap-4">
                   <DialogTrigger asChild>
@@ -753,10 +750,10 @@ export default function Navigation() {
                   </Dialog>
                 </div>
               </Dialog>
-            </div>
+            </WithFullPageLoadingScreen>
           </div>
         </div>
-      </nav>
-    </WithFullPageLoadingScreen>
+      </div>
+    </nav>
   );
 }

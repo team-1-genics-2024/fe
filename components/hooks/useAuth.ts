@@ -55,25 +55,9 @@ export const useAuth = () => {
     }
   };
 
-  const getTokenFromCookies = () => {
-    const cookieString = document.cookie;
-    const cookies = cookieString.split("; ");
-    const tokenCookie = cookies.find((cookie) => cookie.startsWith("token="));
-    return tokenCookie ? tokenCookie.split("=")[1] : null;
-  };
-
   const logout = async () => {
     try {
       let token = getStoredToken();
-      if (!token) {
-        token = getTokenFromCookies();
-      }
-
-      if (!token) {
-        console.error("No token found for logout");
-        return;
-      }
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/logout`,
         {
@@ -82,6 +66,7 @@ export const useAuth = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          credentials: "include",
         }
       );
 

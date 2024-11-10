@@ -22,7 +22,7 @@ export default function ClassPage() {
             </div>
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 1 - b"
                 width={30}
                 height={30}
@@ -32,7 +32,7 @@ export default function ClassPage() {
             </div>
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 1 - c"
                 width={30}
                 height={30}
@@ -42,7 +42,7 @@ export default function ClassPage() {
             </div>
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 1 - d"
                 width={30}
                 height={30}
@@ -56,7 +56,7 @@ export default function ClassPage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 2 - a"
                 width={30}
                 height={30}
@@ -66,7 +66,7 @@ export default function ClassPage() {
             </div>
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 2 - b"
                 width={30}
                 height={30}
@@ -76,7 +76,7 @@ export default function ClassPage() {
             </div>
             <div className="bg-gray-100 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
               <Image
-                src="/api/placeholder/200/150"
+                src="/"
                 alt="Judul Sub Chapter 2 - c"
                 width={30}
                 height={30}
