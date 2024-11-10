@@ -10,7 +10,6 @@ interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
   withFooter?: boolean;
-  withAuthenticated?: boolean;
   customClass?: string;
   withPadding?: boolean;
 }
@@ -19,7 +18,6 @@ export default function Layout({
   children,
   withNavbar,
   withFooter,
-  withAuthenticated,
   customClass = "",
   withPadding = true,
 }: LayoutProps) {

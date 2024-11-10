@@ -36,6 +36,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
           return data.resultCode;
         } catch (error) {
+          showToast("You may login first before accessing this page", "error");
           return null;
         }
       };
@@ -46,7 +47,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         const refreshResult = await refreshUserToken();
         console.log("refreshResult", refreshResult);
         if (!refreshResult) {
-          showToast("You may login first before accessing this page", "error");
+          showToast("Session expired, please login again", "error");
           await router.push("/");
           return;
         }

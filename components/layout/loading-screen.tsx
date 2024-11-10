@@ -153,7 +153,6 @@ const LoadingScreen: React.FC = () => {
   );
 };
 
-// HOC with proper client-side only rendering
 export const WithFullPageLoadingScreen: React.FC<
   WithFullPageLoadingScreenProps
 > = ({ children }) => {
@@ -162,7 +161,7 @@ export const WithFullPageLoadingScreen: React.FC<
 
   useEffect(() => {
     setMounted(true);
-    const timer = setTimeout(() => setShowLoadingScreen(false), 1000 | 2000);
+    const timer = setTimeout(() => setShowLoadingScreen(false), 800);
     return () => clearTimeout(timer);
   }, []);
 

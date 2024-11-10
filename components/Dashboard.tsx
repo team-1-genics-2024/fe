@@ -17,5 +17,6 @@ export default function Dashboard() {
         </div>
       </div>
     </Layout>
+    // Layout nya kek gini ya, ga perlu dikasih true
   );
 }
