@@ -58,7 +58,55 @@ export const useAuth = () => {
   const logout = async () => {
     try {
       let token = getStoredToken();
-      const response = await fetch(
+      let response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/logout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        removeAccessTokens();
+        setIsAuthenticated(false);
+        setAvatarImage(null);
+        localStorage.removeItem("avatarImage");
+        showToast("Successfully logged out", "success");
+        router.push("/");
+        return;
+      }
+
+      const refreshResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/refresh`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!refreshResponse.ok) {
+        removeAccessTokens();
+        setIsAuthenticated(false);
+        setAvatarImage(null);
+        localStorage.removeItem("avatarImage");
+        showToast("Successfully logged out", "success");
+        router.push("/");
+        return;
+      }
+
+      const refreshData = await refreshResponse.json();
+      const newAccessToken = refreshData.data.accessToken;
+      localStorage.setItem("accessToken", newAccessToken);
+      token = newAccessToken;
+
+      response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/logout`,
         {
           method: "POST",
@@ -71,9 +119,12 @@ export const useAuth = () => {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error response:", errorData);
-        showToast("Failed to log out", "error");
+        removeAccessTokens();
+        setIsAuthenticated(false);
+        setAvatarImage(null);
+        localStorage.removeItem("avatarImage");
+        showToast("Successfully logged out", "success");
+        router.push("/");
         return;
       }
 

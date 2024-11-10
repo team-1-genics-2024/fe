@@ -1,10 +1,8 @@
 import React from "react";
-import Layout from "./layout/Layout";
 import Image from "next/image";
 
 export default function ClassPage() {
   return (
-    // <Layout withNavbar withFooter>
     <section>
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-4">Sejarah</h1>
@@ -87,6 +85,5 @@ export default function ClassPage() {
         </div>
       </div>
     </section>
-    // {/* </Layout> */}
   );
 }
