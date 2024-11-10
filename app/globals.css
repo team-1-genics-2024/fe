@@ -3,14 +3,10 @@
 @tailwind utilities;
 
 .custom-shadow {
-  box-shadow:
-    0 -4px 6px rgba(0, 0, 0, 0.1),
-    /* top's shadow */
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    /* bottom's shadow */
-    -4px 0 6px rgba(0, 0, 0, 0.1),
-    /* left's shadow */
-    4px 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1),
+    /* top's shadow */ 0 4px 6px rgba(0, 0, 0, 0.1),
+    /* bottom's shadow */ -4px 0 6px rgba(0, 0, 0, 0.1),
+    /* left's shadow */ 4px 0 6px rgba(0, 0, 0, 0.1);
   /* right's shadow */
 }
 
@@ -51,4 +47,16 @@
     --sidebar-ring:
     217.2 91.2% 59.8%
   }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }

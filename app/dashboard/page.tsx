@@ -44,7 +44,7 @@ const Certificate = () => {
   );
 };
 
-function Dashboard() {
+export default function Dashboard() {
   const token = localStorage.getItem('accessToken');
   console.log(token);
   // const headers = { Authorization: `Bearer ${token}` };
@@ -105,5 +105,3 @@ function Dashboard() {
     </div>
   );
 }
-
-export default Dashboard;
