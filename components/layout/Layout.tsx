@@ -5,7 +5,8 @@ import * as React from "react";
 import Navigation from "@/components/layout/modalAuth";
 import Footer from "@/components/layout/footer";
 import NavbarAuthenticated from "@/components/layout/navbar-authenticated";
-
+import { useRouter } from "next/navigation";
+import { showToast } from "@/lib/toast";
 interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
@@ -22,11 +23,64 @@ export default function Layout({
   withPadding = true,
 }: LayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const router = useRouter();
+
+  const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   React.useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    setIsAuthenticated(!!token);
+    const fetchUserProfile = async (token: string) => {
+      try {
+        let response = await fetch(`${baseApiUrl}api/users`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          setIsAuthenticated(true);
+          return;
+        }
+
+        const refreshResponse = await fetch(`${baseApiUrl}api/auth/refresh`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (!refreshResponse.ok) {
+          setIsAuthenticated(false);
+        }
+
+        const refreshData = await refreshResponse.json();
+        const newAccessToken = refreshData.data.accessToken;
+        localStorage.setItem("accessToken", newAccessToken);
+
+        response = await fetch(`${baseApiUrl}api/users`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          setIsAuthenticated(false);
+        }
+        setIsAuthenticated(true);
+      } catch (error) {
+        return;
+      }
+    };
+    fetchUserProfile(token as string);
   }, []);
+
   return (
     <div className={`min-h-screen flex flex-col ${customClass}`}>
       {withNavbar && !isAuthenticated && <Navigation />}

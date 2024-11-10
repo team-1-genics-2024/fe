@@ -14,7 +14,6 @@ import {
 import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/data";
 import { useAuth } from "../hooks/useAuth";
-import { WithFullPageLoadingScreen } from "@/components/layout/loading-screen";
 
 export default function NavbarHomePage() {
   const router = useRouter();
@@ -26,20 +25,17 @@ export default function NavbarHomePage() {
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
+    console.log("masuk sini");
     const token = localStorage.getItem("accessToken");
-    setIsAuthenticated(!!token);
-
-    if (token) {
-      const storedAvatar = localStorage.getItem("avatarImage");
-      if (storedAvatar) {
-        setAvatarImage(storedAvatar);
-      } else {
-        const randomIndex = Math.floor(Math.random() * userAvatars.length);
-        const selectedAvatar = userAvatars[randomIndex];
-        setAvatarImage(selectedAvatar);
-        localStorage.setItem("avatarImage", selectedAvatar);
-      }
-      fetchUserProfile(token);
+    setIsAuthenticated(!!fetchUserProfile(token || ""));
+    const storedAvatar = localStorage.getItem("avatarImage");
+    if (storedAvatar) {
+      setAvatarImage(storedAvatar);
+    } else {
+      const randomIndex = Math.floor(Math.random() * userAvatars.length);
+      const selectedAvatar = userAvatars[randomIndex];
+      setAvatarImage(selectedAvatar);
+      localStorage.setItem("avatarImage", selectedAvatar);
     }
   }, []);
 
@@ -52,7 +48,10 @@ export default function NavbarHomePage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
+
+      console.log("Response:", response);
 
       if (response.ok) {
         const data = await response.json();
@@ -87,6 +86,7 @@ export default function NavbarHomePage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${newAccessToken}`,
         },
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -103,13 +103,11 @@ export default function NavbarHomePage() {
       console.error("Error fetching user data:", error);
     }
   };
-  // --SAMPE SINI
 
   // --HANDLE LOGOUT--
   const handleSignOut = async () => {
     try {
       await logout();
-      console.log("After logout, avatarImage:", avatarImage);
     } catch (error) {
       return;
     }
@@ -208,22 +206,21 @@ export default function NavbarHomePage() {
                     <AvatarFallback>Profile</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <WithFullPageLoadingScreen>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <div className="px-4 py-2">
-                      <p className="font-medium">{userName}</p>
-                      <p className="text-sm text-gray-500">{userEmail}</p>
-                    </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleSignOut}
-                      className="cursor-pointer"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </WithFullPageLoadingScreen>
+
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-4 py-2">
+                    <p className="font-medium">{userName}</p>
+                    <p className="text-sm text-gray-500">{userEmail}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleSignOut}
+                    className="cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
               </DropdownMenu>
             )}
           </div>

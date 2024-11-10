@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "../hooks/useAuth";
 import { showToast } from "@/lib/toast";
-import { WithFullPageLoadingScreen } from "@/components/layout/loading-screen";
 
 // -- LOGIN VALIDATION --
 const loginSchema = z.object({
@@ -194,9 +193,11 @@ export default function Navigation() {
           router.push("/dashboard");
         } else {
           console.error("AccessToken is missing in result.data.data");
+          showToast(error, "error");
         }
       } else {
         const errorMessage = result.error || "Login failed";
+        showToast(errorMessage, "error");
 
         router.push("/");
         return;
@@ -363,59 +364,46 @@ export default function Navigation() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <WithFullPageLoadingScreen>
-              <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
-                <div className="flex items-center gap-4">
-                  <DialogTrigger asChild>
-                    <Link href={"/"}>
-                      <Button
-                        variant="outline"
-                        className="rounded-full text-[#3498db] hover:text-[#3498db] hover:bg-white"
-                        size="sm"
-                      >
-                        Log in
-                      </Button>
-                    </Link>
-                  </DialogTrigger>
-                  <VisuallyHidden>
-                    <DialogTitle>Hey</DialogTitle>
-                    <Description></Description>
-                  </VisuallyHidden>
 
-                  <DialogContent className="bg-transparent outline-none border-none sm:max-w-[800px] p-0">
-                    <div className="w-full max-w-md lg:max-w-4xl lg:p-4 lg:h-[400px] xl:h-[450px] lg:flex lg:items-center lg:justify-between  p-0 bg-white rounded-xl custom-shadow relative md:leading-[5vh] md:py-16">
-                      <div className="hidden lg:block left-[4%]">
-                        <Image
-                          src="/star-5.svg"
-                          alt="star"
-                          width={90}
-                          height={90}
-                          className="absolute bottom-[34%] left-[24%]"
-                        />
-                        <Image
-                          src="/star-5.svg"
-                          priority
-                          alt="star"
-                          width={180}
-                          height={180}
-                          className="absolute bottom-[0.5%] left-[4%] -rotate-45"
-                        />
+            <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
+              <div className="flex items-center gap-4">
+                <DialogTrigger asChild>
+                  <Link href={"/"}>
+                    <Button
+                      variant="outline"
+                      className="rounded-full text-[#3498db] hover:text-[#3498db] hover:bg-white"
+                      size="sm"
+                    >
+                      Log in
+                    </Button>
+                  </Link>
+                </DialogTrigger>
+                <VisuallyHidden>
+                  <DialogTitle>Hey</DialogTitle>
+                  <Description></Description>
+                </VisuallyHidden>
 
-                        <div className="h-[40vh] flex items-start left-[20%]">
-                          <CardHeader className="space-y-2 text-left">
-                            <CardTitle className="text-[32px] font-medium text-black leading-10">
-                              Log in
-                            </CardTitle>
-                            <p className="text-black text-base font-medium leading-normal tracking-tight">
-                              to continue learning
-                            </p>
-                          </CardHeader>
-                        </div>
-                      </div>
+                <DialogContent className="bg-transparent outline-none border-none sm:max-w-[800px] p-0">
+                  <div className="w-full max-w-md lg:max-w-4xl lg:p-4 lg:h-[400px] xl:h-[450px] lg:flex lg:items-center lg:justify-between  p-0 bg-white rounded-xl custom-shadow relative md:leading-[5vh] md:py-16">
+                    <div className="hidden lg:block left-[4%]">
+                      <Image
+                        src="/star-5.svg"
+                        alt="star"
+                        width={90}
+                        height={90}
+                        className="absolute bottom-[34%] left-[24%]"
+                      />
+                      <Image
+                        src="/star-5.svg"
+                        priority
+                        alt="star"
+                        width={180}
+                        height={180}
+                        className="absolute bottom-[0.5%] left-[4%] -rotate-45"
+                      />
 
-                      {/* small screen */}
-                      <div className="w-full lg:w-1/2 lg:pl-2 sm:h-[40vh]">
-                        <CardHeader className="space-y-2 lg:hidden sm:block">
+                      <div className="h-[40vh] flex items-start left-[20%]">
+                        <CardHeader className="space-y-2 text-left">
                           <CardTitle className="text-[32px] font-medium text-black leading-10">
                             Log in
                           </CardTitle>
@@ -423,182 +411,182 @@ export default function Navigation() {
                             to continue learning
                           </p>
                         </CardHeader>
-
-                        <CardContent className="space-y-4 xl:mt-4">
-                          <form onSubmit={handleLogin} className="space-y-2">
-                            <Input
-                              type="email"
-                              name="email"
-                              value={email}
-                              required
-                              disabled={isSubmittingLogin}
-                              onChange={(e) => setEmail(e.target.value)}
-                              placeholder="Enter your email"
-                              className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
-                            />
-
-                            <div className="relative">
-                              <Input
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter your password"
-                                disabled={isSubmittingLogin}
-                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
-                              />
-                              <button
-                                type="button"
-                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[#747a7e] hover:text-[#3498db]"
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                {!showPassword ? (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    />
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    />
-                                  </svg>
-                                ) : (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                                    />
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
-                            <SubmitButtonLogin
-                              isSubmittingLogin={isSubmittingLogin}
-                            />
-                          </form>
-
-                          <div className="relative my-4">
-                            <div className="absolute inset-0 flex items-center">
-                              <span className="w-full border-t dark:border-gray-700" />
-                            </div>
-                            <div className="relative flex justify-center text-xs font-medium">
-                              <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400">
-                                or
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 sm:bottom-[20%]">
-                            <Link href={googleLogin}>
-                              <Button
-                                variant="outline"
-                                type="button"
-                                className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-                              >
-                                <Image
-                                  src="/image/Google.png"
-                                  width={20}
-                                  height={20}
-                                  alt="google"
-                                  className="p-[0.94px] w-[18px] h-[18px]"
-                                />
-                                <span>
-                                  {isPending
-                                    ? "Redirecting..."
-                                    : "Log in with Google"}
-                                </span>
-                              </Button>
-                            </Link>
-
-                            <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
-                              Don't have account yet?{" "}
-                              <span
-                                onClick={switchToSignup}
-                                className="text-[#3498db] text-[11px] cursor-pointer font-bold underline leading-none tracking-wide"
-                              >
-                                Sign up
-                              </span>
-                              <span className="text-[#747a7e]"> first!</span>
-                            </p>
-                          </div>
-                        </CardContent>
                       </div>
                     </div>
-                  </DialogContent>
 
-                  <Dialog
-                    open={signupDialogOpen}
-                    onOpenChange={setSignupDialogOpen}
-                  >
-                    <div className="flex items-center gap-5 ">
-                      <DialogTrigger asChild>
-                        <Link href={"/"}>
-                          <Button
-                            variant="outline"
-                            className="rounded-full text-white hover:text-white bg-[#3498db] hover:bg-[#3498db]"
-                            size="sm"
-                          >
-                            Sign up
-                          </Button>
-                        </Link>
-                      </DialogTrigger>
-                      <VisuallyHidden>
-                        <DialogTitle>Hey</DialogTitle>
-                      </VisuallyHidden>
+                    {/* small screen */}
+                    <div className="w-full lg:w-1/2 lg:pl-2 sm:h-[40vh]">
+                      <CardHeader className="space-y-2 lg:hidden sm:block">
+                        <CardTitle className="text-[32px] font-medium text-black leading-10">
+                          Log in
+                        </CardTitle>
+                        <p className="text-black text-base font-medium leading-normal tracking-tight">
+                          to continue learning
+                        </p>
+                      </CardHeader>
 
-                      <DialogContent className="bg-transparent outline-none border-none sm:max-w-[800px] p-0">
-                        <div className="w-full max-w-md lg:max-w-4xl lg:p-4 lg:h-[470px] lg:flex lg:items-center lg:justify-between p-0 bg-white rounded-xl custom-shadow relative md:leading-[10vh] lg:leading-[5vh] md:py-16 lg:space-y-10">
-                          <div className="hidden lg:block left-[4%]">
-                            <Image
-                              src="/star-5.svg"
-                              alt="star"
-                              width={90}
-                              height={90}
-                              className="absolute bottom-[34%] left-[24%]"
+                      <CardContent className="space-y-4 xl:mt-4">
+                        <form onSubmit={handleLogin} className="space-y-2">
+                          <Input
+                            type="email"
+                            name="email"
+                            value={email}
+                            required
+                            disabled={isSubmittingLogin}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                            className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                          />
+
+                          <div className="relative">
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              name="password"
+                              required
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Enter your password"
+                              disabled={isSubmittingLogin}
+                              className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
                             />
-                            <Image
-                              src="/star-5.svg"
-                              priority
-                              alt="star"
-                              width={180}
-                              height={180}
-                              className="absolute bottom-[0.5%] left-[4%] -rotate-45"
-                            />
-
-                            <div className="lg:h-[60vh] xl:h-[40vh] flex items-start left-[20%]">
-                              <CardHeader className="space-y-2 text-left">
-                                <CardTitle className="text-[32px] font-medium text-black leading-10">
-                                  Sign up
-                                </CardTitle>
-                                <p className="text-black text-base font-medium leading-normal tracking-tight">
-                                  to continue learning
-                                </p>
-                              </CardHeader>
-                            </div>
+                            <button
+                              type="button"
+                              className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[#747a7e] hover:text-[#3498db]"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {!showPassword ? (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                  />
+                                </svg>
+                              )}
+                            </button>
                           </div>
+                          <SubmitButtonLogin
+                            isSubmittingLogin={isSubmittingLogin}
+                          />
+                        </form>
 
-                          {/* small screen */}
-                          <div className="w-full lg:w-1/2 lg:pl-2">
-                            <CardHeader className="space-y-2 lg:hidden sm:block">
+                        <div className="relative my-4">
+                          <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t dark:border-gray-700" />
+                          </div>
+                          <div className="relative flex justify-center text-xs font-medium">
+                            <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400">
+                              or
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2 sm:bottom-[20%]">
+                          <Link href={googleLogin}>
+                            <Button
+                              variant="outline"
+                              type="button"
+                              className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                            >
+                              <Image
+                                src="/image/Google.png"
+                                width={20}
+                                height={20}
+                                alt="google"
+                                className="p-[0.94px] w-[18px] h-[18px]"
+                              />
+                              <span>
+                                {isPending
+                                  ? "Redirecting..."
+                                  : "Log in with Google"}
+                              </span>
+                            </Button>
+                          </Link>
+
+                          <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
+                            Don't have account yet?{" "}
+                            <span
+                              onClick={switchToSignup}
+                              className="text-[#3498db] text-[11px] cursor-pointer font-bold underline leading-none tracking-wide"
+                            >
+                              Sign up
+                            </span>
+                            <span className="text-[#747a7e]"> first!</span>
+                          </p>
+                        </div>
+                      </CardContent>
+                    </div>
+                  </div>
+                </DialogContent>
+
+                <Dialog
+                  open={signupDialogOpen}
+                  onOpenChange={setSignupDialogOpen}
+                >
+                  <div className="flex items-center gap-5 ">
+                    <DialogTrigger asChild>
+                      <Link href={"/"}>
+                        <Button
+                          variant="outline"
+                          className="rounded-full text-white hover:text-white bg-[#3498db] hover:bg-[#3498db]"
+                          size="sm"
+                        >
+                          Sign up
+                        </Button>
+                      </Link>
+                    </DialogTrigger>
+                    <VisuallyHidden>
+                      <DialogTitle>Hey</DialogTitle>
+                    </VisuallyHidden>
+
+                    <DialogContent className="bg-transparent outline-none border-none sm:max-w-[800px] p-0">
+                      <div className="w-full max-w-md lg:max-w-4xl lg:p-4 lg:h-[470px] lg:flex lg:items-center lg:justify-between p-0 bg-white rounded-xl custom-shadow relative md:leading-[10vh] lg:leading-[5vh] md:py-16 lg:space-y-10">
+                        <div className="hidden lg:block left-[4%]">
+                          <Image
+                            src="/star-5.svg"
+                            alt="star"
+                            width={90}
+                            height={90}
+                            className="absolute bottom-[34%] left-[24%]"
+                          />
+                          <Image
+                            src="/star-5.svg"
+                            priority
+                            alt="star"
+                            width={180}
+                            height={180}
+                            className="absolute bottom-[0.5%] left-[4%] -rotate-45"
+                          />
+
+                          <div className="lg:h-[60vh] xl:h-[40vh] flex items-start left-[20%]">
+                            <CardHeader className="space-y-2 text-left">
                               <CardTitle className="text-[32px] font-medium text-black leading-10">
                                 Sign up
                               </CardTitle>
@@ -606,151 +594,156 @@ export default function Navigation() {
                                 to continue learning
                               </p>
                             </CardHeader>
-
-                            <CardContent className="space-y-4">
-                              <form
-                                onSubmit={handleSignUp}
-                                className="space-y-2"
-                              >
-                                <Input
-                                  type="text"
-                                  name="name"
-                                  required
-                                  disabled={isSubmittingSignUp}
-                                  onChange={(e) => setName(e.target.value)}
-                                  placeholder="Enter your name"
-                                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
-                                />
-                                <Input
-                                  type="email"
-                                  name="email"
-                                  value={email}
-                                  required
-                                  disabled={isSubmittingSignUp}
-                                  onChange={(e) => setEmail(e.target.value)}
-                                  placeholder="Enter your email"
-                                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
-                                />
-
-                                <div className="relative">
-                                  <Input
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) =>
-                                      setPassword(e.target.value)
-                                    }
-                                    placeholder="Enter your password"
-                                    disabled={isSubmittingSignUp}
-                                    className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
-                                  />
-                                  <button
-                                    type="button"
-                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[#747a7e] hover:text-[#3498db]"
-                                    onClick={() =>
-                                      setShowPassword(!showPassword)
-                                    }
-                                  >
-                                    {!showPassword ? (
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                        />
-                                      </svg>
-                                    ) : (
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                                        />
-                                      </svg>
-                                    )}
-                                  </button>
-                                </div>
-                                <SubmitButtonSignUp
-                                  isSubmittingSignUp={isSubmittingSignUp}
-                                />
-                              </form>
-
-                              <div className="relative my-4">
-                                <div className="absolute inset-0 flex items-center">
-                                  <span className="w-full border-t dark:border-gray-700" />
-                                </div>
-                                <div className="relative flex justify-center text-xs font-medium">
-                                  <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400">
-                                    or
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-2 sm:bottom-[20%]">
-                                <Link href={googleLogin}>
-                                  <Button
-                                    variant="outline"
-                                    type="button"
-                                    className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
-                                  >
-                                    <Image
-                                      src="/image/Google.png"
-                                      width={20}
-                                      height={20}
-                                      alt="google"
-                                      className="p-[0.94px] w-[18px] h-[18px]"
-                                    />
-                                    <span>
-                                      {isPending
-                                        ? "Redirecting..."
-                                        : "Sign up with Google"}
-                                    </span>
-                                  </Button>
-                                </Link>
-
-                                <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
-                                  Already have an account?{" "}
-                                  <span
-                                    onClick={switchToLogin}
-                                    className="text-[#3498db] text-[11px] font-bold cursor-pointer underline leading-none tracking-wide"
-                                  >
-                                    Log in
-                                  </span>
-                                  <span className="text-[#747a7e]">
-                                    {" "}
-                                    instead!
-                                  </span>
-                                </p>
-                              </div>
-                            </CardContent>
                           </div>
                         </div>
-                      </DialogContent>
-                    </div>
-                  </Dialog>
-                </div>
-              </Dialog>
-            </WithFullPageLoadingScreen>
+
+                        {/* small screen */}
+                        <div className="w-full lg:w-1/2 lg:pl-2">
+                          <CardHeader className="space-y-2 lg:hidden sm:block">
+                            <CardTitle className="text-[32px] font-medium text-black leading-10">
+                              Sign up
+                            </CardTitle>
+                            <p className="text-black text-base font-medium leading-normal tracking-tight">
+                              to continue learning
+                            </p>
+                          </CardHeader>
+
+                          <CardContent className="space-y-4">
+                            <form onSubmit={handleSignUp} className="space-y-2">
+                              <Input
+                                type="text"
+                                name="name"
+                                required
+                                disabled={isSubmittingSignUp}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Enter your name"
+                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                              />
+                              <Input
+                                type="email"
+                                name="email"
+                                value={email}
+                                required
+                                disabled={isSubmittingSignUp}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email"
+                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                              />
+
+                              <div className="relative">
+                                <Input
+                                  type={showPassword ? "text" : "password"}
+                                  name="password"
+                                  required
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  placeholder="Enter your password"
+                                  disabled={isSubmittingSignUp}
+                                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[#747a7e] hover:text-[#3498db]"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {!showPassword ? (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                      />
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                      />
+                                    </svg>
+                                  ) : (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                      />
+                                    </svg>
+                                  )}
+                                </button>
+                              </div>
+                              <SubmitButtonSignUp
+                                isSubmittingSignUp={isSubmittingSignUp}
+                              />
+                            </form>
+
+                            <div className="relative my-4">
+                              <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t dark:border-gray-700" />
+                              </div>
+                              <div className="relative flex justify-center text-xs font-medium">
+                                <span className="bg-white dark:bg-gray-800 px-2 text-[#747a7e] dark:text-gray-400">
+                                  or
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="space-y-2 sm:bottom-[20%]">
+                              <Link href={googleLogin}>
+                                <Button
+                                  variant="outline"
+                                  type="button"
+                                  className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                                >
+                                  <Image
+                                    src="/image/Google.png"
+                                    width={20}
+                                    height={20}
+                                    alt="google"
+                                    className="p-[0.94px] w-[18px] h-[18px]"
+                                  />
+                                  <span>
+                                    {isPending
+                                      ? "Redirecting..."
+                                      : "Sign up with Google"}
+                                  </span>
+                                </Button>
+                              </Link>
+
+                              <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
+                                Already have an account?{" "}
+                                <span
+                                  onClick={switchToLogin}
+                                  className="text-[#3498db] text-[11px] font-bold cursor-pointer underline leading-none tracking-wide"
+                                >
+                                  Log in
+                                </span>
+                                <span className="text-[#747a7e]">
+                                  {" "}
+                                  instead!
+                                </span>
+                              </p>
+                            </div>
+                          </CardContent>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </div>
+                </Dialog>
+              </div>
+            </Dialog>
           </div>
         </div>
       </div>
