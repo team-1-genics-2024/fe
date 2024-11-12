@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, LayoutGrid, LogOut } from "lucide-react";
+import { Search, LayoutGrid, LogOut, Car } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/data";
 import { useAuth } from "../hooks/useAuth";
+import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
 
 export default function NavbarHomePage() {
   const router = useRouter();
@@ -23,15 +24,16 @@ export default function NavbarHomePage() {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [avatarImage, setAvatarImage] = React.useState<string | null>(null);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log("masuk sini");
     const token = localStorage.getItem("accessToken");
     setIsAuthenticated(!!fetchUserProfile(token || ""));
     const storedAvatar = localStorage.getItem("avatarImage");
     if (storedAvatar) {
       setAvatarImage(storedAvatar);
     } else {
+      setIsLoading(false);
       const randomIndex = Math.floor(Math.random() * userAvatars.length);
       const selectedAvatar = userAvatars[randomIndex];
       setAvatarImage(selectedAvatar);
@@ -42,6 +44,7 @@ export default function NavbarHomePage() {
   // --USERNAME AND EMAIL USER--  //  -- PAKE METHODE KEK GINI KLO MAU FETCH USER DI PAGE YG GA DILINDUNGI/GA DIDALEM PROTECTED ROUTE!--
   const fetchUserProfile = async (token: string) => {
     try {
+      setIsLoading(true);
       let response = await fetch(`${baseApiUrl}api/users`, {
         method: "GET",
         headers: {
@@ -58,6 +61,7 @@ export default function NavbarHomePage() {
         setUserName(data.data.name);
         setUserEmail(data.data.email);
         console.log("User data:", data);
+        setIsLoading(false);
         return;
       }
 
@@ -73,6 +77,7 @@ export default function NavbarHomePage() {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         localStorage.removeItem("accessToken");
+        setIsLoading(false);
         router.replace("/");
       }
 
@@ -99,7 +104,9 @@ export default function NavbarHomePage() {
       setUserName(data.data.name);
       setUserEmail(data.data.email);
       console.log("User data:", data);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error fetching user data:", error);
     }
   };
@@ -114,7 +121,10 @@ export default function NavbarHomePage() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
+    <nav
+      className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90"
+      style={isLoading ? { filter: "blur(5px)" } : {}}
+    >
       <div className="w-full max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center gap-8">
           <div className="flex flex-row items-center">
@@ -131,7 +141,7 @@ export default function NavbarHomePage() {
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">
               <Link
-                href="/home"
+                href="/"
                 className="font-medium text-sm text-gray-600 hover:text-gray-900"
               >
                 Home
@@ -173,7 +183,7 @@ export default function NavbarHomePage() {
               <DropdownMenuContent align="end" className="w-56 md:hidden">
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/home"
+                    href="/"
                     className="flex items-center w-full cursor-pointer"
                   >
                     Home
@@ -201,25 +211,52 @@ export default function NavbarHomePage() {
             {isAuthenticated && avatarImage && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-offset-2 hover:ring-gray-200 transition-all">
+                  <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-offset-2 hover:ring-[#3498db] transition-all">
                     <AvatarImage src={avatarImage} alt="User Avatar" />
                     <AvatarFallback>Profile</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-4 py-2">
-                    <p className="font-medium">{userName}</p>
-                    <p className="text-sm text-gray-500">{userEmail}</p>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-72 p-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-102 bg-white"
+                >
+                  <div className="relative group">
+                    <Avatar className="h-16 w-16 transform transition-all duration-500 hover:scale-110 border-4 border-[#3498db] shadow-xl group-hover:shadow-2xl relative z-10 ">
+                      <AvatarImage
+                        src={avatarImage}
+                        alt="User Avatar"
+                        className="object-cover transition-transform duration-700 hover:rotate-6"
+                      />
+                      <AvatarFallback className="bg-gray-100 text-gray-600 text-xl">
+                        {userName?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div className="absolute inset-0 rounded-full bg-gray-300 opacity-0 group-hover:opacity-20 transform scale-100 group-hover:scale-150 transition-all duration-700" />
+
+                    <div className="mt-4 space-y-1">
+                      <p className="font-semibold text-lg text-gray-900">
+                        {userName}
+                      </p>
+                      <p className="text-sm text-gray-500 font-medium">
+                        {userEmail}
+                      </p>
+                    </div>
                   </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </DropdownMenuItem>
+
+                  <div className="mt-6">
+                    <DropdownMenuSeparator className="bg-gray-300" />
+                    <DropdownMenuItem
+                      onClick={handleSignOut}
+                      className="cursor-pointer rounded-lg transition-all duration-200 hover:bg-gray-50 group mt-3 h-2"
+                    >
+                      <LogOut className="w-5 h-5 mr-3 text-gray-700 group-hover:text-gray-700 transition-colors duration-200" />
+                      <span className="font-medium text-gray-800 group-hover:text-gray-900 transition-colors duration-200">
+                        Logout
+                      </span>
+                    </DropdownMenuItem>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

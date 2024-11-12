@@ -294,7 +294,7 @@ export default function Navigation() {
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">
               <Link
-                href="/home"
+                href="/"
                 className="font-medium text-sm text-gray-600 hover:text-gray-900"
               >
                 Home
