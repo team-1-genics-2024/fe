@@ -2,12 +2,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Layout from "@/components/layout/Layout";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import Image from "next/image";
 
 interface Topic {
   name: string;
-  description: string;
+  classId: number;
+  SubTopic: SubTopics[];
+}
+
+interface SubTopics {
+  name: string;
   topicId: number;
   subtopicId: number;
+  description: string;
   imageUrl: string;
   videoUrl: string;
 }
@@ -15,14 +28,11 @@ interface Topic {
 interface TopicResponse {
   resultCode: number;
   resultMessage: string;
-  data: {
-    topics: Topic[];
-  };
+  data: Topic[];
 }
 
 export default function TopicsPage() {
   const params = useParams();
-
   const [topics, setTopics] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,15 +43,16 @@ export default function TopicsPage() {
         setIsLoading(true);
         setError(null);
 
-        if (!params.topicId || Array.isArray(params.topicId)) {
-          throw new Error("Invalid topic ID");
+        if (!params.classId || Array.isArray(params.classId)) {
+          throw new Error("Invalid class ID");
         }
 
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         const response = await fetch(
-          `${apiBaseUrl}api/topic/${params.topicId}`,
+          `${apiBaseUrl}api/topic/${params.classId}`,
           {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
@@ -53,12 +64,13 @@ export default function TopicsPage() {
         }
 
         const jsonData: TopicResponse = await response.json();
+        console.log(jsonData);
 
         if (jsonData.resultCode !== 200) {
           throw new Error(`Error: ${jsonData.resultMessage}`);
         }
 
-        setTopics(jsonData.data?.topics || []);
+        setTopics(jsonData.data);
       } catch (err) {
         setError("Failed to load topics. Please try again later.");
         console.error("Error loading topics:", err);
@@ -105,29 +117,42 @@ export default function TopicsPage() {
           <h1 className="text-3xl font-bold text-gray-800 mb-8">Topics</h1>
 
           {topics && topics.length > 0 ? (
-            <div className="grid gap-6">
-              {topics.map((topic) => (
-                <div
-                  key={topic.topicId}
-                  className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
-                >
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                    {topic.name}
-                  </h2>
-                  <p className="text-gray-600 mb-4">{topic.description}</p>
-                  <div className="flex justify-between items-center text-sm text-gray-500">
-                    <span>
-                      Created:{" "}
-                      {new Date(topic.imageUrl).toLocaleDateString("id-ID")}
-                    </span>
-                    <span>
-                      Updated:{" "}
-                      {new Date(topic.videoUrl).toLocaleDateString("id-ID")}
-                    </span>
-                  </div>
-                </div>
+            <Accordion
+              type="single"
+              collapsible
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+            >
+              {topics.map((topic, index) => (
+                <AccordionItem value={topic.name} key={topic.name}>
+                  <AccordionTrigger className="w-full px-6 py-4 text-left text-xl font-medium text-gray-800">
+                    Chapter {index + 1} : {topic.name}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 py-4 space-y-4">
+                    {topic.SubTopic.map((subtopic) => (
+                      <div
+                        key={subtopic.subtopicId}
+                        className="bg-gray-100 rounded-xl p-4"
+                      >
+                        <h3 className="text-lg font-normal text-gray-800">
+                          {subtopic.name}
+                        </h3>
+                        <p className="text-gray-600 mt-2">
+                          {subtopic.description}
+                        </p>
+                        {subtopic.imageUrl && (
+                          <img
+                            src="/image/homepage/sejarah.png"
+                            // src={subtopic.imageUrl}
+                            alt={subtopic.name}
+                            className="mt-4 max-w-full h-auto rounded-xl"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-600">No topics found for this class.</p>

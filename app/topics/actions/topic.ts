@@ -39,6 +39,7 @@ export const fetchTopicsByClassId = async (
     }
 
     const jsonData: TopicResponse = await response.json();
+    console.log(jsonData);
 
     if (jsonData.resultCode !== 200) {
       throw new Error(`Error: ${jsonData.resultMessage}`);
