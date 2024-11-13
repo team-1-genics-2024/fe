@@ -22,3 +22,14 @@
 .spin {
   animation: spin 1s linear infinite;
 }
+
+.custom-box {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

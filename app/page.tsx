@@ -5,32 +5,35 @@ import CardHomepage from "@/components/ui/CardHomepage";
 import { useEffect, useState } from "react";
 import { fetchClassData } from "./actions/class";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 
 interface Class {
   id: number;
   name: string;
-  description: string;
   imageUrl: string;
-  createdAt: string;
+  totalTopics: number;
+  totalSubtopics: number;
+  rating: number;
+  totalParticipants: number;
   updatedAt: string;
 }
 
 export default function Home() {
   const [classes, setClasses] = useState<Class[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const loadClasses = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const fetchedClasses = await fetchClassData();
         setClasses(fetchedClasses);
-        setIsLoading(false);
-      } catch (error) {
-        setError("Failed to load classes");
-        console.error(error);
+      } catch (err) {
+        setError("Failed to load classes. Please try again later.");
+        console.error("Error loading classes:", err);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -42,9 +45,42 @@ export default function Home() {
     router.push(`/classes/${id}`);
   };
 
+  if (isLoading) {
+    return (
+      <Layout withNavbar withFooter>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3498DB]"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout withNavbar withFooter>
+        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">{error}</h1>
+            <button
+              onClick={() => window.history.back()}
+              className="bg-[#3498DB] text-white px-6 py-3 rounded-full hover:bg-[#2980b9] transition-colors duration-300"
+            >
+              Go Back
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const formatUpdatedDate = (date: string) => {
+    return `Updated at: ${new Date(date).toLocaleDateString("id-ID")}`;
+  };
+
   return (
     <Layout withNavbar withFooter>
       <div>
+        {/* Hero Section */}
         <div className="relative h-screen bg-white flex items-center justify-center text-center">
           <div className="absolute left-0 top-1/3 z-0">
             <Image
@@ -64,9 +100,7 @@ export default function Home() {
             />
           </div>
 
-          {/* Main content */}
           <div className="flex flex-col items-center">
-            {/* Top Section with Stars */}
             <div className="flex justify-start w-full px-8">
               <Image
                 src="/image/homepage/upperrightstar.png"
@@ -77,9 +111,8 @@ export default function Home() {
               />
             </div>
 
-            {/* Content Section */}
             <div className="text-center mt-6 w-full overflow-hidden z-10">
-              <h1 className="text-2xl md:text-6xl font-bold mb-6 w-full md:w-[690px]">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 w-full md:w-[690px]">
                 Ayo raih prestasi gemilang bersama!
               </h1>
               <div className="space-x-4">
@@ -91,6 +124,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
+
             <div className="flex justify-end w-full px-8">
               <Image
                 src="/image/homepage/lowerrightstar.png"
@@ -102,43 +136,29 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Learning Path Section */}
-        {isLoading ? (
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3498DB]"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center text-red-600 py-8">
-            <p>{error}</p>
-            <Button
-              onClick={() => window.location.reload()}
-              className="mt-4 text-[#3498DB] hover:underline"
-            >
-              Coba lagi
-            </Button>
-          </div>
-        ) : (
+        <div>
+          <h1 className="font-semibold text-3xl text-center mb-16 mt-24">
+            Daftar Learning Path Rancangan Experts
+          </h1>
           <div className="flex flex-wrap justify-center gap-12">
             {classes.map((classItem) => (
               <div
                 key={classItem.id}
                 onClick={() => handleClassDetailClick(classItem.id)}
+                className="cursor-pointer"
               >
                 <CardHomepage
                   foto={"/image/homepage/sejarah.png"}
                   title={classItem.name}
-                  date={new Date(classItem.createdAt).toLocaleDateString(
-                    "id-ID"
-                  )}
-                  participants={classItem.description}
-                  rating={classItem.updatedAt}
+                  date={`${classItem.totalTopics} Topics - ${classItem.totalSubtopics} Subtopics`}
+                  participants={classItem.totalParticipants.toString()}
+                  rating={classItem.rating.toString()}
                   status="enabled"
                 />
               </div>
             ))}
           </div>
-        )}
+        </div>
       </div>
     </Layout>
   );

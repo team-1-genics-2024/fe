@@ -1,24 +1,25 @@
 "use server";
-interface Class {
-  id: number;
+
+interface Topic {
   name: string;
+  description: string;
+  topicId: number;
+  subtopicId: number;
   imageUrl: string;
-  totalTopics: number;
-  totalSubtopics: number;
-  rating: number;
-  totalParticipants: number;
-  updatedAt: string;
+  videoUrl: string;
 }
 
-interface ClassDataResponse {
+interface TopicResponse {
   resultCode: number;
   resultMessage: string;
   data: {
-    classes: Class[];
+    subTopics: Topic[];
   };
 }
 
-export const fetchClassData = async (): Promise<Class[]> => {
+export const fetchTopicsByClassId = async (
+  classId: number
+): Promise<Topic[]> => {
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -26,7 +27,7 @@ export const fetchClassData = async (): Promise<Class[]> => {
       throw new Error("API base URL is not defined");
     }
 
-    const response = await fetch(`${apiBaseUrl}api/class`, {
+    const response = await fetch(`${apiBaseUrl}api/topic/${classId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,15 +38,15 @@ export const fetchClassData = async (): Promise<Class[]> => {
       throw new Error(`Error: ${response.status}`);
     }
 
-    const jsonData: ClassDataResponse = await response.json();
+    const jsonData: TopicResponse = await response.json();
 
     if (jsonData.resultCode !== 200) {
       throw new Error(`Error: ${jsonData.resultMessage}`);
     }
 
-    return jsonData.data.classes;
+    return jsonData.data.subTopics;
   } catch (error) {
-    console.error("Failed to fetch class data:", error);
+    console.error(`Failed to fetch topics for class ID ${classId}:`, error);
     throw error;
   }
 };
