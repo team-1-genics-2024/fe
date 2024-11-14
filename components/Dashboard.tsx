@@ -1,7 +1,5 @@
-"use client";
-
-import Layout from "@/components/layout/Layout";
 import React from "react";
+import Layout from "./layout/Layout";
 
 export default function Dashboard() {
   return (

@@ -322,7 +322,6 @@ export default function Navigation() {
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Apps Menu Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 {isAuthenticated && (
@@ -371,7 +370,7 @@ export default function Navigation() {
                   <Link href={"/"}>
                     <Button
                       variant="outline"
-                      className="rounded-full text-[#3498db] hover:text-[#3498db] hover:bg-white"
+                      className="rounded-full text-[#3498db] hover:text-[#2980b9] hover:bg-gray-100"
                       size="sm"
                     >
                       Log in
@@ -555,7 +554,7 @@ export default function Navigation() {
                       <Link href={"/"}>
                         <Button
                           variant="outline"
-                          className="rounded-full text-white hover:text-white bg-[#3498db] hover:bg-[#3498db]"
+                          className="rounded-full text-white hover:text-gray-100 bg-[#3498db] hover:bg-[#2980b9]"
                           size="sm"
                         >
                           Sign up

@@ -1,10 +1,13 @@
 "use client";
-import Layout from "@/components/layout/Layout";
 import Image from "next/image";
 import CardHomepage from "@/components/ui/CardHomepage";
 import { useEffect, useState } from "react";
 import { fetchClassData } from "./actions/class";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import Layout from "@/components/layout/Layout";
+import ErrorNoClassFound from "@/components/layout/error/error-no-class-found.tsx";
+import LoadingUnprotectedRoute from "@/components/layout/loading/loading-unprotected-route";
 
 interface Class {
   id: number;
@@ -46,43 +49,18 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return (
-      <Layout withNavbar withFooter>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3498DB]"></div>
-        </div>
-      </Layout>
-    );
+    return <LoadingUnprotectedRoute />;
   }
 
   if (error) {
-    return (
-      <Layout withNavbar withFooter>
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">{error}</h1>
-            <button
-              onClick={() => window.history.back()}
-              className="bg-[#3498DB] text-white px-6 py-3 rounded-full hover:bg-[#2980b9] transition-colors duration-300"
-            >
-              Go Back
-            </button>
-          </div>
-        </div>
-      </Layout>
-    );
+    return <ErrorNoClassFound />;
   }
-
-  const formatUpdatedDate = (date: string) => {
-    return `Updated at: ${new Date(date).toLocaleDateString("id-ID")}`;
-  };
 
   return (
     <Layout withNavbar withFooter>
       <div>
-        {/* Hero Section */}
         <div className="relative h-screen bg-white flex items-center justify-center text-center">
-          <div className="absolute left-0 top-1/3 z-0">
+          <div className="absolute -left-10 top-[10%] z-0">
             <Image
               src="/image/homepage/leftstar.png"
               alt="Left Star"
@@ -95,8 +73,8 @@ export default function Home() {
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
-              width={100}
-              height={100}
+              width={150}
+              height={150}
             />
           </div>
 
@@ -111,7 +89,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="text-center mt-6 w-full overflow-hidden z-10">
+            <div className="text-center mt-2 w-full h-[40vh]  overflow-hidden z-10">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 w-full md:w-[690px]">
                 Ayo raih prestasi gemilang bersama!
               </h1>
@@ -141,21 +119,40 @@ export default function Home() {
             Daftar Learning Path Rancangan Experts
           </h1>
           <div className="flex flex-wrap justify-center gap-12">
-            {classes.map((classItem) => (
-              <div
+            {classes.map((classItem, index) => (
+              <motion.div
                 key={classItem.id}
                 onClick={() => handleClassDetailClick(classItem.id)}
                 className="cursor-pointer"
+                initial={{ opacity: 0, scale: 0.3 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: [-1, 1, -1, 1, 0], // efek shake kecil
+                  transition: {
+                    rotate: {
+                      repeat: Infinity,
+                      duration: 0.5,
+                    },
+                  },
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                }}
               >
                 <CardHomepage
-                  foto={"/image/homepage/sejarah.png"}
+                  src={`/${classItem.imageUrl}`}
                   title={classItem.name}
                   date={`${classItem.totalTopics} Topics - ${classItem.totalSubtopics} Subtopics`}
                   participants={classItem.totalParticipants.toString()}
                   rating={classItem.rating.toString()}
                   status="enabled"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

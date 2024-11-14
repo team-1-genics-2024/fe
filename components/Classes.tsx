@@ -1,13 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Layout from "@/components/layout/Layout";
 import Image from "next/image";
 import { fetchClassById } from "../app/classes/actions/class";
 import { FaStar } from "react-icons/fa6";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CountUp from "react-countup";
+import { showToast } from "@/lib/toast";
+import Layout from "./layout/Layout";
+import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
+import ErrorNoClassFound from "./layout/error/error-no-class-found.tsx";
 
 interface Class {
   id: number;
@@ -30,10 +33,33 @@ export default function ClassDetail() {
   const [showFullTitle, setShowFullTitle] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const router = useRouter();
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleVisitTopics = () => {
     if (classData) {
       router.push(`/topics/${classData.id}`);
+    }
+  };
+
+  const handleRating = async () => {
+    try {
+      await fetch(`${baseApiUrl}api/class/${classData?.id}/rating`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating }),
+      });
+      setClassData((prevData) => ({ ...prevData, rating } as Class));
+      console.log(setClassData);
+      setIsRatingModalOpen(false);
+      showToast("Thank you for your honest review", "success");
+    } catch (error) {
+      console.error("Error updating rating:", error);
+      showToast("Error updating rating", "error");
     }
   };
 
@@ -61,33 +87,11 @@ export default function ClassDetail() {
   }, [params.id]);
 
   if (isLoading) {
-    return (
-      <Layout withNavbar withFooter>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3498DB]"></div>
-        </div>
-      </Layout>
-    );
+    return <LoadingUnprotectedRoute />;
   }
 
   if (error || !classData) {
-    return (
-      <Layout withNavbar withFooter>
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
-              {error || "Class not found"}
-            </h1>
-            <button
-              onClick={() => window.history.back()}
-              className="bg-[#3498DB] text-white px-6 py-3 rounded-full hover:bg-[#2980b9] transition-colors duration-300"
-            >
-              Go Back
-            </button>
-          </div>
-        </div>
-      </Layout>
-    );
+    return <ErrorNoClassFound />;
   }
 
   const truncatedTitle =
@@ -97,35 +101,45 @@ export default function ClassDetail() {
 
   return (
     <Layout withNavbar withFooter>
-      <div className="min-h-screen py-8 px-4 mt-12 sm:px-6 lg:px-8">
-        <div className="absolute left-0 top-1/3 -z-20">
+      <div className="min-h-screen py-8 px-4 mt-20 sm:px-6 lg:px-8">
+        <div className="absolute left-0 top-[11%] lg:top-[20%] md:top-[7%] -z-20">
           <Image
-            src="/image/homepage/leftstar.png"
+            src="/image/homepage/lowerrightstar.png"
             alt="Left Star"
             width={100}
             height={100}
           />
         </div>
 
-        <div className="absolute right-0 top-2/3 -z-20">
+        <div className="absolute right-0 top-[103%] lg:top-[80%] md:top-[95%] xl:top-[80%] -z-20">
           <Image
-            src="/image/homepage/rightstar.png"
+            src="/image/homepage/upperrightstar.png"
             alt="Right Star"
-            width={100}
-            height={100}
+            width={120}
+            height={120}
           />
         </div>
+
         <div className="max-w-2xl mx-auto">
-          <div className="relative w-full h-[300px] custom-box overflow-hidden mb-2 group">
+          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[300px] custom-box overflow-hidden mb-2 group">
             <Image
-              src="/image/homepage/sejarah.png"
+              src={`/${classData.imageUrl}`}
               alt={classData.name}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              width={450}
+              height={450}
+              className="object-cover transition-transform duration-500 group-hover:scale-105
+         
+          px-0 ml-1
+         
+          sm:px-0 sm:ml-8
+         
+          md:px-0 md:ml-20
+
+          lg:px-0 lg:ml-20"
               priority={true}
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#3498DB]/30 to-transparent" />
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -135,8 +149,11 @@ export default function ClassDetail() {
                 onClick={() => setShowFullTitle(true)}
               >
                 {showFullTitle ? classData.name : truncatedTitle}
-              </h1>{" "}
-              <div className="flex items-center px-4 py-2 rounded-full">
+              </h1>
+              <div
+                className="flex items-center px-4 py-2 rounded-full cursor-pointer"
+                onClick={() => setIsRatingModalOpen(true)}
+              >
                 {[...Array(5)].map((_, index) =>
                   index < Math.round(classData.rating) ? (
                     <FaStar key={index} className="text-[#3498DB] mr-1" />
@@ -225,6 +242,43 @@ export default function ClassDetail() {
                 onClick={handleVisitTopics}
               >
                 Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={`fixed inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${
+            isRatingModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md flex flex-col h-[300px]">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-16">
+              Rate this class
+            </h2>
+            <div className="flex justify-center mb-6">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <FaStar
+                  key={star}
+                  className={`text-[#3498DB] mr-2 cursor-pointer ${
+                    star <= rating ? "fill-current" : "text-gray-300"
+                  }`}
+                  onClick={() => setRating(star)}
+                />
+              ))}
+            </div>
+            <div className="flex justify-end mt-auto">
+              <button
+                className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-[#2980b9] transition-colors duration-300 mr-2 shadow-md"
+                onClick={handleRating}
+              >
+                Save
+              </button>
+              <button
+                className="text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-full px-6 py-2 transition-colors duration-300 shadow-md"
+                onClick={() => setIsRatingModalOpen(false)}
+              >
+                Cancel
               </button>
             </div>
           </div>
