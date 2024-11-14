@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredToken, refreshUserToken } from "@/lib/auth";
 import { showToast } from "@/lib/toast";
+import LoadingScreen, {
+  WithFullPageLoadingScreen,
+} from "@/components/layout/loading-screen";
+import { setAccessTokens, removeAccessTokens } from "@/lib/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,9 +17,12 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [avatarImage, setAvatarImage] = useState<string | null>(null);
 
   useEffect(() => {
     const validateAuth = async () => {
+      setIsLoading(true);
+
       const token = getStoredToken();
 
       const fetchUserProfile = async (token: string) => {
@@ -26,6 +33,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            credentials: "include",
           });
 
           const data = await response.json();
@@ -36,19 +44,23 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
           return data.resultCode;
         } catch (error) {
-          showToast("You may login first before accessing this page", "error");
           return null;
         }
       };
 
       const code = await fetchUserProfile(token as string);
 
-      if (!token || code != 200) {
+      if (code != 200) {
         const refreshResult = await refreshUserToken();
         console.log("refreshResult", refreshResult);
         if (!refreshResult) {
           showToast("Session expired, please login again", "error");
+          removeAccessTokens();
+          setIsAuthenticated(false);
+          setAvatarImage(null);
+          localStorage.removeItem("avatarImage");
           await router.push("/");
+          setIsLoading(false);
           return;
         }
 
@@ -63,11 +75,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     validateAuth();
   }, [router]);
 
-  if (!isAuthenticated) {
-    return null;
+  if (isLoading) {
+    return <WithFullPageLoadingScreen>{children}</WithFullPageLoadingScreen>;
   }
 
-  return children;
+  return isAuthenticated ? <>{children}</> : null;
 };
 
 export default ProtectedRoute;
