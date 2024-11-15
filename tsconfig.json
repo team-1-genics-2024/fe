@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "app/subclass/[slug]/containers/SubClassNextPage.tsx"  ],
   "exclude": [
     "node_modules"
   ]
