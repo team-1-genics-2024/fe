@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredToken, refreshUserToken } from "@/lib/auth";
 import { showToast } from "@/lib/toast";
-import LoadingScreen, {
-  WithFullPageLoadingScreen,
-} from "@/components/layout/loading-screen";
-import { setAccessTokens, removeAccessTokens } from "@/lib/auth";
+import { WithFullPageLoadingScreen } from "@/components/layout/loading/loading-screen";
+import { removeAccessTokens } from "@/lib/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

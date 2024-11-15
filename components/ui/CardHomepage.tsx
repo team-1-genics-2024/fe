@@ -4,32 +4,32 @@ import { Card, CardContent, CardFooter, CardHeader } from "./card";
 import { Button } from "./button";
 
 interface CardProps {
-  foto: string;
   title: string;
   date: string;
   participants: string;
   rating: string;
   status: string;
+  src: any;
 }
 
 const CardHomepage: React.FC<CardProps> = ({
-  foto,
   title,
   date,
   participants,
   rating,
   status,
+  src,
 }): JSX.Element => {
   return (
     <Card className="w-[350px] shadow-lg rounded-xl overflow-hidden">
       <CardHeader className="p-0">
-        <div className="w-full h-[200px] relative ">
+        <div className="w-full h-[300px] relative ">
           <Image
-            src={foto}
+            src={src}
             alt={title}
             width={400}
-            height={300}
-            className="rounded-t-lg"
+            height={400}
+            className="rounded-t-lg h-[300px] bg-gradient-to-b from-transparent to-[#3498DB]/20"
           />
         </div>
       </CardHeader>
@@ -37,7 +37,7 @@ const CardHomepage: React.FC<CardProps> = ({
         <div className="p-2">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col items-start">
-              <h3 className="text-2xl font-semibold">{title}</h3>
+              <h3 className="text-2xl font-semibold text-gray-700">{title}</h3>
               <p className="text-sm text-gray-500">{date}</p>
               <p className="text-sm text-gray-500">{participants} Peserta</p>
             </div>
