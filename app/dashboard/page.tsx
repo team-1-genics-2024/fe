@@ -5,6 +5,8 @@ import { BurgerIcon, HomeIcon, SertivIcon } from '@/components/dasboard/Icon';
 import SidebarMenu from '@/components/dasboard/SidebarMenu';
 import Image from 'next/image';
 import SearchInput from '@/components/dasboard/SearchInput';
+import { Enroll, fetchEnrollData } from '../actions/enroll';
+import CardCourse from '@/components/dasboard/CardCourse';
 
 const MyCourse = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -45,9 +47,12 @@ const Certificate = () => {
 };
 
 export default function Dashboard() {
-  const token = localStorage.getItem('accessToken');
-  console.log(token);
-  // const headers = { Authorization: `Bearer ${token}` };
+  const [enroll, setEnroll] = useState<Enroll[]>([]);
+  const [searchEnroll, setSearchEnroll] = useState('m');
+
+  useEffect(() => {
+    fetchEnrollData({ searchEnroll }).then((data) => setEnroll(data));
+  }, [searchEnroll]);
 
   const [sideMenu, setSideMenu] = useState([true, false, false]);
   const [sideActive, setSideActive] = useState(false);
@@ -58,9 +63,11 @@ export default function Dashboard() {
     setSideMenuOpen((sideMenuOpen) => !sideMenuOpen);
   };
 
+  console.log(enroll);
+
   return (
-    <div className="grid grid-cols-12 gap-6 transition-all  duration-300 ease-in-out">
-      <div className="absolute md:relative bg-[#EBF5FB]   pt-5 h-full w-auto col-span-2   md:col-span-3 z-50 ">
+    <div className="flex justify-between gap-6 transition-all  duration-300 ease-in-out">
+      <div className="absolute md:relative bg-[#EBF5FB]   pt-5  w-auto  ">
         <div className=" flex flex-col gap-3 ">
           <div className="md:hidden flex">
             <div onClick={() => toggleActive()} className={`${sideActive ? 'bg-[#2f8ac71a]' : ''}   flex justify-between mx-3  py-4 px-3 rounded-[100px] hover:cursor-pointer hover:bg-[#2f8ac71a] group`}>
@@ -84,23 +91,35 @@ export default function Dashboard() {
             <SertivIcon className={`${sideMenu[1] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} />
           </SidebarMenu>
           {/* <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, false, true])} title="Favorites" active={sideMenu[2]}> */}
-          <SearchInput menuOpen={sideMenuOpen} onChange={(e) => console.log(e.target.value)} />
+          <SearchInput menuOpen={sideMenuOpen} onChange={(e) => setSearchEnroll(e.target.value)} />
           {/* <FavIcon className={`${sideMenu[2] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} /> */}
           {/* </SidebarMenu> */}
         </div>
       </div>
-      <div className="md:hidden block bg-[#EBF5FB]   pt-5  w-[70px] col-span-2   md:col-span-3"></div>
+      <div className="md:hidden block bg-[#EBF5FB]   pt-5  w-[70px] "></div>
 
       <div className="col-span-10 md:col-span-9">
         {sideMenu[0] && (
           <MyCourse>
-            p
-            {/* {classData?.map((data) => (
-              <CardCourse key={data.id} rating={data.rating} id={data.id} name={data.name} description={data.description} imageUrl={data.imageUrl} createdAt={data.createdAt} updatedAt={data.updatedAt} />
-            ))} */}
+            {enroll?.map((data) => (
+              <CardCourse
+                key={data.id}
+                id={data.id}
+                rating={Math.round(data.rating * 100) / 100}
+                name={data.name}
+                description={data.description}
+                imageUrl={'/' + data.imageUrl}
+                totalUserProgress={data.totalUserProgress}
+                totalSubtopics={data.totalSubtopics}
+              />
+            ))}
           </MyCourse>
         )}
         {sideMenu[1] && <Certificate />}
+      </div>
+      <div className="md:w-1/4 relative">
+        <Image src={'/image/dashboard/Star.png'} alt="star" width={100} height={100} className="w-[90px] absolute left-7 top-9" />
+        <Image src={'/image/dashboard/Star.png'} alt="star" width={100} height={100} className="w-[40px] absolute left-28 top-36" />
       </div>
     </div>
   );

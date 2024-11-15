@@ -2,16 +2,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
+import { Enroll } from '@/app/actions/enroll';
 
-interface Class {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  rating: string;
-}
 const Star = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -23,11 +15,13 @@ const Star = () => {
   );
 };
 
-const CardDashboard = ({ id, name, description, imageUrl, createAt, updatedAt, rating }: Class) => {
+const CardCourse = ({ id, name, description, imageUrl, rating, totalUserProgress, totalSubtopics }: Enroll) => {
   return (
     <>
       <Card key={id} className="overflow-hidden">
-        <div className="w-full h-[150px] md:h-[180px]">{/* <Image src={imageUrl} width={300} height={180} className="object-cover h-full w-full" alt="courseImg" /> */}</div>
+        <div className="w-full h-[150px] md:h-[180px]">
+          <Image src={imageUrl} width={300} height={180} className="object-cover h-full w-full" alt="courseImg" />
+        </div>
         <CardHeader>
           <CardTitle className="flex justify-between">
             <div className="text-xl md:text-2xl font-[500]">{name}</div>
@@ -39,7 +33,9 @@ const CardDashboard = ({ id, name, description, imageUrl, createAt, updatedAt, r
         </CardHeader>
         <CardContent>
           <Progress value={33} />
-          <p className="text-xs text-slate-500 mt-4">7 of 12 Lesson Complete</p>
+          <p className="text-xs text-slate-500 mt-4">
+            {totalUserProgress} of {totalSubtopics} Lesson Complete
+          </p>
         </CardContent>
         <CardFooter>
           <Link href={'/'} className="px-6 py-2 text-xs md:text-sm rounded-full mx-auto text-white text-center bg-[#3498DB]">
@@ -51,4 +47,4 @@ const CardDashboard = ({ id, name, description, imageUrl, createAt, updatedAt, r
   );
 };
 
-export default CardDashboard;
+export default CardCourse;
