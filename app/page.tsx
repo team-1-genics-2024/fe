@@ -60,32 +60,31 @@ export default function Home() {
     <Layout withNavbar withFooter>
       <div>
         <div className="relative h-screen bg-white flex items-center justify-center text-center">
-          <div className="absolute -left-10 top-[10%] z-0">
+          <div className="absolute -right-[20px] top-[3%] -rotate-12">
             <Image
-              src="/image/homepage/leftstar.png"
+              src="/image/homepage/rightstar.png"
               alt="Left Star"
-              width={100}
-              height={100}
+              width={120}
+              height={120}
             />
           </div>
 
-          <div className="absolute right-0 top-2/3 z-0">
+          <div className="absolute left-[-20px] top-2/3 ">
             <Image
-              src="/image/homepage/rightstar.png"
+              src="/image/homepage/leftstar.png"
               alt="Right Star"
-              width={150}
-              height={150}
+              width={190}
+              height={190}
             />
           </div>
 
           <div className="flex flex-col items-center">
-            <div className="flex justify-start w-full px-8">
+            <div className="flex justify-start w-full left-[-10px]">
               <Image
                 src="/image/homepage/upperrightstar.png"
                 alt="Upper Left Star"
                 width={100}
                 height={100}
-                className="hidden md:block"
               />
             </div>
 
@@ -103,19 +102,18 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex justify-end w-full px-8">
+            <div className="flex justify-end top-[30%] w-full px-8">
               <Image
                 src="/image/homepage/lowerrightstar.png"
                 alt="Upper Right Star"
                 width={100}
                 height={100}
-                className="hidden md:block"
               />
             </div>
           </div>
         </div>
         <div>
-          <h1 className="font-semibold text-3xl text-center mb-16 mt-24">
+          <h1 className="font-semibold text-4xl text-gray-800 text-center mb-16 mt-24">
             Daftar Learning Path Rancangan Experts
           </h1>
           <div className="flex flex-wrap justify-center gap-12">

@@ -115,35 +115,36 @@ const AnimatedTestimonials = () => {
 const About = () => {
   return (
     <Layout withNavbar withFooter>
-      <section className="w-full ">
-        <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full">
+      <section className="w-full overflow-x-visible">
+        <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full overflow-x-visible">
           <div className="absolute -left-10 top-[80%]">
             <Image
               src="/image/homepage/leftstar.png"
               alt="Left Star"
-              width={200}
-              height={200}
+              width={160}
+              height={160}
             />
           </div>
 
-          <div className="absolute right-0 top-[2%] md:top-[5%] lg:top-[1%]">
+          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%] -rotate-12">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
-              width={140}
-              height={140}
+              width={120}
+              height={120}
             />
           </div>
-          <div className="absolute right-0 top-[220%] ">
+
+          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%] -rotate-12">
             <Image
-              src="/image/homepage/upperrightstar.png"
-              alt="Upper Left Star"
-              width={80}
-              height={80}
-              className="sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+              src="/image/homepage/rightstar.png"
+              alt="Right Star"
+              width={180}
+              height={180}
             />
           </div>
-          <div className="absolute top-[20%] left-[15%] md:top-[30%] md:left-[20%] lg:top-[4%]">
+
+          <div className="absolute top-[20%] left-[15%] md:top-[30%] md:left-[20%] lg:top-[4%] xl:left-[25%]">
             <Image
               src="/image/homepage/upperrightstar.png"
               alt="Upper Left Star"
@@ -160,7 +161,7 @@ const About = () => {
                 </h1>
               </div>
 
-              <div className="absolute right-[2%] top-[95%] md:right-[10%] md:top-[90%] lg:right-[20%] ">
+              <div className="absolute right-[2%] top-[95%] md:right-[10%] md:top-[90%] lg:right-[20%]">
                 <Image
                   src="/image/homepage/lowerrightstar.png"
                   alt="Lower Right Star"
@@ -174,7 +175,7 @@ const About = () => {
 
         <div className="h-[110vh] -mt-20 bg-white flex items-center justify-center z-50 w-full">
           <div className="text-center max-w-2xl mx-auto px-2">
-            <div className="mb-8 z-[999] ">
+            <div className="mb-8 z-[999]">
               <Link
                 href="/"
                 className="inline-flex items-center justify-center"
