@@ -3,7 +3,6 @@ import { Lato, Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactDOM from "react-dom";
 
 const lato = Lato({
   weight: ["400", "700"],
@@ -29,6 +28,8 @@ export default function RootLayout({
     <html lang="en" className="!scroll-smooth">
       <link rel="icon" href="/image/homepage/icon.png" sizes="any" />
       <body className={`${lato.className} ${poppins.className}`}>
+        {children}
+
         <ToastContainer
           position="top-center"
           autoClose={2000}
@@ -41,7 +42,6 @@ export default function RootLayout({
           pauseOnHover
           theme="light"
         />
-        {children}
       </body>
     </html>
   );

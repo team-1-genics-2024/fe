@@ -4,10 +4,10 @@
 
 .custom-shadow {
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1),
-    /* top's shadow */ 0 4px 6px rgba(0, 0, 0, 0.1),
-    /* bottom's shadow */ -4px 0 6px rgba(0, 0, 0, 0.1),
-    /* left's shadow */ 4px 0 6px rgba(0, 0, 0, 0.1);
-  /* right's shadow */
+    /* top shadow */ 0 4px 6px rgba(0, 0, 0, 0.1),
+    /* bottom shadow */ -4px 0 6px rgba(0, 0, 0, 0.1),
+    /* left shadow */ 4px 0 6px rgba(0, 0, 0, 0.1); /* right shadow */
+  border-radius: 0.375rem; /* equivalent to rounded-md */
 }
 
 @keyframes spin {
@@ -21,4 +21,14 @@
 
 .spin {
   animation: spin 1s linear infinite;
+}
+
+.custom-box {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 1.5rem;
 }

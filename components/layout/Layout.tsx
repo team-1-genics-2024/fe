@@ -1,12 +1,9 @@
 "use client";
-
 import * as React from "react";
-
 import Navigation from "@/components/layout/modalAuth";
-import Footer from "@/components/layout/footer";
-import NavbarAuthenticated from "@/components/layout/navbar-authenticated";
-import { useRouter } from "next/navigation";
-import { showToast } from "@/lib/toast";
+import FooterSection from "@/components/layout/Footer";
+import NavbarAuthenticated from "@/components/layout/navbarAuthenticated";
+
 interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
@@ -23,7 +20,6 @@ export default function Layout({
   withPadding = true,
 }: LayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const router = useRouter();
 
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -90,7 +86,7 @@ export default function Layout({
         {children}
       </main>
 
-      {withFooter && <Footer />}
+      {withFooter && <FooterSection />}
     </div>
   );
 }

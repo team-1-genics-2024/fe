@@ -1,9 +1,12 @@
+"use server";
 interface Class {
   id: number;
   name: string;
-  description: string;
   imageUrl: string;
-  createdAt: string;
+  totalTopics: number;
+  totalSubtopics: number;
+  rating: number;
+  totalParticipants: number;
   updatedAt: string;
 }
 
