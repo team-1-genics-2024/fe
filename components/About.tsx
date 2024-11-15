@@ -126,7 +126,7 @@ const About = () => {
             />
           </div>
 
-          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%] -rotate-12">
+          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%]">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
@@ -135,7 +135,7 @@ const About = () => {
             />
           </div>
 
-          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%] -rotate-12">
+          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%]">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
