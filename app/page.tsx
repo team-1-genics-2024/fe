@@ -60,7 +60,7 @@ export default function Home() {
     <Layout withNavbar withFooter>
       <div>
         <div className="relative h-screen bg-white flex items-center justify-center text-center">
-          <div className="absolute -right-[20px] top-[3%] -rotate-12">
+          <div className="absolute -right-[20px] top-[3%]">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Left Star"
@@ -126,7 +126,7 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{
                   scale: 1.05,
-                  rotate: [-1, 1, -1, 1, 0], // efek shake kecil
+                  rotate: [-1, 1, -1, 1, 0],
                   transition: {
                     rotate: {
                       repeat: Infinity,

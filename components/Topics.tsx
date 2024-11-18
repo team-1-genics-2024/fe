@@ -264,7 +264,7 @@ export default function TopicsPage() {
                               )}
 
                               <motion.p
-                                className="relative text-gray-600 mt-4 leading-relaxed"
+                                className="relative text-gray-600 mt-4 leading-relaxed whitespace-pre-line"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2 }}
