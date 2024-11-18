@@ -19,8 +19,8 @@ const AnimatedTestimonials = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-gradient-to-b bg-white">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-20 bg-gradient-to-b bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 overflow-hidden">
         <h2 className="text-4xl md:text-4xl xl:text-4xl font-bold text-center mb-16 text-gray-800 ">
           What people say about
           <Image

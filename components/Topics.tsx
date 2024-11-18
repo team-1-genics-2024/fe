@@ -10,9 +10,12 @@ import {
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Layout from "./layout/Layout";
 import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Topic {
   name: string;
@@ -149,6 +152,10 @@ export default function TopicsPage() {
         </div>
 
         <div className="max-w-5xl mx-auto">
+          <Link href="/" className="inline-flex">
+            <ChevronLeft />
+            <p>Back</p>
+          </Link>
           <motion.div
             className="text-center mb-16"
             initial={{ y: -20, opacity: 0 }}
