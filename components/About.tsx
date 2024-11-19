@@ -59,9 +59,11 @@ const AnimatedTestimonials = () => {
                     <div className="w-full max-w-4xl mx-auto p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl  hover:cursor-pointer hover:shadow-2xl hover:shadow-[#3498DB]/[0.8] hover:rounded-2xl">
                       <div className="relative w-32 h-32 mx-auto mb-8">
                         {testimonial.image ? (
-                          <img
+                          <Image
                             src={testimonial.image}
                             alt={testimonial.name}
+                            width={100}
+                            height={100}
                             className="w-full h-full rounded-full object-cover border-4 border-[#3498DB]/70 shadow-lg"
                           />
                         ) : (
@@ -73,7 +75,7 @@ const AnimatedTestimonials = () => {
 
                       <CardItem translateZ="50" className="text-center">
                         <blockquote className="text-2xl text-gray-700 font-medium mb-8 leading-relaxed">
-                          "{testimonial.quote}"
+                          &apos;{testimonial.quote}&apos;
                         </blockquote>
                       </CardItem>
 
@@ -115,6 +117,7 @@ const AnimatedTestimonials = () => {
 const About = () => {
   return (
     <Layout withNavbar withFooter>
+      <></>
       <section className="w-full overflow-x-visible">
         <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full overflow-x-visible">
           <div className="absolute -left-10 top-[80%]">

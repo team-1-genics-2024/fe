@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import CardHomepage from "@/components/ui/CardHomepage";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { fetchClassData } from "./actions/class";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -20,7 +20,7 @@ interface Class {
   updatedAt: string;
 }
 
-export default function Home() {
+const LearningPathSection = () => {
   const [classes, setClasses] = useState<Class[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +57,53 @@ export default function Home() {
   }
 
   return (
+    <div>
+      <h1 className="font-semibold text-4xl text-gray-800 text-center mb-16 mt-24">
+        Daftar Learning Path Rancangan Experts
+      </h1>
+      <div className="flex flex-wrap justify-center gap-12">
+        {classes.map((classItem) => (
+          <motion.div
+            key={classItem.id}
+            onClick={() => handleClassDetailClick(classItem.id)}
+            className="cursor-pointer"
+            initial={{ opacity: 0, scale: 0.3 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{
+              scale: 1.05,
+              rotate: [-1, 1, -1, 1, 0],
+              transition: {
+                rotate: {
+                  repeat: Infinity,
+                  duration: 0.5,
+                },
+              },
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              duration: 0.5,
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
+          >
+            <CardHomepage
+              src={`/${classItem.imageUrl}`}
+              title={classItem.name}
+              date={`${classItem.totalTopics} Topics - ${classItem.totalSubtopics} Subtopics`}
+              participants={classItem.totalParticipants.toString()}
+              rating={classItem.rating.toString()}
+              status="enabled"
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default function Home() {
+  return (
     <Layout withNavbar withFooter>
       <div>
         <div className="relative h-screen bg-white flex items-center justify-center text-center">
@@ -88,7 +135,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="text-center mt-2 w-full h-[40vh]  overflow-hidden z-10">
+            <div className="text-center mt-2 w-full h-[40vh] overflow-hidden z-10">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 w-full md:w-[690px]">
                 Ayo raih prestasi gemilang bersama!
               </h1>
@@ -112,48 +159,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div>
-          <h1 className="font-semibold text-4xl text-gray-800 text-center mb-16 mt-24">
-            Daftar Learning Path Rancangan Experts
-          </h1>
-          <div className="flex flex-wrap justify-center gap-12">
-            {classes.map((classItem, index) => (
-              <motion.div
-                key={classItem.id}
-                onClick={() => handleClassDetailClick(classItem.id)}
-                className="cursor-pointer"
-                initial={{ opacity: 0, scale: 0.3 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{
-                  scale: 1.05,
-                  rotate: [-1, 1, -1, 1, 0],
-                  transition: {
-                    rotate: {
-                      repeat: Infinity,
-                      duration: 0.5,
-                    },
-                  },
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                }}
-              >
-                <CardHomepage
-                  src={`/${classItem.imageUrl}`}
-                  title={classItem.name}
-                  date={`${classItem.totalTopics} Topics - ${classItem.totalSubtopics} Subtopics`}
-                  participants={classItem.totalParticipants.toString()}
-                  rating={classItem.rating.toString()}
-                  status="enabled"
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
+
+        <Suspense fallback={<LoadingUnprotectedRoute />}>
+          <LearningPathSection />
+        </Suspense>
       </div>
     </Layout>
   );
