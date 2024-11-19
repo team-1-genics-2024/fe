@@ -12,6 +12,8 @@ export default function SubClassNextPage({
 }) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(Number(slug));
+
+  // BUTTON NAVIGATION
   const [isNextDisabled, setIsNextDisabled] = useState(false);
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(false);
 
