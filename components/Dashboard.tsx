@@ -3,7 +3,7 @@ import Layout from "./layout/Layout";
 
 export default function Dashboard() {
   return (
-    <Layout withNavbar withFooter>
+    <Layout withNavbar withFooter withPadding>
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         <h1 className="text-2xl font-bold">Dashboard</h1>
 

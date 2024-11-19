@@ -11,6 +11,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import Layout from "./layout/Layout";
+import { useMemo } from "react";
 import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
 
@@ -24,7 +25,6 @@ interface SubTopics {
   name: string;
   topicId: number;
   subtopicId: number;
-  description: string;
   imageUrl: string;
   videoUrl: string;
 }
@@ -41,6 +41,7 @@ export default function TopicsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<number | null>(null);
+  const classId = useMemo(() => params.classId, [params]);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -48,44 +49,44 @@ export default function TopicsPage() {
         setIsLoading(true);
         setError(null);
 
-        if (!params.classId || Array.isArray(params.classId)) {
+        if (!classId) {
           throw new Error("Invalid class ID");
         }
 
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-        const response = await fetch(
-          `${apiBaseUrl}api/topic/${params.classId}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        if (!apiBaseUrl) {
+          throw new Error("API base URL is not defined.");
+        }
+
+        const response = await fetch(`${apiBaseUrl}api/topic/${classId}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
+          throw new Error(`HTTP error: ${response.status}`);
         }
 
         const jsonData: TopicResponse = await response.json();
-        console.log(jsonData);
 
         if (jsonData.resultCode !== 200) {
-          throw new Error(`Error: ${jsonData.resultMessage}`);
+          throw new Error(`API error: ${jsonData.resultMessage}`);
         }
 
         setTopics(jsonData.data);
-      } catch (err) {
+      } catch (err: unknown) {
         setError("Failed to load topics. Please try again later.");
-        console.error("Error loading topics:", err);
+        console.error(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchTopics();
-  }, [params.topicId]);
+  }, [classId]);
 
   if (isLoading) {
     return <LoadingUnprotectedRoute />;
@@ -262,15 +263,6 @@ export default function TopicsPage() {
                                   />
                                 </motion.div>
                               )}
-
-                              <motion.p
-                                className="relative text-gray-600 mt-4 leading-relaxed whitespace-pre-line"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2 }}
-                              >
-                                {subtopic.description}
-                              </motion.p>
                             </motion.div>
                           ))}
                         </AnimatePresence>

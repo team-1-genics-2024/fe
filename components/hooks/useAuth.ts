@@ -9,16 +9,25 @@ import { LoginFormData, AuthResponse } from "@/types/auth";
 import { showToast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 
+export const cleanProtectedPage = () => {
+  showToast("Session expired, please login again", "error");
+  removeAccessTokens();
+  localStorage.removeItem("avatarImage");
+  return;
+};
+
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [avatarImage, setAvatarImage] = useState<string | null>(null);
+  const [, setAvatarImage] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = getStoredToken();
-    setIsAuthenticated(!!token);
-    setIsLoading(false);
+    if (typeof window !== "undefined") {
+      const token = getStoredToken();
+      setIsAuthenticated(!!token);
+      setIsLoading(false);
+    }
   }, []);
 
   const login = async (formData: LoginFormData) => {
@@ -58,7 +67,7 @@ export const useAuth = () => {
   const logout = async () => {
     try {
       let token = getStoredToken();
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/logout`,
         {
           method: "POST",
@@ -71,11 +80,7 @@ export const useAuth = () => {
       );
 
       if (response.ok) {
-        removeAccessTokens();
-        setIsAuthenticated(false);
-        setAvatarImage(null);
-        localStorage.removeItem("avatarImage");
-        showToast("Successfully logged out", "success");
+        cleanUpAuth();
         router.push("/");
         return;
       }
@@ -92,11 +97,7 @@ export const useAuth = () => {
       );
 
       if (!refreshResponse.ok) {
-        removeAccessTokens();
-        setIsAuthenticated(false);
-        setAvatarImage(null);
-        localStorage.removeItem("avatarImage");
-        showToast("Successfully logged out", "success");
+        cleanUpAuth();
         router.push("/");
         return;
       }
@@ -106,7 +107,7 @@ export const useAuth = () => {
       localStorage.setItem("accessToken", newAccessToken);
       token = newAccessToken;
 
-      response = await fetch(
+      const retryResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/logout`,
         {
           method: "POST",
@@ -118,21 +119,13 @@ export const useAuth = () => {
         }
       );
 
-      if (!response.ok) {
-        removeAccessTokens();
-        setIsAuthenticated(false);
-        setAvatarImage(null);
-        localStorage.removeItem("avatarImage");
-        showToast("Successfully logged out", "success");
+      if (!retryResponse.ok) {
+        cleanUpAuth();
         router.push("/");
         return;
       }
 
-      removeAccessTokens();
-      setIsAuthenticated(false);
-      setAvatarImage(null);
-      localStorage.removeItem("avatarImage");
-      showToast("Successfully logged out", "success");
+      cleanUpAuth();
       router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -140,8 +133,17 @@ export const useAuth = () => {
     }
   };
 
+  const cleanUpAuth = () => {
+    removeAccessTokens();
+    setIsAuthenticated(false);
+    setAvatarImage(null);
+    localStorage.removeItem("avatarImage");
+    showToast("Successfully logged out", "success");
+  };
+
   return {
     isAuthenticated,
+    cleanProtectedPage,
     isLoading,
     login,
     logout,

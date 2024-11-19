@@ -92,3 +92,5 @@ export const fetchClassById = async (id: number): Promise<Class> => {
     throw error;
   }
 };
+
+

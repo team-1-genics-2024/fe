@@ -118,16 +118,14 @@ const LoadingScreen: React.FC = () => {
               <div className="absolute inset-0 bg-white/20 rounded-full animate-ping" />
             </div>
             <p className="text-white text-xl font-semibold animate-pulse">
-              SinauPo'o
+              SinauPo&apos;o
             </p>
           </div>
         </div>
 
-        {/* Loading text */}
         <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-full text-center">
           <div className="inline-block">
             <span className={LOADING_TEXT_STYLES.container}>
-              {/* Redirecting... */}
               <span
                 className={`${LOADING_TEXT_STYLES.underline} animate-loadingBar`}
               />
@@ -136,7 +134,6 @@ const LoadingScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Floating particles */}
       {floatingParticles.map((particle, i) => (
         <div
           key={i}
