@@ -15,7 +15,7 @@ const Star = () => {
   );
 };
 
-const CardCourse = ({ id, name, description, imageUrl, rating, totalUserProgress, totalSubtopics }: Enroll) => {
+const CardCourse = ({ id, name, imageUrl, rating, totalUserProgress, totalSubtopics, linkButton }: Enroll) => {
   return (
     <>
       <Card key={id} className="overflow-hidden">
@@ -38,7 +38,7 @@ const CardCourse = ({ id, name, description, imageUrl, rating, totalUserProgress
           </p>
         </CardContent>
         <CardFooter>
-          <Link href={'/'} className="px-6 py-2 text-xs md:text-sm rounded-full mx-auto text-white text-center bg-[#3498DB]">
+          <Link href={linkButton} className="px-6 py-2 text-xs md:text-sm rounded-full mx-auto text-white text-center bg-[#3498DB]">
             Continue Learning
           </Link>
         </CardFooter>

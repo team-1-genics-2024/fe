@@ -1,58 +1,27 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { BurgerIcon, HomeIcon, SertivIcon } from '@/components/dasboard/Icon';
 import SidebarMenu from '@/components/dasboard/SidebarMenu';
 import Image from 'next/image';
 import SearchInput from '@/components/dasboard/SearchInput';
 import { Enroll, fetchEnrollData } from '../actions/enroll';
 import CardCourse from '@/components/dasboard/CardCourse';
-
-const MyCourse = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className=" h-[100vh] md:h-[80vh] md:max-w-[800px] bg-[#F7FCFF] lg:px-12 xl:px-14 pt-6 pb-14 ">
-      <h1 className="text-4xl font-medium mb-8 px-7">My Course</h1>
-      <ScrollArea className="px-7 h-[90%]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">{children}</div>
-      </ScrollArea>
-    </div>
-  );
-};
-
-const CardCertificate = () => {
-  return (
-    <div className="w-[300px] bg-white rounded-[12px] overflow-hidden shadow">
-      <div className="w-full h-[200px] bg-[#F7FCFF]">
-        <Image src="/certificate/1.png" width={300} height={180} className="object-cover h-full w-full" alt="courseImg" />
-      </div>
-      <div className="px-4 py-3">
-        <h1 className="text-lg font-medium">Certificate</h1>
-        <p className="text-xs text-slate-500">Certificate of completion</p>
-      </div>
-    </div>
-  );
-};
-
-const Certificate = () => {
-  return (
-    <div className="h-[80vh] md:max-w-[800px] bg-[#F7FCFF] lg:px-12 xl:px-14 pt-6 pb-14">
-      <h1 className="text-4xl font-medium mb-8 px-7">Certificate</h1>
-      <ScrollArea className="px-7 h-[90%]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
-          <CardCertificate />
-        </div>
-      </ScrollArea>
-    </div>
-  );
-};
-
-export default function Dashboard() {
+import { EnrollDataResponse, fetchCertificate } from '../actions/certificate';
+import MyCourse from '@/components/dasboard/MyCourse';
+import Certificate from '@/components/dasboard/Certificate';
+import withAuth from '../actions/withAuth';
+function Dashboard() {
   const [enroll, setEnroll] = useState<Enroll[]>([]);
+  const [certificate, setCertificate] = useState<EnrollDataResponse | null>(null);
   const [searchEnroll, setSearchEnroll] = useState('m');
 
   useEffect(() => {
     fetchEnrollData({ searchEnroll }).then((data) => setEnroll(data));
   }, [searchEnroll]);
+
+  useEffect(() => {
+    fetchCertificate().then((res) => setCertificate(res));
+  }, []);
 
   const [sideMenu, setSideMenu] = useState([true, false, false]);
   const [sideActive, setSideActive] = useState(false);
@@ -62,8 +31,6 @@ export default function Dashboard() {
     setSideActive((sideActive) => !sideActive);
     setSideMenuOpen((sideMenuOpen) => !sideMenuOpen);
   };
-
-  console.log(enroll);
 
   return (
     <div className="flex justify-between gap-6 transition-all  duration-300 ease-in-out">
@@ -90,10 +57,7 @@ export default function Dashboard() {
           <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, true, false])} title="Certificate" active={sideMenu[1]}>
             <SertivIcon className={`${sideMenu[1] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} />
           </SidebarMenu>
-          {/* <SidebarMenu menuOpen={sideMenuOpen} onClick={() => setSideMenu([false, false, true])} title="Favorites" active={sideMenu[2]}> */}
           <SearchInput menuOpen={sideMenuOpen} onChange={(e) => setSearchEnroll(e.target.value)} />
-          {/* <FavIcon className={`${sideMenu[2] ? 'fill-[#2F8AC7]' : 'fill-[#454B4F]'}  group-hover:fill-[#2F8AC7]`} /> */}
-          {/* </SidebarMenu> */}
         </div>
       </div>
       <div className="md:hidden block bg-[#EBF5FB]   pt-5  w-[70px] "></div>
@@ -111,11 +75,12 @@ export default function Dashboard() {
                 imageUrl={'/' + data.imageUrl}
                 totalUserProgress={data.totalUserProgress}
                 totalSubtopics={data.totalSubtopics}
+                linkButton={`/classes/${data.id}`}
               />
             ))}
           </MyCourse>
         )}
-        {sideMenu[1] && <Certificate />}
+        {sideMenu[1] && <Certificate certificate={certificate?.data.certificates || []} />}
       </div>
       <div className="md:w-1/4 relative">
         <Image src={'/image/dashboard/Star.png'} alt="star" width={100} height={100} className="w-[90px] absolute left-7 top-9" />
@@ -124,3 +89,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuth(Dashboard);

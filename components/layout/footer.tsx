@@ -28,7 +28,9 @@ export default function Footer() {
               alt="SinauPo'o Logo"
               className="mr-2 font-bold"
             />
-            <span className="text-2xl text-[28px] font-bold ">SinauPo'o</span>
+            <span className="text-2xl text-[28px] font-bold ">
+              SinauPo&apos;o
+            </span>
           </div>
 
           <div>
@@ -143,7 +145,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-gray-300">
           <p className="text-center font-normal text-gray-300">
-            © 2024 SinauPo'o | All Rights Reserved
+            © 2024 SinauPo&apos;o | All Rights Reserved
           </p>
         </div>
       </div>

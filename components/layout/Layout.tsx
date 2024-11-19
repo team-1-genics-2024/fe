@@ -71,11 +71,12 @@ export default function Layout({
         }
         setIsAuthenticated(true);
       } catch (error) {
+        console.log(error);
         return;
       }
     };
     fetchUserProfile(token as string);
-  }, []);
+  }, [baseApiUrl]);
 
   return (
     <div className={`min-h-screen flex flex-col ${customClass}`}>

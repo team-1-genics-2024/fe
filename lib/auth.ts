@@ -40,7 +40,7 @@ export const refreshUserToken =
       setAccessTokens(tokens.accessToken);
       return tokens;
     } catch (error) {
-      console.error("Token refresh error:", error);
+      console.log("Token refresh error:", error);
       return null;
     }
   };

@@ -6,6 +6,7 @@ export interface Enroll {
   rating: number;
   totalUserProgress: number;
   totalSubtopics: number;
+  linkButton: string;
 }
 
 interface EnrollDataResponse {
@@ -24,7 +25,7 @@ export const fetchEnrollData = async ({ searchEnroll }: { searchEnroll: string }
       throw new Error('API base URL is not defined');
     }
 
-    const response = await fetch(`${apiBaseUrl}api/class/search?keyword=${searchEnroll}`, {
+    const response = await fetch(`${apiBaseUrl}api/enroll/search?keyword=${searchEnroll}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

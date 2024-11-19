@@ -141,15 +141,15 @@ export default function Navigation() {
   const [password, setPassword] = useState("");
   const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  const [isPending] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [signupDialogOpen, setSignupDialogOpen] = useState(false);
-  const [state, setState] = useState({ success: false, error: "" });
+
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated] = useState(false);
 
   const switchToSignup = () => {
     setLoginDialogOpen(false);
@@ -241,7 +241,7 @@ export default function Navigation() {
         const data = await response.json();
         const successMessage =
           data.message || "Registration completed successfully";
-        setState({ success: true, error: "" });
+
         showToast(successMessage, "success");
         switchToLogin();
         console.log(data);
@@ -249,10 +249,7 @@ export default function Navigation() {
         const errorData = await response.json();
         const errorMessage =
           errorData.message || "Please double check your credentials";
-        setState({
-          success: false,
-          error: errorMessage,
-        });
+
         showToast(errorMessage, "error");
       }
     } catch (error) {
@@ -265,10 +262,7 @@ export default function Navigation() {
             ? error.message
             : "Unexpected error occurred during registration";
       }
-      setState({
-        success: false,
-        error: errorMessage,
-      });
+
       showToast(errorMessage, "error");
     } finally {
       setIsSubmittingSignUp(false);
@@ -287,7 +281,7 @@ export default function Navigation() {
               height={20}
             />
             <span className="text-xl ml-2 font-bold text-[#3498DB]">
-              SinauPo'o
+              SinauPo&apos;o
             </span>
           </Link>
 
@@ -322,6 +316,7 @@ export default function Navigation() {
               <Search className="w-5 h-5" />
             </button>
 
+            {/* Apps Menu Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 {isAuthenticated && (
@@ -367,15 +362,13 @@ export default function Navigation() {
             <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
               <div className="flex items-center gap-4">
                 <DialogTrigger asChild>
-                  <Link href={"/"}>
-                    <Button
-                      variant="outline"
-                      className="rounded-full text-[#3498db] hover:text-[#2980b9] hover:bg-gray-100"
-                      size="sm"
-                    >
-                      Log in
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outline"
+                    className="rounded-full text-[#3498db] hover:text-[#3498db] hover:bg-white"
+                    size="sm"
+                  >
+                    Log in
+                  </Button>
                 </DialogTrigger>
                 <VisuallyHidden>
                   <DialogTitle>Hey</DialogTitle>
@@ -530,7 +523,7 @@ export default function Navigation() {
                           </Link>
 
                           <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
-                            Don't have account yet?{" "}
+                            Don&apos;t have account yet?{" "}
                             <span
                               onClick={switchToSignup}
                               className="text-[#3498db] text-[11px] cursor-pointer font-bold underline leading-none tracking-wide"
@@ -551,15 +544,13 @@ export default function Navigation() {
                 >
                   <div className="flex items-center gap-5 ">
                     <DialogTrigger asChild>
-                      <Link href={"/"}>
-                        <Button
-                          variant="outline"
-                          className="rounded-full text-white hover:text-gray-100 bg-[#3498db] hover:bg-[#2980b9]"
-                          size="sm"
-                        >
-                          Sign up
-                        </Button>
-                      </Link>
+                      <Button
+                        variant="outline"
+                        className="rounded-full text-white hover:text-white bg-[#3498db] hover:bg-[#3498db]"
+                        size="sm"
+                      >
+                        Sign up
+                      </Button>
                     </DialogTrigger>
                     <VisuallyHidden>
                       <DialogTitle>Hey</DialogTitle>
@@ -612,6 +603,7 @@ export default function Navigation() {
                               <Input
                                 type="text"
                                 name="name"
+                                value={name}
                                 required
                                 disabled={isSubmittingSignUp}
                                 onChange={(e) => setName(e.target.value)}

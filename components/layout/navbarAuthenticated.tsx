@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, LayoutGrid, LogOut, Car } from "lucide-react";
+import { Search, LayoutGrid, LogOut } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/data";
 import { useAuth } from "../hooks/useAuth";
 
-export default function NavbarHomePage() {
+export default function NavbarAuthenticated() {
   const router = useRouter();
   const [userName, setUserName] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -115,6 +115,7 @@ export default function NavbarHomePage() {
     try {
       await logout();
     } catch (error) {
+      console.log(error);
       return;
     }
   };
@@ -134,7 +135,7 @@ export default function NavbarHomePage() {
               height={20}
             />
             <span className="text-xl ml-2 font-bold text-[#3498DB]">
-              SinauPo'o
+              SinauPo&apos;o
             </span>
           </div>
           <div className="hidden md:flex flex-1 justify-center">
