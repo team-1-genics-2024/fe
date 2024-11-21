@@ -9,7 +9,7 @@ import CardCourse from '@/components/dasboard/CardCourse';
 import { EnrollDataResponse, fetchCertificate } from '../actions/certificate';
 import MyCourse from '@/components/dasboard/MyCourse';
 import Certificate from '@/components/dasboard/Certificate';
-import withAuth from '../actions/withAuth';
+import withAuth from '../../components/hooks/withAuth';
 function Dashboard() {
   const [enroll, setEnroll] = useState<Enroll[]>([]);
   const [certificate, setCertificate] = useState<EnrollDataResponse | null>(null);
