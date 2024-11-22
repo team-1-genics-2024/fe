@@ -7,23 +7,11 @@ import { FaStar } from "react-icons/fa6";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CountUp from "react-countup";
-import { showToast } from "@/lib/toast";
+import { showToast } from "@/lib/custom-toast/toast";
 import Layout from "./layout/Layout";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
 import ErrorNoClassFound from "./layout/error/error-no-class-found.tsx";
-
-interface Class {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  rating: number;
-  createdAt: string;
-  updatedAt: string;
-  totalTopics: number;
-  totalSubtopics: number;
-  totalParticipants: number;
-}
+import { Class } from "@/types/class";
 
 export default function ClassDetail() {
   const params = useParams();

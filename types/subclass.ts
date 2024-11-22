@@ -5,3 +5,9 @@ export interface SubClassData {
   imageUrl: string;
   videoUrl: string;
 }
+
+export interface MembershipData {
+  userId: number;
+  remainingDays: number;
+  currentDate: Date;
+}

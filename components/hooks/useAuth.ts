@@ -4,9 +4,9 @@ import {
   getStoredToken,
   setAccessTokens,
   removeAccessTokens,
-} from "@/lib/auth";
+} from "@/lib/authentication/auth";
 import { LoginFormData, AuthResponse } from "@/types/auth";
-import { showToast } from "@/lib/toast";
+import { showToast } from "@/lib/custom-toast/toast";
 import { useRouter } from "next/navigation";
 
 export const cleanProtectedPage = () => {

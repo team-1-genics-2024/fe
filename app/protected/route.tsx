@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getStoredToken, refreshUserToken } from "@/lib/auth";
+import { getStoredToken, refreshUserToken } from "@/lib/authentication/auth";
 
 import { WithFullPageLoadingScreen } from "@/components/layout/loading/loading-screen";
 import { cleanProtectedPage } from "@/components/hooks/useAuth";

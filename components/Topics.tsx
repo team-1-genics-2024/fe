@@ -11,28 +11,21 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import Layout from "./layout/Layout";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
-
-interface Topic {
-  name: string;
-  classId: number;
-  SubTopic: SubTopics[];
-}
-
-interface SubTopics {
-  name: string;
-  topicId: number;
-  subtopicId: number;
-  imageUrl: string;
-  videoUrl: string;
-}
-
-interface TopicResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: Topic[];
+import { Topic, TopicResponse } from "@/types/topics";
+import { showToast } from "@/lib/custom-toast/toast";
+import { toast } from "react-toastify";
+import ErrorNoSubClassFound from "./layout/error/error-no-subclass-found";
+interface Membership {
+  id: number;
+  userId: number;
+  endDate: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function TopicsPage() {
@@ -42,6 +35,8 @@ export default function TopicsPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const classId = useMemo(() => params.classId, [params]);
+  const router = useRouter();
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -87,6 +82,49 @@ export default function TopicsPage() {
 
     fetchTopics();
   }, [classId]);
+
+  const handleSubtopicClick = async (subtopic: Topic["SubTopic"][number]) => {
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const accessToken = localStorage.getItem("accessToken");
+
+      const response = await fetch(`${apiBaseUrl}api/membership`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        showToast(errorData.message, "error");
+        return;
+      }
+
+      const membershipData = await response.json();
+      console.log(membershipData);
+
+      const isMember = membershipData.data.some(
+        (membership: Membership) => membership.isActive
+      );
+
+      if (!isMember) {
+        const errorData = {
+          message: "You're not a member, please join first.",
+        };
+        showToast(errorData.message, "error");
+        router.push("/");
+        return;
+      }
+
+      router.push(`/subclass/${subtopic.subtopicId}`);
+    } catch (err: unknown) {
+      console.error(err instanceof Error ? err.message : "Unknown error");
+      toast.error(error);
+    }
+  };
 
   if (isLoading) {
     return <LoadingUnprotectedRoute />;
@@ -205,9 +243,9 @@ export default function TopicsPage() {
                       </AccordionTrigger>
                       <AccordionContent className="px-6 sm:px-8 py-6 space-y-6 sm:space-y-8 bg-white">
                         <AnimatePresence>
-                          {topic.SubTopic.map((subtopic, idx) => (
+                          {topic.SubTopic.map((SubTopics, idx) => (
                             <motion.div
-                              key={subtopic.subtopicId}
+                              key={SubTopics.subtopicId}
                               className="relative bg-[#3498db]/5 rounded-2xl p-6 transition-all duration-500 hover:shadow-lg"
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -217,6 +255,7 @@ export default function TopicsPage() {
                               onHoverEnd={() => setActiveCard(null)}
                               onTouchStart={() => setActiveCard(idx)}
                               onTouchEnd={() => setActiveCard(null)}
+                              onClick={() => handleSubtopicClick(SubTopics)}
                             >
                               <motion.h3
                                 className="relative text-lg font-medium text-[#3498db] mb-4 flex items-center space-x-3"
@@ -224,10 +263,10 @@ export default function TopicsPage() {
                                 transition={{ duration: 0.2 }}
                               >
                                 <BookOpen className="w-5 h-5 bg-white" />
-                                <span>{subtopic.name}</span>
+                                <span>{SubTopics.name}</span>
                               </motion.h3>
 
-                              {subtopic.imageUrl && (
+                              {SubTopics.imageUrl && (
                                 <motion.div
                                   className="relative rounded-xl overflow-hidden shadow-lg"
                                   initial={{ scale: 1 }}
@@ -250,8 +289,8 @@ export default function TopicsPage() {
                                   }}
                                 >
                                   <Image
-                                    src={`/${subtopic.imageUrl}`}
-                                    alt={subtopic.name}
+                                    src={`/${SubTopics.imageUrl}`}
+                                    alt={SubTopics.name}
                                     className="w-full h-auto"
                                     width={400}
                                     height={400}

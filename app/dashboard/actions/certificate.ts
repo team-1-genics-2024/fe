@@ -1,24 +1,6 @@
-"use server";
-interface Class {
-  id: number;
-  name: string;
-  imageUrl: string;
-  totalTopics: number;
-  totalSubtopics: number;
-  rating: number;
-  totalParticipants: number;
-  updatedAt: string;
-}
+import { CertificateDataResponse } from "@/types/certificate";
 
-interface ClassDataResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: {
-    classes: Class[];
-  };
-}
-
-export const fetchClassData = async (): Promise<Class[]> => {
+export const fetchCertificate = async (): Promise<CertificateDataResponse> => {
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -26,10 +8,11 @@ export const fetchClassData = async (): Promise<Class[]> => {
       throw new Error("API base URL is not defined");
     }
 
-    const response = await fetch(`${apiBaseUrl}api/class`, {
+    const response = await fetch(`${apiBaseUrl}api/certificate`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + (localStorage.getItem("accessToken") || ""),
       },
     });
 
@@ -37,13 +20,14 @@ export const fetchClassData = async (): Promise<Class[]> => {
       throw new Error(`Error: ${response.status}`);
     }
 
-    const jsonData: ClassDataResponse = await response.json();
+    const jsonData = await response.json();
 
     if (jsonData.resultCode !== 200) {
       throw new Error(`Error: ${jsonData.resultMessage}`);
     }
 
-    return jsonData.data.classes;
+    // console.log(jsonData);
+    return jsonData as CertificateDataResponse;
   } catch (error) {
     console.error("Failed to fetch class data:", error);
     throw error;

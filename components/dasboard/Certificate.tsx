@@ -1,6 +1,6 @@
-import type { Certificate } from '@/app/actions/certificate';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
-import CardCertificate from './CardCertificate';
+import type { Certificate } from "@/types/certificate";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import CardCertificate from "./CardCertificate";
 
 const Certificate = ({ certificate }: { certificate: Certificate[] }) => {
   return (

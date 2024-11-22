@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, LayoutGrid, LogOut } from "lucide-react";
+import { LayoutGrid, LogOut } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { userAvatars } from "@/lib/data";
-import { useAuth } from "../hooks/useAuth";
+import { userAvatars } from "@/lib/static-data/avatar-data";
+import { useAuth } from "../../hooks/useAuth";
+import NavbarSkeleton from "./skeleton/navbar-skeleton";
 
 export default function NavbarAuthenticated() {
   const router = useRouter();
@@ -120,11 +121,12 @@ export default function NavbarAuthenticated() {
     }
   };
 
+  if (isLoading) {
+    return <NavbarSkeleton />;
+  }
+
   return (
-    <nav
-      className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90"
-      style={isLoading ? { filter: "blur(5px)" } : {}}
-    >
+    <nav className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <section className="w-full max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center gap-8">
           <div className="flex flex-row items-center">
@@ -162,13 +164,6 @@ export default function NavbarAuthenticated() {
           </div>
 
           <div className="flex items-center gap-6">
-            <button
-              className="p-2 text-gray-600 hover:text-gray-900"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 {isAuthenticated && (
