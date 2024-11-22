@@ -16,17 +16,8 @@ import { useMemo } from "react";
 import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
 import { Topic, TopicResponse } from "@/types/topics";
-import { showToast } from "@/lib/custom-toast/toast";
+
 import { toast } from "react-toastify";
-import ErrorNoSubClassFound from "./layout/error/error-no-subclass-found";
-interface Membership {
-  id: number;
-  userId: number;
-  endDate: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export default function TopicsPage() {
   const params = useParams();
@@ -36,7 +27,6 @@ export default function TopicsPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const classId = useMemo(() => params.classId, [params]);
   const router = useRouter();
-  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -88,50 +78,51 @@ export default function TopicsPage() {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
       const accessToken = localStorage.getItem("accessToken");
 
-      const response = await fetch(`${apiBaseUrl}api/membership`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      console.log("Fetching subtopic with ID:", subtopic.subtopicId);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        showToast(errorData.message, "error");
-        return;
-      }
-
-      const membershipData = await response.json();
-      console.log(membershipData);
-
-      const isMember = membershipData.data.some(
-        (membership: Membership) => membership.isActive
+      const response = await fetch(
+        `${apiBaseUrl}api/topic/subtopic/${subtopic.subtopicId}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
-      if (!isMember) {
-        const errorData = {
-          message: "You're not a member, please join first.",
-        };
-        showToast(errorData.message, "error");
-        router.push("/");
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        console.error("Error data:", errorMessage);
+        showToast(errorMessage.errorMessage, "error");
         return;
       }
+
+      const subtopicData = await response.json();
+      console.log(subtopicData);
 
       router.push(`/subclass/${subtopic.subtopicId}`);
     } catch (err: unknown) {
       console.error(err instanceof Error ? err.message : "Unknown error");
-      toast.error(error);
+
+      showToast(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "error"
+      );
+    }
+  };
+
+  const showToast = (message: string, type: "success" | "error") => {
+    if (type === "error") {
+      toast.error(message);
+    } else {
+      toast.success(message);
     }
   };
 
   if (isLoading) {
     return <LoadingUnprotectedRoute />;
-  }
-
-  if (error) {
-    return <ErrorNoTopicFound />;
   }
 
   return (
@@ -312,15 +303,7 @@ export default function TopicsPage() {
               </Accordion>
             </motion.div>
           ) : (
-            <motion.div
-              className="text-center py-16 bg-[#3498db] rounded-2xl shadow-lg text-white"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <BookOpen className="w-16 h-16 mx-auto opacity-80 mb-4" />
-              <p>No topics found for this class, please try again later</p>
-            </motion.div>
+            <ErrorNoTopicFound />
           )}
         </div>
       </motion.div>

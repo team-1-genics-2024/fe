@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/static-data/avatar-data";
 import { useAuth } from "../../hooks/useAuth";
 import NavbarSkeleton from "./skeleton/navbar-skeleton";
+import { showToast } from "@/lib/custom-toast/toast";
 
 export default function NavbarAuthenticated() {
   const router = useRouter();

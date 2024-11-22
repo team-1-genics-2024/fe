@@ -9,8 +9,8 @@ import { LoginFormData, AuthResponse } from "@/types/auth";
 import { showToast } from "@/lib/custom-toast/toast";
 import { useRouter } from "next/navigation";
 
-export const cleanProtectedPage = () => {
-  showToast("Session expired, please login again", "error");
+export const cleanProtectedPage = (errorMessage?: string) => {
+  showToast(errorMessage || "Session expired, please login again", "error");
   removeAccessTokens();
   localStorage.removeItem("avatarImage");
   return;
@@ -81,7 +81,7 @@ export const useAuth = () => {
 
       if (response.ok) {
         cleanUpAuth();
-        router.push("/");
+        window.location.reload();
         return;
       }
 
@@ -97,8 +97,11 @@ export const useAuth = () => {
       );
 
       if (!refreshResponse.ok) {
-        cleanUpAuth();
-        router.push("/");
+        const refreshErrorData = await refreshResponse.json();
+        cleanProtectedPage(
+          refreshErrorData.message || "Failed to refresh token"
+        );
+        window.location.reload();
         return;
       }
 
@@ -120,25 +123,28 @@ export const useAuth = () => {
       );
 
       if (!retryResponse.ok) {
-        cleanUpAuth();
-        router.push("/");
+        const retryErrorData = await retryResponse.json();
+        cleanProtectedPage(retryErrorData.message || "Failed to logout");
+
         return;
       }
 
       cleanUpAuth();
-      router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
       showToast("An unexpected error occurred during logout", "error");
     }
   };
 
-  const cleanUpAuth = () => {
+  const cleanUpAuth = (errorMessage?: string) => {
     removeAccessTokens();
     setIsAuthenticated(false);
     setAvatarImage(null);
     localStorage.removeItem("avatarImage");
-    showToast("Successfully logged out", "success");
+    showToast(
+      errorMessage || "Successfully logged out",
+      errorMessage ? "error" : "success"
+    );
   };
 
   return {

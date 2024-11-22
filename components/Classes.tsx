@@ -32,22 +32,40 @@ export default function ClassDetail() {
   };
 
   const handleRating = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      showToast("You need to log in to submit a rating", "error");
+      return;
+    }
+
     try {
-      await fetch(`${baseApiUrl}api/class/${classData?.id}/rating`, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ rating }),
-      });
+      const response = await fetch(
+        `${baseApiUrl}api/class/${classData?.id}/rating`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ rating }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showToast(data.errorMessage || "Error updating rating", "error");
+        return;
+      }
+
       setClassData((prevData) => ({ ...prevData, rating } as Class));
-      console.log(setClassData);
       setIsRatingModalOpen(false);
-      showToast("Thank you for your honest review", "success");
+      showToast(data.message || "Thank you for your honest review", "success");
     } catch (error) {
       console.error("Error updating rating:", error);
-      showToast("Error updating rating", "error");
+      showToast("An unexpected error occurred while updating rating", "error");
     }
   };
 

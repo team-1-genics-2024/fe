@@ -15,7 +15,7 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { Description } from "@radix-ui/react-dialog";
 import { z } from "zod";
-import { Search, LayoutGrid } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +32,7 @@ import {
   LoginFormData,
   SignUpFormData,
 } from "@/lib/validation/authSchemas";
+import { LoginResult } from "@/types/authentication/login";
 
 export default function Navigation() {
   const googleLogin = "https://api.beteam1genics.my.id/api/auth/google";
@@ -42,13 +43,12 @@ export default function Navigation() {
   const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [isPending] = useState(false);
-  const router = useRouter();
+  const [, setIsModalOpen] = useState(false);
   const { login } = useAuth();
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [signupDialogOpen, setSignupDialogOpen] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const [isAuthenticated] = useState(false);
 
   const switchToSignup = () => {
     setLoginDialogOpen(false);
@@ -78,7 +78,7 @@ export default function Navigation() {
 
       const validatedData = loginSchema.parse(formData);
 
-      const result = await login(validatedData);
+      const result: LoginResult = await login(validatedData);
       console.log("Login result:", result);
 
       if (result.success && result.data) {
@@ -86,29 +86,56 @@ export default function Navigation() {
 
         if (accessToken) {
           window.localStorage.setItem("accessToken", accessToken);
-
           console.log("Token stored:", accessToken);
 
-          router.push("/dashboard");
+          setIsModalOpen(false);
+          window.location.reload();
         } else {
           console.error("AccessToken is missing in result.data.data");
-          showToast(error, "error");
+          showToast("Access token is missing. Please try again.", "error");
         }
       } else {
-        const errorMessage = result.error || "Login failed";
-        showToast(errorMessage, "error");
+        if (result.error) {
+          if (typeof result.error === "string") {
+            console.error("Login error message:", result.error);
+            showToast(result.error, "error");
+          } else if (result.error && typeof result.error === "object") {
+            const errorMessage = result.error.errorMessage || "Login failed";
+            console.error("Login error object:", result.error);
+            showToast(errorMessage, "error");
+          } else {
+            console.error(
+              "Login failed due to an unknown error:",
+              result.error
+            );
+            showToast("Login failed due to an unknown error.", "error");
+          }
+        } else {
+          console.error(
+            "Login failed due to an unknown error without specific error:",
+            result
+          );
+          showToast("Login failed due to an unknown error.", "error");
+        }
 
-        router.push("/");
         return;
       }
-      router.push("/dashboard");
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage = error.errors.map((err) => err.message).join(", ");
         setError(errorMessage);
+        console.error("Validation error during login:", errorMessage);
+        showToast(errorMessage, "error");
+      } else if (error instanceof Response) {
+        const errorResponse = await error.json();
+        const serverErrorMessage =
+          errorResponse.errorMessage || "An unexpected error occurred";
+        console.error("Login error response:", errorResponse);
+        showToast(serverErrorMessage, "error");
       } else {
         console.error("Login error:", error);
         setError("An unexpected error occurred");
+        showToast("An unexpected error occurred", "error");
       }
     } finally {
       setIsSubmittingLogin(false);
@@ -146,13 +173,16 @@ export default function Navigation() {
         console.log(data);
       } else {
         const errorData = await response.json();
+        console.error("Registration error response:", errorData);
         const errorMessage =
-          errorData.message || "Please double check your credentials";
+          errorData.errorMessage || "Please double check your credentials";
 
         showToast(errorMessage, "error");
       }
     } catch (error) {
       let errorMessage: string;
+      console.error("Caught error during registration:", error);
+
       if (error instanceof z.ZodError) {
         errorMessage = error.errors.map((err) => err.message).join(", ");
       } else {
@@ -202,23 +232,14 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button
-              className="p-2 text-gray-600 hover:text-gray-900 hidden md:block lg:block"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                {isAuthenticated && (
-                  <button
-                    className="p-2 text-gray-600 hover:text-gray-900"
-                    aria-label="Apps"
-                  >
-                    <LayoutGrid className="w-5 h-5 block sm:hidden" />
-                  </button>
-                )}
+                <button
+                  className="p-2 text-gray-600 hover:text-gray-900"
+                  aria-label="Apps"
+                >
+                  <LayoutGrid className="w-5 h-5 block sm:hidden" />
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
@@ -226,7 +247,7 @@ export default function Navigation() {
               >
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/home"
+                    href="/"
                     className="flex items-center w-full cursor-pointer"
                   >
                     Home
