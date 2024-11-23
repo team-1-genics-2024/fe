@@ -7,7 +7,6 @@ import {
 } from "@/lib/authentication/auth";
 import { LoginFormData, AuthResponse } from "@/types/auth";
 import { showToast } from "@/lib/custom-toast/toast";
-import { useRouter } from "next/navigation";
 
 export const cleanProtectedPage = (errorMessage?: string) => {
   showToast(errorMessage || "Session expired, please login again", "error");
@@ -20,7 +19,6 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [, setAvatarImage] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {

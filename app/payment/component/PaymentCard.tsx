@@ -3,23 +3,16 @@
 import AlertModal from "./ModalPayment";
 import { PaymentProps } from "@/types/payment";
 
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("id-ID", {
+export default function PaymentCard({ header, price }: PaymentProps) {
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(amount);
-};
-
-export default function PaymentCard({ header, price }: PaymentProps) {
-  const numericPrice = Number(price);
+  }).format(Number(price));
 
   return (
-    <section className="p-4 border-2 rounded-2xl flex flex-col">
+    <section className="p-4 border-2 rounded-2xl flex flex-col bg-gradient-to-b from-[#3498db]/10 to-[#3498db]/5">
       <p className="text-[22px]">{header}</p>
-      <p className="text-[#454B4F] text-[22px]">
-        {formatCurrency(numericPrice)}
-      </p>
+      <p className="text-[#454B4F] text-[22px]">{formattedPrice}</p>
       <div className="flex justify-end items-center">
         <AlertModal price={price}>
           {({ openModal }) => (

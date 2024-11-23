@@ -15,6 +15,7 @@ export interface TopicResponse {
   resultCode: number;
   resultMessage: string;
   data: Topic[];
+  isEnrolled: boolean;
 }
 
 export interface TopicDataResponse {

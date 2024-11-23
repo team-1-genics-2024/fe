@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function ErrorNoTopicFound() {
   return (
     <motion.div
-      className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#3498db]/5"
+      className="min-h-screen flex flex-col items-center justify-center p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

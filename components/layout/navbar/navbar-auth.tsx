@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 import { Description } from "@radix-ui/react-dialog";
 import { z } from "zod";
 import { LayoutGrid } from "lucide-react";
@@ -231,7 +230,7 @@ export default function Navigation() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-8">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -265,11 +264,11 @@ export default function Navigation() {
             </DropdownMenu>
 
             <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="rounded-full text-[#3498db] hover:text-[#3498db] hover:bg-white"
+                    className="rounded-full text-[#3498db] border border-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 "
                     size="sm"
                   >
                     Log in
@@ -449,7 +448,7 @@ export default function Navigation() {
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        className="rounded-full text-white hover:text-white bg-[#3498db] hover:bg-[#3498db]"
+                        className="rounded-full text-white bg-[#3498db] hover:bg-gray-100/50 hover:text-gray-200 "
                         size="sm"
                       >
                         Sign up

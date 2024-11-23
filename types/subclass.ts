@@ -11,3 +11,9 @@ export interface MembershipData {
   remainingDays: number;
   currentDate: Date;
 }
+
+export type SubClassCardProps = {
+  judul?: string;
+  video?: string;
+  textbook?: string;
+};

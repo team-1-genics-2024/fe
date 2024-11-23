@@ -1,12 +1,7 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-
-interface SearchInputProps {
-  className?: string;
-  menuOpen?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { SearchInputProps } from "@/types/search-input";
 
 export default function SearchInput({
   className,

@@ -11,6 +11,7 @@ export const fetchClassData = async (): Promise<Class[]> => {
 
     const response = await fetch(`${apiBaseUrl}api/class`, {
       method: "GET",
+
       headers: {
         "Content-Type": "application/json",
       },

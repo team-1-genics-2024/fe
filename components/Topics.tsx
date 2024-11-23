@@ -133,7 +133,7 @@ export default function TopicsPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="absolute left-0 top-[15%] lg:top-[20%] md:top-[10%] -z-20">
+        <div className="absolute left-0 top-[15%] lg:top-[20%] md:top-[10%] -z-20 hidden md:hidden lg:block">
           <Image
             src="/image/homepage/lowerrightstar.png"
             alt="Left Star"
@@ -142,14 +142,6 @@ export default function TopicsPage() {
           />
         </div>
 
-        <div className="absolute right-0 top-[65%] md:top-[55%] lg:top-[100%] xl:top-[80%] -z-20">
-          <Image
-            src="/image/homepage/upperrightstar.png"
-            alt="Right Star"
-            width={120}
-            height={120}
-          />
-        </div>
         <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
           <motion.div
             className="absolute -top-1/2 -left-1/2 w-full h-full bg-[#3498db]/10 rounded-full blur-3xl"

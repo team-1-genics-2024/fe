@@ -9,9 +9,10 @@ import SideMenuDesktop from "./SideMenuDesktop";
 import CustomScrollbar from "@/components/subclass/scrollbar-subclass";
 import SubClassNextPage from "./SubClassNextPage";
 import { useRouter } from "next/navigation";
-// import { WithFullPageLoadingScreen } from "@/components/layout/loading/loading-screen";
+import LoadingUnprotectedRoute from "@/components/layout/loading/loading-unprotected-route";
 import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
 import { SubClassData, MembershipData } from "@/types/subclass";
+import ProtectedRoute from "@/app/protected/route";
 
 export default function SubClass({ slug }: { slug: number }) {
   const router = useRouter();
@@ -99,8 +100,7 @@ export default function SubClass({ slug }: { slug: number }) {
   }, [slug]);
 
   if (loading) {
-    return <div>loading</div>;
-    //  <WithFullPageLoadingScreen></WithFullPageLoadingScreen>;
+    return <LoadingUnprotectedRoute />;
   }
 
   if (error) {
@@ -108,28 +108,30 @@ export default function SubClass({ slug }: { slug: number }) {
   }
 
   return (
-    <Layout withNavbar={true} withFooter={false} withPadding={false}>
-      <main className="min-h-screen flex flex-col md:flex-row">
-        <SideMenuMobile />
+    <ProtectedRoute>
+      <Layout withNavbar={true} withFooter={false} withPadding={false}>
+        <main className="min-h-screen flex flex-col md:flex-row">
+          <SideMenuMobile />
 
-        <div className="flex w-full">
-          <SideMenuDesktop />
+          <div className="flex w-full">
+            <SideMenuDesktop />
 
-          <CustomScrollbar className="lg:mr-32">
-            {/* SUBCLASS TIAP HALAMAN */}
-            {data && (
-              <SubClassCard
-                judul={data.name}
-                textbook={data.description}
-                video={data.videoUrl}
-              />
-            )}
+            <CustomScrollbar className="lg:mr-32">
+              {/* SUBCLASS TIAP HALAMAN */}
+              {data && (
+                <SubClassCard
+                  judul={data.name}
+                  textbook={data.description}
+                  video={data.videoUrl}
+                />
+              )}
 
-            {/* BUTTON */}
-            <SubClassNextPage slug={slug} />
-          </CustomScrollbar>
-        </div>
-      </main>
-    </Layout>
+              {/* BUTTON */}
+              <SubClassNextPage slug={slug} />
+            </CustomScrollbar>
+          </div>
+        </main>
+      </Layout>
+    </ProtectedRoute>
   );
 }

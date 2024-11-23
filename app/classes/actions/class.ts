@@ -11,6 +11,7 @@ export const fetchClassData = async (): Promise<Class[]> => {
 
     const response = await fetch(`${apiBaseUrl}api/class`, {
       method: "GET",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,6 +44,7 @@ export const fetchClassById = async (id: number): Promise<Class> => {
 
     const response = await fetch(`${apiBaseUrl}api/class/${id}`, {
       method: "GET",
+
       headers: {
         "Content-Type": "application/json",
       },

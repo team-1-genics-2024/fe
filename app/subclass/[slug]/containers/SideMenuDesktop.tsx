@@ -55,7 +55,7 @@ export default function SideMenuDesktop() {
         <SidebarMenu
           menuOpen={sideMenuOpen}
           onClick={() => scrollToSection("text-book")}
-          title="Text Boook"
+          title="Text Book"
           active={sideMenu[1]}
         >
           <TextBookIcon

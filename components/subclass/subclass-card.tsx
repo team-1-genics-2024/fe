@@ -1,12 +1,7 @@
 import dynamic from "next/dynamic";
+import { SubClassCardProps } from "@/types/subclass";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
-
-export type SubClassCardProps = {
-  judul?: string;
-  video?: string;
-  textbook?: string;
-};
 
 export default function SubClassCard({
   judul,
@@ -21,6 +16,7 @@ export default function SubClassCard({
     try {
       const response = await fetch(`${baseApiUrl}api/topic/1`, {
         method: "POST",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -1,7 +1,10 @@
+"use client";
+import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
+
 export default function SubClassPage() {
   return (
     <main>
-      <h1>Sub Class Page</h1>
+      <ErrorNoSubClassFound />
     </main>
   );
 }

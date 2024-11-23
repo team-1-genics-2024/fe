@@ -3,6 +3,8 @@ import { useDisclosure } from "@nextui-org/react";
 import React from "react";
 import Modal from "@/components/ui/modal";
 import { ModalReturnType, PaymentPost } from "@/types/payment";
+import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 
 export default function AlertModal({
   children,
@@ -18,14 +20,10 @@ export default function AlertModal({
 
   // PAYMENT HANDLE
   const grossAmount = Number(price);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(grossAmount);
 
   async function postPayment(grossAmount: number) {
     const token = localStorage.getItem("accessToken");
@@ -55,6 +53,7 @@ export default function AlertModal({
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error Response:", errorData);
+        toast.error(`Error: ${errorData.errorMessage || "An error occurred"}`);
         return { success: false, data: errorData };
       }
 
@@ -64,6 +63,7 @@ export default function AlertModal({
       return { success: true, data: responseData.data };
     } catch (error) {
       console.error("Network Error:", error);
+      toast.error("Network error. Please try again.");
       return { success: false, data: error };
     }
   }
@@ -72,56 +72,65 @@ export default function AlertModal({
     const result = await postPayment(grossAmount);
     if (result.success) {
       console.log("Payment posted successfully:", result.data);
-
       const urlLink = result.data;
       if (urlLink) {
         window.location.href = urlLink;
       } else {
         console.error("URL link not found in response data:", result.data);
-        alert("Failed to retrieve URL link. Please try again.");
+        toast.error("Failed to retrieve URL link. Please try again.");
       }
     } else {
       console.error("Failed to post payment:", result.data);
-      alert("Failed to post payment. Please try again.");
     }
   }
 
   return (
     <>
       {children(modalReturn)}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="opaque">
-        <Modal.Header
-          className="border-1.5 bg-warning-main p-3 sm:p-4"
-          onClose={onClose}
-          buttonCrossClassName="relative mr-0 mt-0 sm:mr-0 sm:mt-0 "
-        >
-          <div className="flex gap-1.5">
-            <p className="flex items-center ml-4 gap-2 text-lg md:text-xl">
-              Order Confirmed
+      {isOpen && <div className="fixed inset-0 bg-black opacity-60 z-10" />}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        backdrop="opaque"
+        className="max-w-lg md:max-w-2xl mx-auto"
+      >
+        <div className="border-1.5 bg-white p-3 sm:p-4 z-20 text-center justify-center">
+          {" "}
+          <div className="flex justify-center mb-6">
+            <p className="flex text-2xl font-semibold text-center items-center gap-2 md:text-xl">
+              Order Confirm
             </p>
           </div>
-        </Modal.Header>
+        </div>
 
-        <Modal.Body className="px-7 py-4 sm:p-4">
-          <p className="text-sm sm:text-base/6">
-            Are you sure you want to buy this course for{" "}
-            {formatCurrency(grossAmount)}?
+        <div className="px-7 py-8 sm:p-4 bg-white z-20 text-center">
+          <p className="text-md sm:text-base/6">
+            Are you sure want to buy this course for{" "}
+            <span className="font-bold text-[#3498DB]">{formattedPrice}?</span>
           </p>
-        </Modal.Body>
+        </div>
 
-        <Modal.Footer className="px-7 py-4 sm:p-4">
-          <div className="flex flex-wrap-reverse justify-center gap-3 sm:gap-7 ">
-            <button
+        <div className="p-4 sm:p-4 bg-white z-20 flex justify-center">
+          <div className="flex flex-wrap-reverse justify-center gap-3 sm:gap-5">
+            <Button
               className={`
-                bg-[#3498DB] text-[14px] flex items-center justify-center text-white hover:bg-blue-300 px-4 py-2 rounded-full`}
-              onClick={() => {
-                handleBuy();
-              }}
+            bg-[#3498DB] text-[14px] flex items-center justify-center text-white 
+            hover:bg-blue-300 px-4 rounded-full 
+hover:bg-gray-100/50 hover:text-gray-200 outline`}
+              onClick={handleBuy}
             >
               Continue
-            </button>
+            </Button>
+            <Button
+              className={`
+            bg-white text-[14px] flex py-2 items-center justify-center text-[#3498DB] 
+            hover:text-gray-200 hover:bg-gray-100/50 outline rounded-full`}
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
           </div>
-        </Modal.Footer>
+        </div>
       </Modal>
     </>
   );

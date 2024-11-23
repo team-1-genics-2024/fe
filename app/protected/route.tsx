@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredToken, refreshUserToken } from "@/lib/authentication/auth";
-
 import { WithFullPageLoadingScreen } from "@/components/layout/loading/loading-screen";
 import { cleanProtectedPage } from "@/components/hooks/useAuth";
 
@@ -51,7 +50,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
           cleanProtectedPage();
           setIsAuthenticated(false);
           setIsLoading(false);
-          await router.push("/");
+          router.push("/");
         }
       }
 

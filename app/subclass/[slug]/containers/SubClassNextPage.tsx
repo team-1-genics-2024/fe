@@ -22,6 +22,7 @@ export default function SubClassNextPage({ slug }: { slug: number }) {
         `${baseApiUrl}api/topic/subtopic/${nextIndex}`,
         {
           method: "GET",
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,
           },

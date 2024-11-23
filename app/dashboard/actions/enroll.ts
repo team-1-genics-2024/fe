@@ -16,6 +16,7 @@ export const fetchEnrollData = async ({
       `${apiBaseUrl}api/enroll/search?keyword=${searchEnroll}`,
       {
         method: "GET",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("accessToken"),

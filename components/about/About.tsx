@@ -10,7 +10,7 @@ const About = () => {
     <Layout withNavbar withFooter>
       <section className="w-full overflow-x-visible">
         <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full overflow-x-visible">
-          <div className="absolute -left-10 top-[80%]">
+          <div className="absolute -left-10 top-[80%] hidden lg:block">
             <Image
               src="/image/homepage/leftstar.png"
               alt="Left Star"
@@ -19,7 +19,7 @@ const About = () => {
             />
           </div>
 
-          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%]">
+          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%] hidden lg:block ">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
@@ -28,7 +28,7 @@ const About = () => {
             />
           </div>
 
-          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%]">
+          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%] hidden lg:block">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"

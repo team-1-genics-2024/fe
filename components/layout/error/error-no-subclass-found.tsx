@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function ErrorNoSubClassFound() {
   return (
     <motion.div
-      className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#3498db]/5"
+      className="min-h-screen flex flex-col items-center justify-center p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -16,7 +16,7 @@ export default function ErrorNoSubClassFound() {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <h1 className="text-2xl font-bold text-white mb-4">
-          You're not enrolled in this class
+          Unexpected error occured
         </h1>
         <motion.button
           onClick={() => window.history.back()}

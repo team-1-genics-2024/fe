@@ -10,6 +10,7 @@ export const fetchCertificate = async (): Promise<CertificateDataResponse> => {
 
     const response = await fetch(`${apiBaseUrl}api/certificate`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + (localStorage.getItem("accessToken") || ""),

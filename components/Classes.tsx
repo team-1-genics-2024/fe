@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { fetchClassById } from "../app/classes/actions/class";
@@ -12,6 +12,7 @@ import Layout from "./layout/Layout";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
 import ErrorNoClassFound from "./layout/error/error-no-class-found.tsx";
 import { Class } from "@/types/class";
+import { Button } from "@nextui-org/react";
 
 export default function ClassDetail() {
   const params = useParams();
@@ -23,13 +24,8 @@ export default function ClassDetail() {
   const router = useRouter();
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-  const handleVisitTopics = () => {
-    if (classData) {
-      router.push(`/topics/${classData.id}`);
-    }
-  };
 
   const handleRating = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -64,6 +60,7 @@ export default function ClassDetail() {
       setIsRatingModalOpen(false);
       showToast(data.message || "Thank you for your honest review", "success");
     } catch (error) {
+      window.location.reload();
       console.error("Error updating rating:", error);
       showToast("An unexpected error occurred while updating rating", "error");
     }
@@ -92,6 +89,106 @@ export default function ClassDetail() {
     loadClassDetail();
   }, [params.id]);
 
+  useEffect(() => {
+    const checkEnrollmentStatus = async () => {
+      if (!classData) return;
+
+      let accessToken: any = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        try {
+          const refreshResponse = await fetch(`${baseApiUrl}api/auth/refresh`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!refreshResponse.ok) {
+            const errorData = await refreshResponse.json();
+            console.error("Error refreshing token:", errorData);
+            throw new Error(errorData.errorMessage || "Error refreshing token");
+          }
+
+          const refreshData = await refreshResponse.json();
+          accessToken = refreshData.data.accessToken; // Ambil token baru dari respon
+          localStorage.setItem("accessToken", accessToken); // Simpan token baru ke localStorage
+        } catch (error) {
+          console.error("Error refreshing token:", error);
+          return; // Keluar jika gagal mendapatkan token
+        }
+      }
+
+      // Lanjutkan untuk memeriksa status pendaftaran
+      try {
+        const response = await fetch(
+          `${baseApiUrl}api/enroll/${classData.id}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error(errorData);
+          throw new Error(
+            errorData.errorMessage || "Error fetching enrollment status"
+          );
+        }
+
+        const data = await response.json();
+        setIsEnrolled(data.data.isEnrolled);
+        console.log("Enrollment Status Data:", data);
+      } catch (error) {
+        console.error("Error checking enrollment status:", error);
+      }
+    };
+
+    checkEnrollmentStatus();
+  }, [classData]);
+
+  const handleEnroll = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      showToast("You need to log in to enroll in this class", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseApiUrl}api/enroll/${classData?.id}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showToast(data.errorMessage || "Error enrolling in class", "error");
+        return;
+      }
+
+      showToast(
+        data.message || "Successfully enrolled in the class!",
+        "success"
+      );
+      setIsEnrolled(true);
+    } catch (error) {
+      console.error("Error enrolling in class:", error);
+      showToast("An unexpected error occurred while enrolling", "error");
+    }
+  };
+
   if (isLoading) {
     return <LoadingUnprotectedRoute />;
   }
@@ -107,8 +204,8 @@ export default function ClassDetail() {
 
   return (
     <Layout withNavbar withFooter>
-      <div className="min-h-screen py-8 px-4 mt-20 sm:px-6 lg:px-8">
-        <div className="absolute left-0 top-[11%] lg:top-[20%] md:top-[7%] -z-20">
+      <div className="min-h-screen py-8 px-4 mt-20 sm:px-6 lg:px-8 bg-gradient-to-br">
+        <div className="absolute left-0 top-[11%] lg:top-[20%] md:top-[7%] -z-20 hidden md:hidden lg:block">
           <Image
             src="/image/homepage/lowerrightstar.png"
             alt="Left Star"
@@ -117,7 +214,7 @@ export default function ClassDetail() {
           />
         </div>
 
-        <div className="absolute right-0 top-[103%] lg:top-[80%] md:top-[95%] xl:top-[80%] -z-20">
+        <div className="absolute right-0 top-[103%] lg:top-[80%] md:top-[95%] xl:top-[80%] -z-20 hidden md:hidden lg:block">
           <Image
             src="/image/homepage/upperrightstar.png"
             alt="Right Star"
@@ -145,7 +242,7 @@ export default function ClassDetail() {
               priority={true}
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-[#3498DB]/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#3498DB]/30 to-[#3498DB]/10" />
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -243,12 +340,21 @@ export default function ClassDetail() {
             </div>
 
             <div className="mt-8 flex justify-center">
-              <button
-                className="bg-[#3498DB] text-white px-8 py-3 rounded-full hover:bg-[#2980b9] transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5"
-                onClick={handleVisitTopics}
-              >
-                Learn More
-              </button>
+              <div>
+                <button
+                  className={`bg-[#3498DB] text-white px-8 py-3 rounded-full 
+                  ${isEnrolled ? "bg-[#3498DB]" : "bg-[#3498DB]"} 
+                  transition-all duration-300 hover:shadow-lg transform 
+                  hover:-translate-y-0.5`}
+                  onClick={
+                    isEnrolled
+                      ? () => router.push(`/topics/${classData.id}`)
+                      : handleEnroll
+                  }
+                >
+                  {isEnrolled ? "Learn Now" : "Enroll"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -258,34 +364,35 @@ export default function ClassDetail() {
             isRatingModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md flex flex-col h-[300px]">
+          <div className="bg-white rounded-2xl shadow-lg p-4 w-full max-w-md flex flex-col h-[300px]">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-16">
-              Rate this class
+              How satisfied you are with this class
             </h2>
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-8">
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
                   key={star}
                   className={`text-[#3498DB] mr-2 cursor-pointer ${
                     star <= rating ? "fill-current" : "text-gray-300"
                   }`}
+                  style={{ fontSize: "2rem" }}
                   onClick={() => setRating(star)}
                 />
               ))}
             </div>
-            <div className="flex justify-end mt-auto">
-              <button
-                className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-[#2980b9] transition-colors duration-300 mr-2 shadow-md"
+            <div className="flex justify-center mt-6 gap-2">
+              <Button
+                className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-gray-100/50 hover:text-gray-200 transition-colors duration-300 mr-2 outline"
                 onClick={handleRating}
               >
                 Save
-              </button>
-              <button
-                className="text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-full px-6 py-2 transition-colors duration-300 shadow-md"
+              </Button>
+              <Button
+                className="rounded-full text-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 outline"
                 onClick={() => setIsRatingModalOpen(false)}
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </div>

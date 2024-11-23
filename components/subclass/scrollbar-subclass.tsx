@@ -1,9 +1,5 @@
 import React from "react";
-
-type CustomScrollbarProps = {
-  children: React.ReactNode;
-  className?: string;
-};
+import { CustomScrollbarProps } from "@/types/scroll-bar";
 
 const CustomScrollbar: React.FC<CustomScrollbarProps> = ({
   children,

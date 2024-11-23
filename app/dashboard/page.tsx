@@ -90,7 +90,7 @@ export default function Dashboard() {
             />
           </div>
         </div>
-        <div className="md:hidden block bg-[#EBF5FB]   pt-5  w-[70px] "></div>
+        <div className="md:hidden block bg-[#EBF5FB] pt-5 w-[70px] "></div>
 
         <div className="col-span-10 md:col-span-9">
           {sideMenu[0] && (

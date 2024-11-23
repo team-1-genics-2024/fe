@@ -10,8 +10,8 @@ export default function PaymentPage() {
           <Image
             src="/image/payment/star-right.png"
             alt="Right Star"
-            width={70}
-            height={70}
+            width={40}
+            height={40}
           />
         </div>
         <div className="absolute bottom-4 left-10 hidden md:block">
@@ -22,7 +22,7 @@ export default function PaymentPage() {
             height={70}
           />
         </div>
-        <div className="absolute bottom-20 left-32 hidden md:block">
+        <div className="absolute bottom-[15%] left-32 hidden md:block lg:hidden -z-50">
           <Image
             src="/image/payment/star-left2.png"
             alt="Left2 Star"
