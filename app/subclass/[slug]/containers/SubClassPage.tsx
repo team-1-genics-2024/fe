@@ -68,10 +68,12 @@ export default function SubClass({ slug }: { slug: number }) {
         credentials: "include",
       });
 
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Subclass Error Response:", errorData);
         setError(errorData?.message || "Failed to fetch subclass data.");
+        router.push("/class");
         return;
       }
 
