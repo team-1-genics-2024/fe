@@ -113,16 +113,41 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isEnrolled, setIsEnrolled] = useState(true);
   const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
   const [isPending] = useState(false);
-
   const [signupDialogOpen, setSignupDialogOpen] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handlePaymentClick = () => {
     router.push("/payment");
   };
+
+  useEffect(() => {
+    const checkEnrollment = async () => {
+      try {
+        const response = await fetch(`${baseApiUrl}api/enroll`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setIsEnrolled(data.isEnrolled);
+      } catch (error) {
+        console.error("Error checking enrollment:", error);
+      }
+    };
+
+    checkEnrollment();
+  }, []);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -221,17 +246,22 @@ export default function Home() {
                   onOpenChange={setSignupDialogOpen}
                 >
                   <div className="flex justify-between w-full max-w-md mx-auto mb-6">
-                    <DialogTrigger asChild>
-                      <button className="bg-[#3498DB] text-white px-4 py-2 rounded-full w-full mr-2">
-                        Gabung sekarang
-                      </button>
-                    </DialogTrigger>
-                    <button
-                      onClick={handlePaymentClick}
-                      className="border border-[#3498DB] text-[#3498DB] px-4 py-2 rounded-full w-full ml-2"
-                    >
-                      Lihat harga
-                    </button>
+                    {isEnrolled && (
+                      <>
+                        {" "}
+                        <DialogTrigger asChild>
+                          <button className="bg-[#3498DB] text-white px-4 py-2 rounded-full w-full mr-2">
+                            Gabung sekarang
+                          </button>
+                        </DialogTrigger>
+                        <button
+                          onClick={handlePaymentClick}
+                          className="border border-[#3498DB] text-[#3498DB] px-4 py-2 rounded-full w-full ml-2"
+                        >
+                          Lihat harga
+                        </button>
+                      </>
+                    )}
 
                     <VisuallyHidden>
                       <DialogTitle>Hey</DialogTitle>

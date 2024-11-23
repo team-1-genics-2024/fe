@@ -17,8 +17,8 @@ export const AnimatedTestimonials = () => {
 
   return (
     <section className="py-20 bg-gradient-to-b bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-4xl md:text-4xl xl:text-4xl font-bold text-center mb-16 text-gray-800 ">
+      <div className="max-w-6xl mx-auto px-4">
+        <h2 className="text-4xl md:text-4xl xl:text-4xl font-bold text-center mb-4 text-gray-800">
           What people say about
           <Image
             src="/image/logo/logo.png"
@@ -53,7 +53,7 @@ export const AnimatedTestimonials = () => {
                   }`}
                 >
                   <CardItem translateZ="100" className="w-full h-full">
-                    <div className="w-full max-w-4xl mx-auto p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl  hover:cursor-pointer hover:shadow-2xl hover:shadow-[#3498DB]/[0.8] hover:rounded-2xl">
+                    <div className="w-full max-w-2xl mx-auto p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl hover:cursor-pointer hover:shadow-2xl hover:shadow-[#3498DB]/[0.8] hover:rounded-2xl">
                       <div className="relative w-32 h-32 mx-auto mb-8">
                         {testimonial.image ? (
                           <Image
@@ -72,7 +72,7 @@ export const AnimatedTestimonials = () => {
 
                       <CardItem translateZ="50" className="text-center">
                         <blockquote className="text-2xl text-gray-700 font-medium mb-8 leading-relaxed">
-                          &apos;{testimonial.quote}&apos;
+                          &apos;&apos;{testimonial.quote}&apos;&apos;
                         </blockquote>
                       </CardItem>
 

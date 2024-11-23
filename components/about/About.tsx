@@ -86,7 +86,7 @@ const About = () => {
               </Link>
             </div>
 
-            <p className="text-gray-700 md:text-lg leading-relaxed mx-auto text-2xl z-[999]">
+            <p className="text-gray-700 md:text-lg leading-relaxed mx-auto text-2xl z-[999] p-4">
               Platform kursus online kami menawarkan kemudahan dan kepraktisan
               dalam belajar. Anda bisa belajar kapan saja dan di mana saja.
               Antarmuka yang ramah pengguna dan fitur interaktif kami dirancang

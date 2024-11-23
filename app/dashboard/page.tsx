@@ -12,6 +12,7 @@ import { CertificateDataResponse } from "@/types/certificate";
 import MyCourse from "@/components/dasboard/MyCourse";
 import Certificate from "@/components/dasboard/Certificate";
 import ProtectedRoute from "../protected/route";
+import { NoCourseFound } from "@/components/layout/error/error-no-course-found";
 
 export default function Dashboard() {
   const [enroll, setEnroll] = useState<Enroll[]>([]);
@@ -95,19 +96,23 @@ export default function Dashboard() {
         <div className="col-span-10 md:col-span-9">
           {sideMenu[0] && (
             <MyCourse>
-              {enroll?.map((data) => (
-                <CardCourse
-                  key={data.id}
-                  id={data.id}
-                  rating={Math.round(data.rating * 100) / 100}
-                  name={data.name}
-                  description={data.description}
-                  imageUrl={"/" + data.imageUrl}
-                  totalUserProgress={data.totalUserProgress}
-                  totalSubtopics={data.totalSubtopics}
-                  linkButton={`/classes/${data.id}`}
-                />
-              ))}
+              {!enroll || enroll.length === 0 ? (
+                <NoCourseFound />
+              ) : (
+                enroll.map((data) => (
+                  <CardCourse
+                    key={data.id}
+                    id={data.id}
+                    rating={Math.round(data.rating * 100) / 100}
+                    name={data.name}
+                    description={data.description}
+                    imageUrl={"/" + data.imageUrl}
+                    totalUserProgress={data.totalUserProgress}
+                    totalSubtopics={data.totalSubtopics}
+                    linkButton={`/classes/${data.id}`}
+                  />
+                ))
+              )}
             </MyCourse>
           )}
           {sideMenu[1] && (

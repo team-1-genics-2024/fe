@@ -268,7 +268,7 @@ export default function Navigation() {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="rounded-full text-[#3498db] border border-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 "
+                    className="rounded-full text-[#3498db] border border-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 px-6 py-2"
                     size="sm"
                   >
                     Log in
@@ -448,7 +448,7 @@ export default function Navigation() {
                     <DialogTrigger asChild>
                       <Button
                         variant="outline"
-                        className="rounded-full text-white bg-[#3498db] hover:bg-gray-100/50 hover:text-gray-200 "
+                        className="rounded-full text-white bg-[#3498db] hover:bg-gray-100/50 hover:text-gray-200 px-6 py-2"
                         size="sm"
                       >
                         Sign up

@@ -94,28 +94,28 @@ export default function AlertModal({
         backdrop="opaque"
         className="max-w-lg md:max-w-2xl mx-auto"
       >
-        <div className="border-1.5 bg-white p-3 sm:p-4 z-20 text-center justify-center">
+        <div className="border-1.5 mt-4 bg-white p-3 sm:p-4 z-20 text-center justify-center">
           {" "}
           <div className="flex justify-center mb-6">
-            <p className="flex text-2xl font-semibold text-center items-center gap-2 md:text-xl">
-              Order Confirm
+            <p className="flex text-3xl font-semibold text-center items-center gap-2">
+              Confirm Payment
             </p>
           </div>
         </div>
 
-        <div className="px-7 py-8 sm:p-4 bg-white z-20 text-center">
-          <p className="text-md sm:text-base/6">
+        <div className="px-7 py-8 bg-white z-20 text-center mb-4">
+          <p className="text-md">
             Are you sure want to buy this course for{" "}
             <span className="font-bold text-[#3498DB]">{formattedPrice}?</span>
           </p>
         </div>
 
-        <div className="p-4 sm:p-4 bg-white z-20 flex justify-center">
+        <div className="p-4 sm:p-4 bg-white z-20 flex justify-center mb-4">
           <div className="flex flex-wrap-reverse justify-center gap-3 sm:gap-5">
             <Button
               className={`
             bg-[#3498DB] text-[14px] flex items-center justify-center text-white 
-            hover:bg-blue-300 px-4 rounded-full 
+            hover:bg-blue-300 px-6 py-2 rounded-full 
 hover:bg-gray-100/50 hover:text-gray-200 outline`}
               onClick={handleBuy}
             >
@@ -123,7 +123,7 @@ hover:bg-gray-100/50 hover:text-gray-200 outline`}
             </Button>
             <Button
               className={`
-            bg-white text-[14px] flex py-2 items-center justify-center text-[#3498DB] 
+            bg-white text-[14px] flex px-6 py-2 items-center justify-center text-[#3498DB] 
             hover:text-gray-200 hover:bg-gray-100/50 outline rounded-full`}
               onClick={onClose}
             >

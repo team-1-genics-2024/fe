@@ -26,15 +26,10 @@ export default function ClassDetail() {
   const [rating, setRating] = useState(0);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleRating = async () => {
     const accessToken = localStorage.getItem("accessToken");
-
-    if (!accessToken) {
-      showToast("You need to log in to submit a rating", "error");
-      return;
-    }
-
     try {
       const response = await fetch(
         `${baseApiUrl}api/class/${classData?.id}/rating`,
@@ -89,38 +84,12 @@ export default function ClassDetail() {
     loadClassDetail();
   }, [params.id]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const checkEnrollmentStatus = async () => {
       if (!classData) return;
 
-      let accessToken: any = localStorage.getItem("accessToken");
-
-      if (!accessToken) {
-        try {
-          const refreshResponse = await fetch(`${baseApiUrl}api/auth/refresh`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!refreshResponse.ok) {
-            const errorData = await refreshResponse.json();
-            console.error("Error refreshing token:", errorData);
-            throw new Error(errorData.errorMessage || "Error refreshing token");
-          }
-
-          const refreshData = await refreshResponse.json();
-          accessToken = refreshData.data.accessToken;
-          localStorage.setItem("accessToken", accessToken);
-        } catch (error) {
-          console.error("Error refreshing token:", error);
-          return;
-        }
-      }
-
       try {
+        const accessToken = localStorage.getItem("accessToken");
         const response = await fetch(
           `${baseApiUrl}api/enroll/${classData.id}`,
           {
@@ -142,6 +111,7 @@ export default function ClassDetail() {
         }
 
         const data = await response.json();
+
         setIsEnrolled(data.data.isEnrolled);
         console.log("Enrollment Status Data:", data);
       } catch (error) {
@@ -149,17 +119,22 @@ export default function ClassDetail() {
       }
     };
 
-    checkEnrollmentStatus();
+    if (classData) {
+      checkEnrollmentStatus();
+    }
   }, [classData]);
+
+  const handleConfirmEnroll = () => {
+    handleEnroll();
+    setShowModal(false); // Tutup modal setelah konfirmasi
+  };
+
+  const handleCancelEnroll = () => {
+    setShowModal(false); // Tutup modal tanpa melakukan pendaftaran
+  };
 
   const handleEnroll = async () => {
     const accessToken = localStorage.getItem("accessToken");
-
-    if (!accessToken) {
-      showToast("You need to log in to enroll in this class", "error");
-      return;
-    }
-
     try {
       const response = await fetch(`${baseApiUrl}api/enroll/${classData?.id}`, {
         method: "POST",
@@ -348,11 +323,40 @@ export default function ClassDetail() {
                   onClick={
                     isEnrolled
                       ? () => router.push(`/topics/${classData.id}`)
-                      : handleEnroll
+                      : () => setShowModal(true)
                   }
                 >
                   {isEnrolled ? "Learn Now" : "Enroll"}
                 </button>
+
+                {showModal && (
+                  <div
+                    className={`fixed inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300`}
+                  >
+                    <div className="bg-white rounded-2xl shadow-lg p-4 w-full max-w-md flex flex-col">
+                      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
+                        Confirm Enrollment
+                      </h2>
+                      <p className="text-center text-gray-600 mb-4 mt-4">
+                        Are you sure you want to enroll in this class?
+                      </p>
+                      <div className="flex justify-center mt-6 gap-2">
+                        <button
+                          className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-gray-100/50 hover:text-gray-200 transition-colors duration-300 mr-2 outline"
+                          onClick={handleEnroll}
+                        >
+                          Continue
+                        </button>
+                        <button
+                          className="rounded-full text-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 outline px-6 py-2"
+                          onClick={handleCancelEnroll}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
