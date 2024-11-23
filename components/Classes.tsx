@@ -112,15 +112,14 @@ export default function ClassDetail() {
           }
 
           const refreshData = await refreshResponse.json();
-          accessToken = refreshData.data.accessToken; // Ambil token baru dari respon
-          localStorage.setItem("accessToken", accessToken); // Simpan token baru ke localStorage
+          accessToken = refreshData.data.accessToken;
+          localStorage.setItem("accessToken", accessToken);
         } catch (error) {
           console.error("Error refreshing token:", error);
-          return; // Keluar jika gagal mendapatkan token
+          return;
         }
       }
 
-      // Lanjutkan untuk memeriksa status pendaftaran
       try {
         const response = await fetch(
           `${baseApiUrl}api/enroll/${classData.id}`,
