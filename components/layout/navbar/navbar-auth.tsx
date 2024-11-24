@@ -14,13 +14,6 @@ import { Input } from "@/components/ui/input";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Description } from "@radix-ui/react-dialog";
 import { z } from "zod";
-import { LayoutGrid } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/components/hooks/useAuth";
 import { showToast } from "@/lib/custom-toast/toast";
 import SubmitButtonLogin from "@/components/layout/button/button-login";
@@ -230,39 +223,7 @@ export default function Navigation() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-8">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="p-2 text-gray-600 hover:text-gray-900"
-                  aria-label="Apps"
-                >
-                  <LayoutGrid className="w-5 h-5 block sm:hidden" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-56 lg:hidden sm:block "
-              >
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/"
-                    className="flex items-center w-full cursor-pointer"
-                  >
-                    Home
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/about"
-                    className="flex items-center w-full cursor-pointer"
-                  >
-                    About us
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
+          <div className="flex items-center gap-4">
             <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
               <div className="flex items-center gap-2">
                 <DialogTrigger asChild>

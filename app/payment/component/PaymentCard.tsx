@@ -10,15 +10,17 @@ export default function PaymentCard({ header, price }: PaymentProps) {
   }).format(Number(price));
 
   return (
-    <section className="p-4 border-2 rounded-2xl flex flex-col bg-gradient-to-b from-[#3498db]/10 to-[#3498db]/5">
-      <p className="text-[22px]">{header}</p>
-      <p className="text-[#454B4F] text-[22px]">{formattedPrice}</p>
-      <div className="flex justify-end items-center">
+    <section className="p-8 border border-gray-300 rounded-xl flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-300 bg-gradient-to-b from-[#3498db]/5 to-[#3498db]/10">
+      <p className="text-xl font-semibold text-gray-800 mb-4">{header}</p>
+      <p className="text-gray-600 text-lg mb-8">{formattedPrice}</p>
+      <div className="flex justify-end items-center mt-4">
         <AlertModal price={price}>
           {({ openModal }) => (
             <button
               className="
-                bg-[#3498DB] mt-6 text-[14px] w-[30%] flex items-center justify-center text-white hover:bg-blue-300 px-4 py-2 rounded-full"
+            bg-[#3498DB] text-white text-sm w-full md:w-[40%] flex items-center justify-center rounded-full 
+ hover:bg-gray-100/50 hover:text-gray-200 outline transition-colors duration-300 px-4 py-2 border border-transparent
+            shadow-sm hover:shadow-md"
               onClick={() => {
                 openModal();
               }}

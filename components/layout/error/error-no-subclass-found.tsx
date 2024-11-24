@@ -15,8 +15,8 @@ export default function ErrorNoSubClassFound() {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h1 className="text-2xl font-bold text-white mb-4">
-          Unexpected error occured
+        <h1 className="text-2xl font-bold text-white mb-8">
+          Oops, something went wrong
         </h1>
         <motion.button
           onClick={() => window.history.back()}

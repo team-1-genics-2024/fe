@@ -19,15 +19,18 @@ export default function SubClass({ slug }: { slug: number }) {
 
   const [data, setData] = useState<SubClassData | null>(null);
   const [member, setMember] = useState<MembershipData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
 
-  // Membership Data
+  // === GET MEMBERSHIP DATA ===
   const fetchMember = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+
       const response = await fetch(`${baseApiUrl}api/membership/remaining`, {
         method: "GET",
         headers: {
@@ -51,9 +54,12 @@ export default function SubClass({ slug }: { slug: number }) {
     }
   };
 
-  // Sub Topic Data
+  // === GET SUB TOPIC DATA ===
   const fetchSubClassData = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+
       const response = await fetch(`${baseApiUrl}api/topic/subtopic/${slug}`, {
         method: "GET",
         headers: {
@@ -70,14 +76,16 @@ export default function SubClass({ slug }: { slug: number }) {
       }
 
       const responseData = await response.json();
+      console.log("Subclass Data:", responseData.data);
       setData(responseData.data);
     } catch (error) {
       console.error("Subclass Network Error:", error);
       setError("A network error occurred while fetching subclass data.");
+      console.error(error instanceof Error ? error.message : "Unknown error");
     }
   };
 
-  // Handle membership expiration
+  // === HANDEL MEMBERSHIP EXPIRED ===
   useEffect(() => {
     if (member?.remainingDays === 0) {
       setError(
@@ -88,18 +96,18 @@ export default function SubClass({ slug }: { slug: number }) {
   }, [member, router]);
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     const fetchData = async () => {
       await fetchMember();
       await fetchSubClassData();
-      setLoading(false);
+      setIsLoading(false);
     };
 
     fetchData();
   }, [slug]);
 
-  if (loading) {
+  if (isLoading) {
     return <LoadingUnprotectedRoute />;
   }
 
@@ -111,7 +119,7 @@ export default function SubClass({ slug }: { slug: number }) {
     <ProtectedRoute>
       <Layout withNavbar={true} withFooter={false} withPadding={false}>
         <main className="min-h-screen flex flex-col md:flex-row">
-          <SideMenuMobile />
+          <SideMenuMobile topicId={data?.topicId} />
 
           <div className="flex w-full">
             <SideMenuDesktop />
@@ -123,11 +131,13 @@ export default function SubClass({ slug }: { slug: number }) {
                   judul={data.name}
                   textbook={data.description}
                   video={data.videoUrl}
+                  topicId={data.topicId}
+                  subtopicId={data.subtopicId}
                 />
               )}
 
               {/* BUTTON */}
-              <SubClassNextPage slug={slug} />
+              <SubClassNextPage slug={slug} topicId={data?.topicId} />
             </CustomScrollbar>
           </div>
         </main>

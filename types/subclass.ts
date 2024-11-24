@@ -1,9 +1,9 @@
 export interface SubClassData {
   name: string;
-  topicId: string;
   description: string;
-  imageUrl: string;
   videoUrl: string;
+  subtopicId: number;
+  topicId: number;
 }
 
 export interface MembershipData {
@@ -16,4 +16,6 @@ export type SubClassCardProps = {
   judul?: string;
   video?: string;
   textbook?: string;
+  subtopicId: number;
+  topicId: number;
 };

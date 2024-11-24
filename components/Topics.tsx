@@ -23,7 +23,7 @@ export default function TopicsPage() {
   const params = useParams();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const classId = useMemo(() => params.classId, [params]);
   const router = useRouter();

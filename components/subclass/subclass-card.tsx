@@ -7,29 +7,33 @@ export default function SubClassCard({
   judul,
   video,
   textbook,
+  subtopicId,
+  topicId,
 }: SubClassCardProps) {
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
 
-  // Tinggal tambahin apa yg di hit
   const handleVideoEnd = async () => {
     try {
-      const response = await fetch(`${baseApiUrl}api/topic/1`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          message: "Video has ended",
-        }),
-      });
+      const response = await fetch(
+        `${baseApiUrl}api/progress/${topicId}/${subtopicId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            message: "Video has ended",
+          }),
+        }
+      );
       const data = await response.json();
       console.log("API response:", data);
     } catch (error) {
       console.error("Error hitting API:", error);
     }
   };
+
   return (
     <div className="w-fit">
       <section className="px-9 md:px-[50px] lg:px-[90px] w-fit">

@@ -14,7 +14,7 @@ export default function PaymentPage() {
             height={40}
           />
         </div>
-        <div className="absolute bottom-4 left-10 hidden md:block">
+        <div className="absolute bottom-4 left-10 hidden md:block lg:hidden">
           <Image
             src="/image/payment/star-left.png"
             alt="Left Star"
@@ -31,7 +31,7 @@ export default function PaymentPage() {
           />
         </div>
 
-        <p className="md:mt-10 text-[32px] ">Const and Benefits</p>
+        <p className="md:mt-10 text-[32px] ">Costs and Benefits</p>
         <div className="mt-10 grid md:grid-cols-2 gap-4">
           <PaymentCard
             header="1 month subscription (30 Days)"

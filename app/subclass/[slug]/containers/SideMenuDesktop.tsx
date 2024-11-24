@@ -7,13 +7,18 @@ import SidebarMenu from "@/components/subclass/sidebar-menu";
 import { useState } from "react";
 
 export default function SideMenuDesktop() {
-  const [sideMenu] = useState([true, false, false]);
-
+  const [sideMenu, setSideMenu] = useState([true, false, false]);
   const [sideActive, setSideActive] = useState(false);
   const [sideMenuOpen] = useState(false);
 
   const toggleActive = () => {
     setSideActive((sideActive) => !sideActive);
+  };
+
+  const handleMenuClick = (index: number, id: string) => {
+    const updatedMenu = sideMenu.map((_, i) => i === index);
+    setSideMenu(updatedMenu);
+    scrollToSection(id);
   };
 
   const scrollToSection = (id: string) => {
@@ -42,7 +47,7 @@ export default function SideMenuDesktop() {
         </div>
         <SidebarMenu
           menuOpen={sideMenuOpen}
-          onClick={() => scrollToSection("course-video")}
+          onClick={() => handleMenuClick(0, "course-video")}
           title="Course Video"
           active={sideMenu[0]}
         >
@@ -54,7 +59,7 @@ export default function SideMenuDesktop() {
         </SidebarMenu>
         <SidebarMenu
           menuOpen={sideMenuOpen}
-          onClick={() => scrollToSection("text-book")}
+          onClick={() => handleMenuClick(1, "text-book")}
           title="Text Book"
           active={sideMenu[1]}
         >

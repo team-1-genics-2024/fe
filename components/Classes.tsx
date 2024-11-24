@@ -124,13 +124,8 @@ export default function ClassDetail() {
     }
   }, [classData]);
 
-  const handleConfirmEnroll = () => {
-    handleEnroll();
-    setShowModal(false); // Tutup modal setelah konfirmasi
-  };
-
   const handleCancelEnroll = () => {
-    setShowModal(false); // Tutup modal tanpa melakukan pendaftaran
+    setShowModal(false);
   };
 
   const handleEnroll = async () => {
@@ -157,6 +152,7 @@ export default function ClassDetail() {
         "success"
       );
       setIsEnrolled(true);
+      setShowModal(false);
     } catch (error) {
       console.error("Error enrolling in class:", error);
       showToast("An unexpected error occurred while enrolling", "error");

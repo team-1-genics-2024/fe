@@ -8,7 +8,7 @@ export default function Footer() {
     { name: "Environment", url: "/" },
     { name: "Jobs", url: "/" },
     { name: "Privacy Policy", url: "/" },
-    { name: "Contact Us", url: "/" },
+    { name: "Contact Us", url: "https://www.instagram.com/yuttt.sssss/" },
   ];
 
   const courseLinks = [

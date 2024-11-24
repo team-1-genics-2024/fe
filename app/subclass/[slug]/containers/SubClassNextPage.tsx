@@ -1,20 +1,24 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-export default function SubClassNextPage({ slug }: { slug: number }) {
+export default function SubClassNextPage({
+  slug,
+  topicId,
+}: {
+  slug: number;
+  topicId?: number;
+}) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(Number(slug));
-
-  // BUTTON NAVIGATION
   const [isNextDisabled, setIsNextDisabled] = useState(false);
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(false);
 
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
 
+  // === CHECK NEXT DATA ===
   useEffect(() => {
     const checkNextData = async () => {
       const nextIndex = currentIndex + 1;
@@ -39,6 +43,7 @@ export default function SubClassNextPage({ slug }: { slug: number }) {
     checkNextData();
   }, [currentIndex, baseApiUrl, token]);
 
+  // === CHECK PREVIOUS DATA ===
   useEffect(() => {
     const checkPreviousData = async () => {
       const previousIndex = currentIndex - 1;
@@ -51,6 +56,7 @@ export default function SubClassNextPage({ slug }: { slug: number }) {
         `${baseApiUrl}api/topic/subtopic/${previousIndex}`,
         {
           method: "GET",
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -79,22 +85,27 @@ export default function SubClassNextPage({ slug }: { slug: number }) {
     router.push(`/subclass/${newIndex}`);
   };
 
+  const goToTopic = () => {
+    router.push(`/topics/${topicId}`);
+  };
+
   return (
     <section className="mt-4 md:px-[50px] lg:px-[90px] md:mt-24">
       <div className="flex justify-center md:justify-between">
         <div>
-          <Link href="/class">
-            <button className="text-[#3498DB] group hover:text-blue-300 px-4 py-2 flex rounded-full max-md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 items-center mr-2 fill-[#3498DB] group-hover:fill-blue-300"
-                viewBox="0 0 24 24"
-              >
-                <path d="M5.86875 9.75L10.0688 13.95L9 15L3 9L9 3L10.0688 4.05L5.86875 8.25H15V9.75H5.86875Z" />
-              </svg>
-              Kembali ke Class
-            </button>
-          </Link>
+          <button
+            className="text-[#3498DB] group hover:text-blue-300 px-4 py-2 flex rounded-full max-md:hidden"
+            onClick={goToTopic}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 items-center mr-2 fill-[#3498DB] group-hover:fill-blue-300"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5.86875 9.75L10.0688 13.95L9 15L3 9L9 3L10.0688 4.05L5.86875 8.25H15V9.75H5.86875Z" />
+            </svg>
+            Kembali ke Topic
+          </button>
         </div>
         <div className="flex flex-row md:relative max-md:absolute px-9 max-md:bottom-4 max-md:left-0 max-md:w-full">
           <button
