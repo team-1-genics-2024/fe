@@ -111,10 +111,6 @@ export default function SubClass({ slug }: { slug: number }) {
     return <LoadingUnprotectedRoute />;
   }
 
-  if (error) {
-    return <ErrorNoSubClassFound />;
-  }
-
   return (
     <ProtectedRoute>
       <Layout withNavbar={true} withFooter={false} withPadding={false}>

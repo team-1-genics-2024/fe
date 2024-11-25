@@ -49,7 +49,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
           } transition-transform duration-300`}
         >
           <div className="p-4 mt-14 flex flex-col space-y-6 items-start">
-            <div onClick={toggleActive} className="cursor-pointer">
+            <div onClick={toggleActive} className="cursor-pointer ml-1">
               <BurgerIcon className={`fill-[#2F8AC7] hover:fill-[#454B4F]`} />
             </div>
             <CourseVideoIcon
@@ -66,7 +66,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
 
       <div>
         <button
-          className="text-[#3498DB] text-[14px] group hover:text-blue-300 px-4 py-2 flex rounded-full"
+          className="text-[#3498DB] text-[14px] group hover:text-blue-300 px-4 py-2 flex rounded-full right-0"
           onClick={goToTopic}
         >
           <svg

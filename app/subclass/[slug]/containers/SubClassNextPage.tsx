@@ -113,7 +113,7 @@ export default function SubClassNextPage({
             disabled={isPreviousDisabled}
             className={`${
               isPreviousDisabled ? "opacity-50 cursor-not-allowed" : ""
-            } text-[#3498DB] text-[14px] max-md:w-full items-center max-md:justify-center hover:text-blue-300 px-4 py-2 flex border border-black rounded-full`}
+            } text-[#3498DB] text-[14px] max-md:w-full items-center max-md:justify-center  px-4 py-2  hover:text-gray-200 hover:bg-gray-100/50 outline  rounded-full`}
           >
             Materi Sebelumnya
           </button>
@@ -123,7 +123,7 @@ export default function SubClassNextPage({
             disabled={isNextDisabled}
             className={`${
               isNextDisabled ? "opacity-50 cursor-not-allowed" : ""
-            } bg-[#3498DB] text-[14px] max-md:w-full max-md:justify-center ml-4 text-white hover:bg-blue-300 px-4 py-2 rounded-full`}
+            } bg-[#3498DB] text-[14px] max-md:w-full max-md:justify-center ml-4 text-white hover:bg-gray-100/50 hover:text-gray-200 outline px-4 py-2 rounded-full`}
           >
             Materi Selanjutnya
           </button>
