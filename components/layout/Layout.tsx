@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
-import Navigation from "@/components/layout/modalAuth";
-import FooterSection from "@/components/layout/Footer";
-import NavbarAuthenticated from "@/components/layout/navbarAuthenticated";
+import Navigation from "@/components/layout/navbar/navbar-auth";
+import FooterSection from "@/components/layout/footer/Footer";
+import NavbarAuthenticated from "@/components/layout/navbar/navbar-authenticated";
 
 interface LayoutProps {
   children: React.ReactNode;
