@@ -20,7 +20,7 @@ export default function SubClass({ slug }: { slug: number }) {
   const [data, setData] = useState<SubClassData | null>(null);
   const [member, setMember] = useState<MembershipData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");

@@ -9,26 +9,8 @@ const About = () => {
   return (
     <Layout withNavbar withFooter>
       <section className="w-full">
-        <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full">
-          <div className="absolute -left-10 top-[80%] hidden lg:block">
-            <Image
-              src="/image/homepage/leftstar.png"
-              alt="Left Star"
-              width={160}
-              height={160}
-            />
-          </div>
-
-          <div className="absolute right-[-30px] top-[2%] md:top-[5%] lg:top-[1%] hidden lg:block ">
-            <Image
-              src="/image/homepage/rightstar.png"
-              alt="Right Star"
-              width={120}
-              height={120}
-            />
-          </div>
-
-          <div className="absolute right-[-30px] top-[230%] md:top-[230%] lg:top-[200%] hidden lg:block">
+        <div className="relative min-h-[80vh] flex items-center justify-center text-center w-full mb-28">
+          <div className="absolute right-[-15px] md:top-[240%] lg:top-[220%] hidden lg:block md:block">
             <Image
               src="/image/homepage/rightstar.png"
               alt="Right Star"
@@ -36,37 +18,52 @@ const About = () => {
               height={180}
             />
           </div>
-
-          <div className="absolute top-[20%] left-[15%] md:top-[30%] md:left-[20%] lg:top-[4%] xl:left-[25%]">
+          <div className="absolute top-[2%] right-[-15px] lg:top-[2%] hidden md:block lg:block">
+            <Image
+              src="/image/homepage/rightstar.png"
+              alt="Right Star"
+              width={180}
+              height={180}
+            />
+          </div>
+          <div className="absolute left-[-30px] md:top-[100%] lg:top-[90%] hidden md:block lg:block">
+            <Image
+              src="/image/homepage/leftstar.png"
+              alt="Right Star"
+              width={200}
+              height={200}
+            />
+          </div>
+          <div className="absolute top-[25%] left-[10%] md:top-[20%] md:left-[20%] lg:top-[15%] xl:left-[25%]">
             <Image
               src="/image/homepage/upperrightstar.png"
               alt="Upper Left Star"
-              width={80}
-              height={80}
+              width={90}
+              height={90}
+            />
+          </div>
+
+          <div className="absolute right-[2%] top-[60%] md:right-[10%] md:top-[60%] lg:right-[20%] lg:top-[65%]">
+            <Image
+              src="/image/homepage/lowerrightstar.png"
+              alt="Lower Right Star"
+              width={100}
+              height={100}
             />
           </div>
 
           <div className="w-full mx-auto px-4 relative">
             <div className="flex flex-col items-center relative w-full">
               <div className="text-center my-4 md:my-6 lg:my-8 z-10">
-                <h1 className="text-4xl text-gray-700 sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+                <h1 className="text-5xl text-gray-700 sm:text-4xl md:text-6xl lg:text-6xl font-bold">
                   About Us
                 </h1>
-              </div>
-
-              <div className="absolute right-[2%] top-[95%] md:right-[10%] md:top-[90%] lg:right-[20%]">
-                <Image
-                  src="/image/homepage/lowerrightstar.png"
-                  alt="Lower Right Star"
-                  width={120}
-                  height={120}
-                />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="h-[110vh] -mt-20 bg-white flex items-center justify-center z-50 w-full">
+        <div className="h-[140vh] -mt-20 bg-white flex items-center justify-center z-50 w-full">
           <div className="text-center max-w-2xl mx-auto px-2">
             <div className="mb-8 z-[999]">
               <Link

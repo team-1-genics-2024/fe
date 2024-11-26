@@ -39,12 +39,12 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
         {sideActive && (
           <div
             onClick={toggleActive}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
           ></div>
         )}
 
         <div
-          className={`fixed top-0 left-0 w-fit h-full bg-white z-50 shadow-lg transform ${
+          className={`fixed top-0 left-0 w-fit h-full bg-white shadow-lg transform ${
             sideActive ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300`}
         >
