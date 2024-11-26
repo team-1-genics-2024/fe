@@ -8,8 +8,8 @@ import { AnimatedTestimonials } from "./Testimonials";
 const About = () => {
   return (
     <Layout withNavbar withFooter>
-      <section className="w-full overflow-x-visible">
-        <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full overflow-x-visible">
+      <section className="w-full">
+        <div className="relative min-h-[60vh] flex items-center justify-center text-center w-full">
           <div className="absolute -left-10 top-[80%] hidden lg:block">
             <Image
               src="/image/homepage/leftstar.png"
