@@ -133,9 +133,9 @@ export const AnimatedTestimonials = ({
                     y: 0,
                   }}
                   transition={{
-                    duration: 0.2,
+                    duration: 1.5,
                     ease: "easeInOut",
-                    delay: 0.02 * index,
+                    delay: 1.5 * index,
                   }}
                   className="inline-block"
                 >

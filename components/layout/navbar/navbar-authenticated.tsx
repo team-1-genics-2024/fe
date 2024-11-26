@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { userAvatars } from "@/lib/static-data/avatar-data";
 import { useAuth } from "../../hooks/useAuth";
 import NavbarSkeleton from "./skeleton/navbar-skeleton";
-import { showToast } from "@/lib/custom-toast/toast";
 
 export default function NavbarAuthenticated() {
   const router = useRouter();
@@ -130,34 +129,32 @@ export default function NavbarAuthenticated() {
     <nav className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <section className="w-full max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center gap-8">
-          <div className="flex flex-row items-center">
+          <Link href="/" className="flex flex-row items-center z-50">
             <Image
-              src="/image/homepage/icon.png"
+              src="/image/logo/logo.png"
               alt="Left Star"
-              width={20}
-              height={20}
+              width={150}
+              height={150}
             />
-            <span className="text-xl ml-2 font-bold text-[#3498DB]">
-              SinauPo&apos;o
-            </span>
-          </div>
+          </Link>
+
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">
               <Link
                 href="/"
-                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+                className="font-medium text-md text-gray-600 hover:text-gray-900"
               >
                 Home
               </Link>
               <Link
                 href="/dashboard"
-                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+                className="font-medium text-md text-gray-600 hover:text-gray-900"
               >
                 Dashboard
               </Link>
               <Link
                 href="/about"
-                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+                className="font-medium text-md text-gray-600 hover:text-gray-900"
               >
                 About us
               </Link>
@@ -172,7 +169,7 @@ export default function NavbarAuthenticated() {
                     className="p-2 text-gray-600 hover:text-gray-900"
                     aria-label="Apps"
                   >
-                    <LayoutGrid className="w-5 h-5 block sm:hidden" />
+                    <LayoutGrid className="w-6 h-6 block sm:hidden" />
                   </button>
                 )}
               </DropdownMenuTrigger>

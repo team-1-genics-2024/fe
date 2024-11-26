@@ -22,15 +22,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8  mt-8">
           <div className="flex items-center md:items-start">
             <Image
-              src="/image/homepage/icon_white.png"
-              width={32}
-              height={32}
+              src="/image/logo/logo-white.png"
+              width={200}
+              height={200}
               alt="SinauPo'o Logo"
               className="mr-2 font-bold"
             />
-            <span className="text-2xl text-[28px] font-bold ">
-              SinauPo&apos;o
-            </span>
           </div>
 
           <div>

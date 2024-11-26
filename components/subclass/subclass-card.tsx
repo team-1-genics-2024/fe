@@ -35,7 +35,7 @@ export default function SubClassCard({
   };
 
   return (
-    <div className="w-fit">
+    <div className="w-fit min-h-[60vh]">
       <section className="px-9 md:px-[50px] lg:px-[90px] w-fit">
         <h1 className="text-[24px] md:text-[45px]" id="course-video">
           {judul}
@@ -47,7 +47,7 @@ export default function SubClassCard({
               controls
               width="100%"
               height="100%"
-              className="absolute top-0 left-0 w-full h-full"
+              className="absolute top-0 left-0 w-full h-full -z-50"
               onEnded={handleVideoEnd}
             />
           </div>

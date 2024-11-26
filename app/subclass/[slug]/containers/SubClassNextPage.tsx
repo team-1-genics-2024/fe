@@ -90,16 +90,16 @@ export default function SubClassNextPage({
   };
 
   return (
-    <section className="mt-4 md:px-[50px] lg:px-[90px] md:mt-24">
-      <div className="flex justify-center md:justify-between">
-        <div>
+    <section className="mt-20 md:px-[5px] lg:px-[10px] md:mt-24 lg:mt-24">
+      <div className="flex justify-center space-between items-center">
+        <div className="flex-1 left-0 lg:left-10 mr-40">
           <button
-            className="text-[#3498DB] group hover:text-blue-300 px-4 py-2 flex rounded-full max-md:hidden"
+            className="text-[#3498DB] group hover:text-blue-300 px-4 py-2 ml-8 flex items-center rounded-full max-md:hidden"
             onClick={goToTopic}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 items-center mr-2 fill-[#3498DB] group-hover:fill-blue-300"
+              className="h-8 w-8 mr-2 mt-2 fill-[#3498DB] group-hover:fill-blue-300"
               viewBox="0 0 24 24"
             >
               <path d="M5.86875 9.75L10.0688 13.95L9 15L3 9L9 3L10.0688 4.05L5.86875 8.25H15V9.75H5.86875Z" />
@@ -107,25 +107,40 @@ export default function SubClassNextPage({
             Kembali ke Topic
           </button>
         </div>
-        <div className="flex flex-row md:relative max-md:absolute px-9 max-md:bottom-4 max-md:left-0 max-md:w-full">
+
+        <div className=" flex space-x-4 mb-2 mr-8">
           <button
             onClick={goToPrevious}
             disabled={isPreviousDisabled}
-            className={`${
-              isPreviousDisabled ? "opacity-50 cursor-not-allowed" : ""
-            } text-[#3498DB] text-[14px] max-md:w-full items-center max-md:justify-center  px-4 py-2  hover:text-gray-200 hover:bg-gray-100/50 outline  rounded-full`}
+            className={`
+          text-[#3498DB] text-[14px]
+          px-4 py-2
+          rounded-full
+          outline
+          hover:text-gray-200
+          hover:bg-gray-100/50
+          ${isPreviousDisabled ? "opacity-50 cursor-not-allowed" : ""}
+        `}
           >
-            Materi Sebelumnya
+            Sebelumnya
           </button>
 
           <button
             onClick={goToNext}
             disabled={isNextDisabled}
-            className={`${
-              isNextDisabled ? "opacity-50 cursor-not-allowed" : ""
-            } bg-[#3498DB] text-[14px] max-md:w-full max-md:justify-center ml-4 text-white hover:bg-gray-100/50 hover:text-gray-200 outline px-4 py-2 rounded-full`}
+            className={`
+          bg-[#3498DB]
+          text-white
+          text-[14px]
+          px-4 py-3
+          rounded-full
+          outline 
+          hover:bg-gray-100/50
+          hover:text-gray-200
+          ${isNextDisabled ? "opacity-50 cursor-not-allowed" : ""}
+        `}
           >
-            Materi Selanjutnya
+            Selanjutnya
           </button>
         </div>
       </div>

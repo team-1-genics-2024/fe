@@ -217,7 +217,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="absolute left-[-20px] hidden lg:block">
+          <div className="absolute left-[-20px] top-[70%] hidden lg:block">
             <Image
               src="/image/homepage/leftstar.png"
               alt="Right Star"
@@ -227,7 +227,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col items-center">
-            <div className="flex justify-start w-full left-[-10px]">
+            <div className="flex justify-start w-full left-[-10px] top-[5%]">
               <Image
                 src="/image/homepage/upperrightstar.png"
                 alt="Upper Left Star"
@@ -236,7 +236,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="text-center mt-2 w-full h-[40vh] overflow-hidden z-10">
+            <div className="text-center mt-28 w-full h-[40vh] overflow-hidden z-10">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 w-full md:w-[690px]">
                 Ayo raih prestasi gemilang bersama!
               </h1>
@@ -437,7 +437,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex justify-end top-[30%] w-full px-8">
+            <div className="flex justify-end mb-28 w-full px-8">
               <Image
                 src="/image/homepage/lowerrightstar.png"
                 alt="Upper Right Star"

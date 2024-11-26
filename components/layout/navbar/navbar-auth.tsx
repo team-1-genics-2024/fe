@@ -160,7 +160,10 @@ export default function Navigation() {
         const successMessage =
           data.message || "Registration completed successfully";
 
-        showToast(successMessage, "success");
+        setTimeout(() => {
+          showToast(successMessage, "success");
+        }, 3000);
+
         switchToLogin();
         console.log(data);
       } else {
@@ -196,27 +199,24 @@ export default function Navigation() {
         <div className="flex justify-between h-16 items-center gap-8">
           <Link href="/" className="flex flex-row items-center">
             <Image
-              src="/image/homepage/icon.png"
+              src="/image/logo/logo.png"
               alt="Left Star"
-              width={20}
-              height={20}
+              width={135}
+              height={135}
             />
-            <span className="text-xl ml-2 font-bold text-[#3498DB]">
-              SinauPo&apos;o
-            </span>
           </Link>
 
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">
               <Link
                 href="/"
-                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+                className="font-medium text-md text-gray-600 hover:text-gray-900"
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className="font-medium text-sm text-gray-600 hover:text-gray-900"
+                className="font-medium text-md text-gray-600 hover:text-gray-900"
               >
                 About us
               </Link>

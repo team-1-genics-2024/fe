@@ -27,7 +27,7 @@ export default function SideMenuDesktop() {
   };
 
   return (
-    <section className="absolute max-md:hidden md:relative bg-[#EBF5FB] pt-5 h-full w-[20%] col-span-2 md:col-span-3 z-50">
+    <section className="absolute max-md:hidden md:relative bg-[#EBF5FB] pt-5 h-full w-[20%] col-span-2 md:col-span-3">
       <div className="flex flex-col gap-3">
         <div className="md:hidden flex">
           <div

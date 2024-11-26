@@ -17,6 +17,10 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Sinaupo'o",
   description: "By far the best E-Learning platform",
+  icons: {
+    icon: "/image/homepage/icon.png",
+    apple: "/image/homepage/icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -26,10 +30,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="!scroll-smooth">
-      <link rel="icon" href="/image/homepage/icon.png" sizes="any" />
       <body className={`${lato.className} ${poppins.className}`}>
         {children}
-
         <ToastContainer
           position="top-center"
           autoClose={2000}

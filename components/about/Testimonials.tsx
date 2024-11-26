@@ -26,7 +26,7 @@ export const AnimatedTestimonials = () => {
             width={250}
             height={250}
             quality={100}
-            className="-mt-2 inline-flex items-center justify-center ml-4"
+            className="md:-mt-2 lg:-mt-2 sm:mt-4 inline-flex items-center justify-center ml-4"
           />
         </h2>
 

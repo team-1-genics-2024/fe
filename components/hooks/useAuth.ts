@@ -139,10 +139,12 @@ export const useAuth = () => {
     setIsAuthenticated(false);
     setAvatarImage(null);
     localStorage.removeItem("avatarImage");
-    showToast(
-      errorMessage || "Successfully logged out",
-      errorMessage ? "error" : "success"
-    );
+    setTimeout(() => {
+      showToast(
+        errorMessage || "Successfully logged out",
+        errorMessage ? "error" : "success"
+      );
+    }, 3000);
   };
 
   return {
