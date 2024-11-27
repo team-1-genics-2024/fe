@@ -365,7 +365,7 @@ export default function ClassDetail() {
         >
           <div className="bg-white rounded-2xl shadow-lg p-4 w-full max-w-md flex flex-col h-[300px]">
             <h2 className="text-2xl font-semibold text-center text-gray-800 mb-16">
-              How satisfied you are with this class
+              How satisfied are you with this class
             </h2>
             <div className="flex justify-center mb-8">
               {[1, 2, 3, 4, 5].map((star) => (

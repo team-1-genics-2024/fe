@@ -129,14 +129,14 @@ export default function NavbarAuthenticated() {
     <nav className="sticky top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <section className="w-full max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center gap-8">
-          <Link href="/" className="flex flex-row items-center z-50">
+          <div className="flex flex-row items-center z-50">
             <Image
               src="/image/logo/logo.png"
               alt="Left Star"
               width={150}
               height={150}
             />
-          </Link>
+          </div>
 
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">
