@@ -197,14 +197,14 @@ export default function Navigation() {
     <nav className="sticky top-0 z-20 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-6">
         <div className="flex justify-between h-16 items-center gap-8">
-          <Link href="/" className="flex flex-row items-center">
+          <div className="flex flex-row items-center">
             <Image
               src="/image/logo/logo.png"
               alt="Left Star"
               width={135}
               height={135}
             />
-          </Link>
+          </div>
 
           <div className="hidden md:flex flex-1 justify-center">
             <nav className="flex gap-12">

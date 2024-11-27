@@ -45,7 +45,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
 
         <div
           className={`fixed top-0 left-0 w-fit h-full bg-white shadow-lg transform ${
-            sideActive ? "translate-x-0" : "-translate-x-full"
+            sideActive ? "translate-x-0  z-[999]" : "-translate-x-full"
           } transition-transform duration-300`}
         >
           <div className="p-4 mt-14 flex flex-col space-y-6 items-start">
