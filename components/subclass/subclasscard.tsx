@@ -1,41 +1,47 @@
 import dynamic from "next/dynamic";
-import { SubClassCardProps } from "@/types/subclass";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+
+export type SubClassCardProps = {
+  judul?: string;
+  video?: string;
+  textbook?: string;
+  subtopicId: number;
+  topicId: number;
+};
 
 export default function SubClassCard({
   judul,
   video,
   textbook,
   subtopicId,
-  classId,
+  topicId,
 }: SubClassCardProps) {
+
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
 
+  // === USER PROGRESS ===
   const handleVideoEnd = async () => {
     try {
-      const response = await fetch(
-        `${baseApiUrl}api/progress/${classId}/${subtopicId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            message: "Video has ended",
-          }),
-        }
-      );
+      const response = await fetch(`${baseApiUrl}api/progress/${topicId}/${subtopicId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          message: "Video has ended",
+        }),
+      });
       const data = await response.json();
       console.log("API response:", data);
     } catch (error) {
       console.error("Error hitting API:", error);
     }
   };
-
+  
   return (
-    <div className="w-fit min-h-[60vh]">
+    <div className="w-fit">
       <section className="px-9 md:px-[50px] lg:px-[90px] w-fit">
         <h1 className="text-[24px] md:text-[45px]" id="course-video">
           {judul}
@@ -47,7 +53,7 @@ export default function SubClassCard({
               controls
               width="100%"
               height="100%"
-              className="absolute top-0 left-0 w-full h-full z-40"
+              className="absolute top-0 left-0 w-full h-full"
               onEnded={handleVideoEnd}
             />
           </div>

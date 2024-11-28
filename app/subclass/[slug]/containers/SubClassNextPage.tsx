@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 
 export default function SubClassNextPage({
   slug,
-  topicId,
+  classId,
 }: {
   slug: number;
-  topicId?: number;
+  classId?: number;
 }) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(Number(slug));
@@ -33,7 +33,10 @@ export default function SubClassNextPage({
         }
       );
 
-      if (!response.ok || (await response.json()).data.length === 0) {
+      const nextData = await response.json();
+      console.log("Subclass Next Data:", nextData.data);
+
+      if (!response.ok || nextData.data.length === 0 || classId !== nextData.data.classId) {
         setIsNextDisabled(true);
       } else {
         setIsNextDisabled(false);
@@ -41,7 +44,7 @@ export default function SubClassNextPage({
     };
 
     checkNextData();
-  }, [currentIndex, baseApiUrl, token]);
+  }, [currentIndex, baseApiUrl, token, classId]);
 
   // === CHECK PREVIOUS DATA ===
   useEffect(() => {
@@ -51,6 +54,7 @@ export default function SubClassNextPage({
         setIsPreviousDisabled(true);
         return;
       }
+      
 
       const response = await fetch(
         `${baseApiUrl}api/topic/subtopic/${previousIndex}`,
@@ -63,15 +67,20 @@ export default function SubClassNextPage({
         }
       );
 
-      if (!response.ok || (await response.json()).data.length === 0) {
+      const previousData = await response.json();
+      console.log("Subclass Previous Data:", previousData.data);
+      
+      if (!response.ok || previousData.data.length === 0  || 
+        classId !== previousData.data.classId) {
         setIsPreviousDisabled(true);
-      } else {
+      } 
+      else {
         setIsPreviousDisabled(false);
       }
     };
 
     checkPreviousData();
-  }, [currentIndex, baseApiUrl, token]);
+  }, [currentIndex, baseApiUrl, token, classId]);
 
   const goToPrevious = () => {
     const newIndex = Number(currentIndex) - 1;
@@ -86,7 +95,7 @@ export default function SubClassNextPage({
   };
 
   const goToTopic = () => {
-    router.push(`/topics/${topicId}`);
+    router.push(`/topics/${classId}`);
   };
 
   return (

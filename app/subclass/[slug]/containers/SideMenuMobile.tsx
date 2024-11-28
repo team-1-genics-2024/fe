@@ -6,7 +6,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function SideMenuMobile({ topicId }: { topicId?: number }) {
+export default function SideMenuMobile({ classId }: { classId?: number }) {
   const router = useRouter();
 
   const [sideActive, setSideActive] = useState(false);
@@ -21,7 +21,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
   };
 
   const goToTopic = () => {
-    router.push(`/topics/${topicId}`);
+    router.push(`/topics/${classId}`);
   };
 
   return (
