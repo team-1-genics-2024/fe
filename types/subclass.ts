@@ -4,6 +4,7 @@ export interface SubClassData {
   videoUrl: string;
   subtopicId: number;
   topicId: number;
+  classId: number;
 }
 
 export interface MembershipData {
@@ -17,5 +18,6 @@ export type SubClassCardProps = {
   video?: string;
   textbook?: string;
   subtopicId: number;
-  topicId: number;
+  topicId?: number;
+  classId: number;
 };

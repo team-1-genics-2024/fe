@@ -10,7 +10,7 @@ import CustomScrollbar from "@/components/subclass/scrollbar-subclass";
 import SubClassNextPage from "./SubClassNextPage";
 import { useRouter } from "next/navigation";
 import LoadingUnprotectedRoute from "@/components/layout/loading/loading-unprotected-route";
-// import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
+import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
 import { SubClassData, MembershipData } from "@/types/subclass";
 import ProtectedRoute from "@/app/protected/route";
 
@@ -20,7 +20,7 @@ export default function SubClass({ slug }: { slug: number }) {
   const [data, setData] = useState<SubClassData | null>(null);
   const [member, setMember] = useState<MembershipData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
@@ -28,9 +28,6 @@ export default function SubClass({ slug }: { slug: number }) {
   // === GET MEMBERSHIP DATA ===
   const fetchMember = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
-
       const response = await fetch(`${baseApiUrl}api/membership/remaining`, {
         method: "GET",
         headers: {
@@ -41,8 +38,9 @@ export default function SubClass({ slug }: { slug: number }) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error Response:", errorData);
-        setError(errorData?.message || "Failed to fetch membership data.");
+        throw new Error(
+          errorData?.message || "Failed to fetch membership data."
+        );
         return;
       }
 
@@ -70,19 +68,15 @@ export default function SubClass({ slug }: { slug: number }) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Subclass Error Response:", errorData);
-        setError(errorData?.message || "Failed to fetch subclass data.");
-        router.push("/dashboard");
-        return;
+        throw new Error(errorData?.message || "Failed to fetch subclass data.");
       }
 
       const responseData = await response.json();
-      console.log("Subclass Data:", responseData.data);
       setData(responseData.data);
-    } catch (error) {
-      console.error("Subclass Network Error:", error);
-      setError("A network error occurred while fetching subclass data.");
-      console.error(error instanceof Error ? error.message : "Unknown error");
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Network error occurred."
+      );
     }
   };
 
@@ -97,14 +91,19 @@ export default function SubClass({ slug }: { slug: number }) {
   }, [member, router]);
 
   useEffect(() => {
-    setIsLoading(true);
-
     const fetchData = async () => {
-      await fetchMember();
-      await fetchSubClassData();
-      setIsLoading(false);
-    };
+      try {
+        setIsLoading(true);
+        setError(null);
 
+        await fetchMember();
+        await fetchSubClassData();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchData();
   }, [slug]);
 
@@ -112,11 +111,15 @@ export default function SubClass({ slug }: { slug: number }) {
     return <LoadingUnprotectedRoute />;
   }
 
+  if (error) {
+    return <ErrorNoSubClassFound />;
+  }
+
   return (
     <ProtectedRoute>
       <Layout withNavbar={true} withFooter={false} withPadding={false}>
         <main className="min-h-screen flex flex-col md:flex-row">
-          <SideMenuMobile topicId={data?.topicId} />
+          <SideMenuMobile classId={data?.classId} />
 
           <div className="flex w-full">
             <SideMenuDesktop />
@@ -128,13 +131,13 @@ export default function SubClass({ slug }: { slug: number }) {
                   judul={data.name}
                   textbook={data.description}
                   video={data.videoUrl}
-                  topicId={data.topicId}
+                  classId={data.classId}
                   subtopicId={data.subtopicId}
                 />
               )}
 
               {/* BUTTON */}
-              <SubClassNextPage slug={slug} topicId={data?.topicId} />
+              <SubClassNextPage slug={slug} classId={data?.classId} />
             </CustomScrollbar>
           </div>
         </main>

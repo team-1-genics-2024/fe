@@ -8,7 +8,7 @@ export default function SubClassCard({
   video,
   textbook,
   subtopicId,
-  topicId,
+  classId,
 }: SubClassCardProps) {
   const baseApiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const token = localStorage.getItem("accessToken");
@@ -16,7 +16,7 @@ export default function SubClassCard({
   const handleVideoEnd = async () => {
     try {
       const response = await fetch(
-        `${baseApiUrl}api/progress/${topicId}/${subtopicId}`,
+        `${baseApiUrl}api/progress/${classId}/${subtopicId}`,
         {
           method: "POST",
           headers: {
