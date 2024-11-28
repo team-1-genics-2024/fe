@@ -10,7 +10,7 @@ import CustomScrollbar from "@/components/subclass/scrollbar-subclass";
 import SubClassNextPage from "./SubClassNextPage";
 import { useRouter } from "next/navigation";
 import LoadingUnprotectedRoute from "@/components/layout/loading/loading-unprotected-route";
-import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
+// import ErrorNoSubClassFound from "@/components/layout/error/error-no-subclass-found";
 import { SubClassData, MembershipData } from "@/types/subclass";
 import ProtectedRoute from "@/app/protected/route";
 
