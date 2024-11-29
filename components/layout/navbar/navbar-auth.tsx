@@ -272,9 +272,9 @@ export default function Navigation() {
                     </div>
 
                     {/* small screen */}
-                    <div className="w-full lg:w-1/2 lg:pl-2 sm:h-[40vh]">
+                    <div className="w-full lg:w-1/2 lg:pl-2">
                       <CardHeader className="space-y-2 lg:hidden sm:block">
-                        <CardTitle className="text-[32px] font-medium text-black leading-10">
+                        <CardTitle className="text-[32px] font-medium text-black">
                           Log in
                         </CardTitle>
                         <p className="text-black text-base font-medium leading-normal tracking-tight">

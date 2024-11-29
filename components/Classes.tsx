@@ -379,7 +379,7 @@ export default function ClassDetail() {
                 />
               ))}
             </div>
-            <div className="flex justify-center mt-6 gap-2">
+            <div className="flex justify-center mt-6 gap-2 cursor-pointer">
               <Button
                 className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-gray-100/50 hover:text-gray-200 transition-colors duration-300 mr-2 outline"
                 onClick={handleRating}

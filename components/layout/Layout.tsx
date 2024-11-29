@@ -8,16 +8,12 @@ interface LayoutProps {
   children: React.ReactNode;
   withNavbar?: boolean;
   withFooter?: boolean;
-  customClass?: string;
-  withPadding?: boolean;
 }
 
 export default function Layout({
   children,
   withNavbar,
   withFooter,
-  customClass = "",
-  withPadding = true,
 }: LayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
@@ -79,15 +75,13 @@ export default function Layout({
   }, [baseApiUrl]);
 
   return (
-    <div className={`min-h-screen flex flex-col ${customClass}`}>
+    <>
       {withNavbar && !isAuthenticated && <Navigation />}
       {withNavbar && isAuthenticated && <NavbarAuthenticated />}
 
-      <main className={`flex-grow ${withPadding ? "px-4 py-8" : ""}`}>
-        {children}
-      </main>
+      {children}
 
       {withFooter && <FooterSection />}
-    </div>
+    </>
   );
 }

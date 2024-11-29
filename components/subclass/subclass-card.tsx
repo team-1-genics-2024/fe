@@ -38,7 +38,7 @@ export default function SubClassCard({
     <div className="w-fit min-h-[60vh]">
       <section className="px-9 md:px-[50px] lg:px-[90px] w-fit">
         <h1
-          className="text-[24px] md:text-[45px] mt-4 mb-8 font-semibold text-gray-700"
+          className="text-[24px] md:text-[40px] mt-4 mb-8 font-semibold text-gray-700"
           id="course-video"
         >
           {judul}
@@ -58,11 +58,11 @@ export default function SubClassCard({
       </section>
       <section className="px-9 mt-8 md:px-[50px] lg:px-[50px] md:mt-16">
         <div id="text-book" className="flex items-center gap-4">
-          <p className="text-[22px] md:text-[32px] font-semibold text-gray-700 border-b-2 border-[#3498DB] inline-block mt-12">
-            Textbook Material
+          <p className="text-[22px] md:text-[32px] font-semibold text-gray-700 border-b-2 border-[#3498DB] inline-block mt-12 lg:ml-10">
+            Textbook Materi
           </p>
         </div>
-        <div className="mt-6 bg-gradient-to-br from-blue-50 to-gray-100 p-6 rounded-lg shadow-lg whitespace-pre-line">
+        <div className="mt-6 lg:ml-8 lg:mr-8 bg-gradient-to-br from-blue-50 to-gray-100 p-6 rounded-lg shadow-lg whitespace-pre-line">
           <div className="text-[14px] md:text-[16px] text-gray-800 leading-relaxed">
             {textbook ? textbook : "No textbook available"}
           </div>

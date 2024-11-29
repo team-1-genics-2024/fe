@@ -301,7 +301,7 @@ export default function Home() {
                           onClick={handlePaymentClick}
                           className="border border-[#3498DB] text-[#3498DB] px-4 py-2 rounded-full w-full ml-2"
                         >
-                          Lihat harga
+                          Explore Pricing
                         </button>
                       </>
                     )}
@@ -316,7 +316,7 @@ export default function Home() {
                           <div className="text-center w-full">
                             <div className="flex flex-col">
                               <h2
-                                className="flex flex-wrap justify-center mt-2
+                                className="flex mt-8 flex-wrap justify-center 
             text-3xl sm:text-3xl lg:text-[28px] 
             font-semibold text-gray-700 
             leading-tight space-x-2"
@@ -334,11 +334,12 @@ export default function Home() {
                               </h2>
                             </div>
 
-                            <p className="text-black whitespace-pre-line text-md sm:text-base font-medium leading-normal tracking-tight mt-12">
-                              Your journey to knowledge starts here. Choose your
-                              learning package and let's grow together.
+                            <p className="text-black whitespace-pre-line text-md sm:text-base font-medium leading-normal tracking-tight mt-12 p-4">
+                              Looks like you haven’t picked a package yet.
+                              Embark on your learning adventure now. Select a
+                              package and let’s grow together!
                             </p>
-                            <div className="flex justify-center mt-12 gap-2 cursor-pointer">
+                            <div className="flex justify-center mt-12 gap-2 cursor-pointer mb-8">
                               <Button
                                 className="bg-[#3498DB] text-white px-6 py-2 rounded-full hover:bg-gray-100/50 hover:text-gray-200 transition-colors duration-300 mr-2 outline"
                                 onClick={handleChoosePackage}
@@ -349,7 +350,7 @@ export default function Home() {
                                 className="rounded-full text-[#3498db] hover:text-gray-200 hover:bg-gray-100/50 bg-white outline"
                                 onClick={handleAboutUs}
                               >
-                                Explore Our Platform
+                                User Testimonials
                               </Button>
                             </div>
                           </div>
@@ -518,8 +519,7 @@ export default function Home() {
                                 </Link>
 
                                 <p className="text-[#747a7e]  text-center text-[11px] font-medium leading-none tracking-wide">
-                                  Unlock Your Potential, Shape Your Future –
-                                  Start Learning Today!
+                                  Unlock Your Potential, Start Learning Today!
                                 </p>
                               </div>
                             </CardContent>

@@ -37,13 +37,13 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-0 right-0 top-[50%] z-50 m-auto w-full max-w-lg -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg duration-200 md:left-[70%] lg:left-[50%] sm:-translate-x-1/2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 dark:border-slate-800 dark:bg-slate-950",
+        "fixed left-0 right-0 top-[50%] z-50 m-auto w-full max-w-lg -translate-y-1/2 rounded-lg bg-white p-6 duration-200 md:left-[70%] lg:left-[50%] sm:-translate-x-1/2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute font-bold right-6 top-6 md:right-[46%] lg:right-[5%] lg:top-[7%] rounded-sm ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-black data-[state=open]:text-black dark:ring-offset-slate-950 dark:focus:ring-black dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
+      <DialogPrimitive.Close className="absolute font-bold right-6 top-6 md:right-[46%] lg:right-[5%] lg:top-[7%] rounded-sm ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 disabled:pointer-events-none ">
         <Cross2Icon className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

@@ -26,14 +26,17 @@ export default function DetailSertifikat({
       <Link className="absolute left-4 top-6" href={"/dashboard"}>
         <IoArrowBack className="w-7 h-7" />
       </Link>
-      <h1 className="mx-auto text-center text-xl font-bold">
+      <h1 className="mx-auto text-center text-xl font-bold mb-4 mt-4">
         Digital Certificate SinauPo&apos;o
       </h1>
       <p className="mx-auto text-center w-3/4 mt-2">
         Sertifikat ini adalah dokumen resmi yang valid dan dirilis oleh
         SinauPo&apos;o untuk member atas nama{" "}
-        {certificate?.data?.certificate?.user.name} karena telah menyelesaikan
-        kursus {certificate?.data?.certificate?.class.name}
+        <span className="text-black font-bold">
+          {certificate?.data?.certificate?.user.name}
+        </span>{" "}
+        karena telah menyelesaikan kursus{" "}
+        {certificate?.data?.certificate?.class.name}
       </p>
       <div className="mx-auto w-[300px] sm:w-[400px] md:w-[600px] lg:w-[800px] mt-6 relative">
         <p
@@ -50,7 +53,7 @@ export default function DetailSertifikat({
           alt="certificate"
           width={1920}
           height={1080}
-          className="w-full h-full"
+          className="w-full h-full mb-8"
         />
       </div>
     </div>
