@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 .custom-shadow {
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1),
-    -4px 0 6px rgba(0, 0, 0, 0.1), 4px 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1), -4px 0 6px rgba(0, 0, 0, 0.1), 4px 0 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
 }
 
@@ -72,4 +71,11 @@
 
 .scroll-area::-webkit-scrollbar-thumb:hover {
   background-color: #2980b9;
+}
+
+@font-face {
+  font-family: 'Holiday';
+  src: url('/font/Holiday.woff2') format('truetype'); /* atau gunakan woff/woff2 jika tersedia */
+  font-weight: 300;
+  font-style: normal;
 }
