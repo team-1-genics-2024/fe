@@ -293,7 +293,7 @@ export default function Home() {
                         ) : (
                           <DialogTrigger asChild>
                             <button className="bg-[#3498DB] text-white px-4 py-2 rounded-full w-full mr-2">
-                              Gabung sekarang
+                              Join Now
                             </button>
                           </DialogTrigger>
                         )}
@@ -549,8 +549,4 @@ export default function Home() {
       </div>
     </Layout>
   );
-}
-
-{
-  /*  */
 }
