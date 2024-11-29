@@ -1,27 +1,17 @@
 "use client";
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader } from "./card";
-import { Button } from "./button";
-
-interface CardProps {
-  title: string;
-  date: string;
-  participants: string;
-  rating: string;
-  status: string;
-  src: any;
-}
+import { Card, CardContent, CardHeader } from "./card";
+import { CardProps } from "@/types/card";
 
 const CardHomepage: React.FC<CardProps> = ({
   title,
   date,
   participants,
   rating,
-  status,
   src,
 }): JSX.Element => {
   return (
-    <Card className="w-[350px] shadow-lg rounded-xl overflow-hidden">
+    <Card className="w-[350px] shadow-lg rounded-xl overflow-hidden ">
       <CardHeader className="p-0">
         <div className="w-full h-[300px] relative ">
           <Image
@@ -33,7 +23,7 @@ const CardHomepage: React.FC<CardProps> = ({
           />
         </div>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-2">
         <div className="p-2">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col items-start">
@@ -59,11 +49,6 @@ const CardHomepage: React.FC<CardProps> = ({
           </div>
         </div>
       </CardContent>
-      <CardFooter className="justify-end mr-0 p-2 mb-2">
-        <Button className="mt-4 bg-blue-400 text-white py-2  rounded-full hover:bg-blue-300">
-          {status}
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

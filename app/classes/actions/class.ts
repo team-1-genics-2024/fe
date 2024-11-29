@@ -1,33 +1,5 @@
 "use server";
-
-interface Class {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  rating: number;
-  createdAt: string;
-  updatedAt: string;
-  totalTopics: number;
-  totalSubtopics: number;
-  totalParticipants: number;
-}
-
-interface ClassDataResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: {
-    classes: Class[];
-  };
-}
-
-interface ClassDetailResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: {
-    class: Class;
-  };
-}
+import { Class, ClassDataResponse, ClassDetailResponse } from "@/types/class";
 
 export const fetchClassData = async (): Promise<Class[]> => {
   try {
@@ -39,6 +11,7 @@ export const fetchClassData = async (): Promise<Class[]> => {
 
     const response = await fetch(`${apiBaseUrl}api/class`, {
       method: "GET",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -71,6 +44,7 @@ export const fetchClassById = async (id: number): Promise<Class> => {
 
     const response = await fetch(`${apiBaseUrl}api/class/${id}`, {
       method: "GET",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -92,5 +66,3 @@ export const fetchClassById = async (id: number): Promise<Class> => {
     throw error;
   }
 };
-
-

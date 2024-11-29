@@ -11,37 +11,22 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import Layout from "./layout/Layout";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
 import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
+import { Topic, TopicResponse } from "@/types/topics";
 
-interface Topic {
-  name: string;
-  classId: number;
-  SubTopic: SubTopics[];
-}
-
-interface SubTopics {
-  name: string;
-  topicId: number;
-  subtopicId: number;
-  imageUrl: string;
-  videoUrl: string;
-}
-
-interface TopicResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: Topic[];
-}
+import { toast } from "react-toastify";
 
 export default function TopicsPage() {
   const params = useParams();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const classId = useMemo(() => params.classId, [params]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -88,12 +73,56 @@ export default function TopicsPage() {
     fetchTopics();
   }, [classId]);
 
+  const handleSubtopicClick = async (subtopic: Topic["SubTopic"][number]) => {
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const accessToken = localStorage.getItem("accessToken");
+
+      console.log("Fetching subtopic with ID:", subtopic.subtopicId);
+
+      const response = await fetch(
+        `${apiBaseUrl}api/topic/subtopic/${subtopic.subtopicId}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        console.error("Error data:", errorMessage);
+        showToast(errorMessage.errorMessage, "error");
+        return;
+      }
+
+      const subtopicData = await response.json();
+      console.log(subtopicData);
+
+      router.push(`/subclass/${subtopic.subtopicId}`);
+    } catch (err: unknown) {
+      console.error(err instanceof Error ? err.message : "Unknown error");
+
+      showToast(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "error"
+      );
+    }
+  };
+
+  const showToast = (message: string, type: "success" | "error") => {
+    if (type === "error") {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  };
+
   if (isLoading) {
     return <LoadingUnprotectedRoute />;
-  }
-
-  if (error) {
-    return <ErrorNoTopicFound />;
   }
 
   return (
@@ -104,7 +133,7 @@ export default function TopicsPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="absolute left-0 top-[15%] lg:top-[20%] md:top-[10%] -z-20">
+        <div className="absolute left-0 top-[15%] lg:top-[20%] md:top-[10%] -z-20 hidden md:hidden lg:block">
           <Image
             src="/image/homepage/lowerrightstar.png"
             alt="Left Star"
@@ -113,14 +142,6 @@ export default function TopicsPage() {
           />
         </div>
 
-        <div className="absolute right-0 top-[65%] md:top-[55%] lg:top-[100%] xl:top-[80%] -z-20">
-          <Image
-            src="/image/homepage/upperrightstar.png"
-            alt="Right Star"
-            width={120}
-            height={120}
-          />
-        </div>
         <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
           <motion.div
             className="absolute -top-1/2 -left-1/2 w-full h-full bg-[#3498db]/10 rounded-full blur-3xl"
@@ -205,9 +226,9 @@ export default function TopicsPage() {
                       </AccordionTrigger>
                       <AccordionContent className="px-6 sm:px-8 py-6 space-y-6 sm:space-y-8 bg-white">
                         <AnimatePresence>
-                          {topic.SubTopic.map((subtopic, idx) => (
+                          {topic.SubTopic.map((SubTopics, idx) => (
                             <motion.div
-                              key={subtopic.subtopicId}
+                              key={SubTopics.subtopicId}
                               className="relative bg-[#3498db]/5 rounded-2xl p-6 transition-all duration-500 hover:shadow-lg"
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -217,6 +238,7 @@ export default function TopicsPage() {
                               onHoverEnd={() => setActiveCard(null)}
                               onTouchStart={() => setActiveCard(idx)}
                               onTouchEnd={() => setActiveCard(null)}
+                              onClick={() => handleSubtopicClick(SubTopics)}
                             >
                               <motion.h3
                                 className="relative text-lg font-medium text-[#3498db] mb-4 flex items-center space-x-3"
@@ -224,10 +246,10 @@ export default function TopicsPage() {
                                 transition={{ duration: 0.2 }}
                               >
                                 <BookOpen className="w-5 h-5 bg-white" />
-                                <span>{subtopic.name}</span>
+                                <span>{SubTopics.name}</span>
                               </motion.h3>
 
-                              {subtopic.imageUrl && (
+                              {SubTopics.imageUrl && (
                                 <motion.div
                                   className="relative rounded-xl overflow-hidden shadow-lg"
                                   initial={{ scale: 1 }}
@@ -250,8 +272,8 @@ export default function TopicsPage() {
                                   }}
                                 >
                                   <Image
-                                    src={`/${subtopic.imageUrl}`}
-                                    alt={subtopic.name}
+                                    src={`/${SubTopics.imageUrl}`}
+                                    alt={SubTopics.name}
                                     className="w-full h-auto"
                                     width={400}
                                     height={400}
@@ -273,15 +295,7 @@ export default function TopicsPage() {
               </Accordion>
             </motion.div>
           ) : (
-            <motion.div
-              className="text-center py-16 bg-[#3498db] rounded-2xl shadow-lg text-white"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <BookOpen className="w-16 h-16 mx-auto opacity-80 mb-4" />
-              <p>No topics found for this class, please try again later</p>
-            </motion.div>
+            <ErrorNoTopicFound />
           )}
         </div>
       </motion.div>

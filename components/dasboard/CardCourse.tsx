@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
-import { Enroll } from '@/app/actions/enroll';
+import { Enroll } from '@/types/enroll';
 
 const Star = () => {
   return (
@@ -23,7 +23,7 @@ const CardCourse = ({ id, name, imageUrl, rating, totalUserProgress, totalSubtop
           <Image src={imageUrl} width={300} height={180} className="object-cover h-full w-full" alt="courseImg" />
         </div>
         <CardHeader>
-          <CardTitle className="flex justify-between">
+          <CardTitle className="flex md:flex-col xl:flex-row 2xl:flex-col justify-between">
             <div className="text-xl md:text-2xl font-[500]">{name}</div>
             <div className="flex items-center gap-1">
               <Star />
@@ -32,7 +32,7 @@ const CardCourse = ({ id, name, imageUrl, rating, totalUserProgress, totalSubtop
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Progress value={33} />
+          <Progress value={(totalUserProgress/totalSubtopics)*100} />
           <p className="text-xs text-slate-500 mt-4">
             {totalUserProgress} of {totalSubtopics} Lesson Complete
           </p>

@@ -1,21 +1,5 @@
 "use server";
-
-interface Topic {
-  name: string;
-  description: string;
-  topicId: number;
-  subtopicId: number;
-  imageUrl: string;
-  videoUrl: string;
-}
-
-interface TopicResponse {
-  resultCode: number;
-  resultMessage: string;
-  data: {
-    subTopics: Topic[];
-  };
-}
+import { Topic, TopicDataResponse } from "@/types/topics";
 
 export const fetchTopicsByClassId = async (
   classId: number
@@ -38,7 +22,7 @@ export const fetchTopicsByClassId = async (
       throw new Error(`Error: ${response.status}`);
     }
 
-    const jsonData: TopicResponse = await response.json();
+    const jsonData: TopicDataResponse = await response.json();
     console.log(jsonData);
 
     if (jsonData.resultCode !== 200) {

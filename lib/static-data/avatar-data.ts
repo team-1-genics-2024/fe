@@ -1,0 +1,17 @@
+export const userAvatars = [
+  "/avatar/avatar1.png",
+  "/avatar/avatar2.png",
+  "/avatar/avatar3.png",
+  "/avatar/avatar4.png",
+  "/avatar/avatar5.png",
+  "/avatar/avatar6.png",
+  "/avatar/avatar7.png",
+  "/avatar/avatar8.png",
+  "/avatar/avatar9.png",
+  "/avatar/avatar10.png",
+  "/avatar/avatar11.png",
+  "/avatar/avatar12.png",
+  "/avatar/avatar13.png",
+  "/avatar/avatar14.png",
+  "/avatar/avatar15.png",
+] as const;
