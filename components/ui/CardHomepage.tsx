@@ -11,7 +11,7 @@ const CardHomepage: React.FC<CardProps> = ({
   src,
 }): JSX.Element => {
   return (
-    <Card className="w-[350px] shadow-lg rounded-xl overflow-hidden ">
+    <Card className="w-[350px] shadow-lg rounded-xl overflow-hidden">
       <CardHeader className="p-0">
         <div className="w-full h-[300px] relative ">
           <Image
