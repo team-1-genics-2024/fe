@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 
 export default function SubClassNextPage({
   slug,
-  topicId,
+  classId,
 }: {
   slug: number;
-  topicId?: number;
+  classId?: number;
 }) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(Number(slug));
@@ -33,7 +33,14 @@ export default function SubClassNextPage({
         }
       );
 
-      if (!response.ok || (await response.json()).data.length === 0) {
+      const nextData = await response.json();
+      console.log("Subclass Next Data:", nextData.data);
+
+      if (
+        !response.ok ||
+        nextData.data.length === 0 ||
+        classId !== nextData.data.classId
+      ) {
         setIsNextDisabled(true);
       } else {
         setIsNextDisabled(false);
@@ -41,7 +48,7 @@ export default function SubClassNextPage({
     };
 
     checkNextData();
-  }, [currentIndex, baseApiUrl, token]);
+  }, [currentIndex, baseApiUrl, token, classId]);
 
   // === CHECK PREVIOUS DATA ===
   useEffect(() => {
@@ -63,7 +70,14 @@ export default function SubClassNextPage({
         }
       );
 
-      if (!response.ok || (await response.json()).data.length === 0) {
+      const previousData = await response.json();
+      console.log("Subclass Previous Data:", previousData.data);
+
+      if (
+        !response.ok ||
+        previousData.data.length === 0 ||
+        classId !== previousData.data.classId
+      ) {
         setIsPreviousDisabled(true);
       } else {
         setIsPreviousDisabled(false);
@@ -71,7 +85,7 @@ export default function SubClassNextPage({
     };
 
     checkPreviousData();
-  }, [currentIndex, baseApiUrl, token]);
+  }, [currentIndex, baseApiUrl, token, classId]);
 
   const goToPrevious = () => {
     const newIndex = Number(currentIndex) - 1;
@@ -86,13 +100,13 @@ export default function SubClassNextPage({
   };
 
   const goToTopic = () => {
-    router.push(`/topics/${topicId}`);
+    router.push(`/topics/${classId}`);
   };
 
   return (
     <section className="mt-20 md:px-[5px] lg:px-[10px] md:mt-24 lg:mt-24">
       <div className="flex justify-center space-between items-center">
-        <div className="flex-1 left-0 lg:left-10 mr-40">
+        <div className="flex-1 ml-4 mb-8">
           <button
             className="text-[#3498DB] group hover:text-blue-300 px-4 py-2 ml-8 flex items-center rounded-full max-md:hidden"
             onClick={goToTopic}
@@ -108,19 +122,19 @@ export default function SubClassNextPage({
           </button>
         </div>
 
-        <div className=" flex space-x-4 mb-2 mr-8">
+        <div className="flex space-x-4 mb-8 md:mr-4 mr-8 lg:mr-4">
           <button
             onClick={goToPrevious}
             disabled={isPreviousDisabled}
             className={`
-          text-[#3498DB] text-[14px]
-          px-4 py-2
-          rounded-full
-          outline
-          hover:text-gray-200
-          hover:bg-gray-100/50
-          ${isPreviousDisabled ? "opacity-50 cursor-not-allowed" : ""}
-        `}
+      text-[#3498DB] text-[14px]
+      px-4 py-2
+      rounded-full
+      outline
+      hover:text-gray-200
+      hover:bg-gray-100/50
+      ${isPreviousDisabled ? "opacity-50 cursor-not-allowed" : ""}
+    `}
           >
             Sebelumnya
           </button>
@@ -129,16 +143,16 @@ export default function SubClassNextPage({
             onClick={goToNext}
             disabled={isNextDisabled}
             className={`
-          bg-[#3498DB]
-          text-white
-          text-[14px]
-          px-4 py-3
-          rounded-full
-          outline 
-          hover:bg-gray-100/50
-          hover:text-gray-200
-          ${isNextDisabled ? "opacity-50 cursor-not-allowed" : ""}
-        `}
+      bg-[#3498DB]
+      text-white
+      text-[14px]
+      px-4 py-3
+      rounded-full
+      outline
+      hover:bg-gray-100/50
+      hover:text-gray-200
+      ${isNextDisabled ? "opacity-50 cursor-not-allowed" : ""}
+    `}
           >
             Selanjutnya
           </button>

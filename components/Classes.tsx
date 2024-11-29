@@ -244,13 +244,13 @@ export default function ClassDetail() {
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">
                 <p className="text-xs text-gray-500 mb-1 truncate">Topics</p>
                 <p className="text-lg font-semibold text-gray-800">
-                  <CountUp end={classData.totalTopics} duration={3.5} />
+                  <CountUp end={classData.totalTopics} duration={4.5} />
                 </p>
               </div>
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">
                 <p className="text-xs text-gray-500 mb-1 truncate">Subtopics</p>
                 <p className="text-lg font-semibold text-gray-800">
-                  <CountUp end={classData.totalSubtopics} duration={3.5} />
+                  <CountUp end={classData.totalSubtopics} duration={4.5} />
                 </p>
               </div>
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">
@@ -260,7 +260,7 @@ export default function ClassDetail() {
                 <p className="text-lg font-semibold text-gray-800">
                   <CountUp
                     end={classData.totalParticipants}
-                    duration={3.5}
+                    duration={4.5}
                     separator=","
                   />
                 </p>
