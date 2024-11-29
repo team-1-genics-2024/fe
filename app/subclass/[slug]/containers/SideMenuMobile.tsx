@@ -6,7 +6,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function SideMenuMobile({ topicId }: { topicId?: number }) {
+export default function SideMenuMobile({ classId }: { classId?: number }) {
   const router = useRouter();
 
   const [sideActive, setSideActive] = useState(false);
@@ -21,7 +21,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
   };
 
   const goToTopic = () => {
-    router.push(`/topics/${topicId}`);
+    router.push(`/topics/${classId}`);
   };
 
   return (
@@ -66,7 +66,7 @@ export default function SideMenuMobile({ topicId }: { topicId?: number }) {
 
       <div>
         <button
-          className="text-[#3498DB] text-[14px] group hover:text-blue-300 px-4 py-2 flex rounded-full right-0"
+          className="text-[#3498DB] text-[14px] group hover:text-blue-300 px-4 py-2 flex rounded-full ml-[20%]"
           onClick={goToTopic}
         >
           <svg

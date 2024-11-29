@@ -272,9 +272,9 @@ export default function Navigation() {
                     </div>
 
                     {/* small screen */}
-                    <div className="w-full lg:w-1/2 lg:pl-2 sm:h-[40vh]">
+                    <div className="w-full lg:w-1/2 lg:pl-2">
                       <CardHeader className="space-y-2 lg:hidden sm:block">
-                        <CardTitle className="text-[32px] font-medium text-black leading-10">
+                        <CardTitle className="text-[32px] font-medium text-black">
                           Log in
                         </CardTitle>
                         <p className="text-black text-base font-medium leading-normal tracking-tight">
@@ -292,7 +292,7 @@ export default function Navigation() {
                             disabled={isSubmittingLogin}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
-                            className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                            className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] focus:ring-1 focus:border-[#3498DB] text-base font-normal leading-normal tracking-wide"
                           />
 
                           <div className="relative">
@@ -304,7 +304,7 @@ export default function Navigation() {
                               onChange={(e) => setPassword(e.target.value)}
                               placeholder="Enter your password"
                               disabled={isSubmittingLogin}
-                              className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
+                              className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] focus:ring-1 focus:border-[#3498DB] text-base font-normal leading-normal tracking-wide pr-10"
                             />
                             <button
                               type="button"
@@ -368,7 +368,7 @@ export default function Navigation() {
                             <Button
                               variant="outline"
                               type="button"
-                              className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                              className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#454b4f] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
                             >
                               <Image
                                 src="/image/Google.png"
@@ -471,7 +471,7 @@ export default function Navigation() {
                                 disabled={isSubmittingSignUp}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Enter your name"
-                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] focus:ring-1 focus:border-[#3498DB] text-base font-normal leading-normal tracking-wide"
                               />
                               <Input
                                 type="email"
@@ -481,7 +481,7 @@ export default function Navigation() {
                                 disabled={isSubmittingSignUp}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
-                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide"
+                                className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] focus:ring-1 focus:border-[#3498DB] text-base font-normal leading-normal tracking-wide"
                               />
 
                               <div className="relative">
@@ -493,7 +493,7 @@ export default function Navigation() {
                                   onChange={(e) => setPassword(e.target.value)}
                                   placeholder="Enter your password"
                                   disabled={isSubmittingSignUp}
-                                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] text-base font-normal leading-normal tracking-wide pr-10"
+                                  className="w-full h-14 px-3 py-6 border rounded-2xl border-[#747a7e] text-[#454b4f] focus:ring-1 focus:border-[#3498DB] text-base font-normal leading-normal tracking-wide pr-10"
                                 />
                                 <button
                                   type="button"
@@ -559,7 +559,7 @@ export default function Navigation() {
                                 <Button
                                   variant="outline"
                                   type="button"
-                                  className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#3498db] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
+                                  className="w-full h-10 border rounded-[100px] border-[#747a7e] text-[#454b4f] text-sm font-medium leading-tight tracking-tight dark:border-gray-700 p-2 flex items-center justify-center space-x-1 pl-4 pr-6 py-2.5"
                                 >
                                   <Image
                                     src="/image/Google.png"

@@ -26,3 +26,7 @@ export interface ClassDetailResponse {
     class: Class;
   };
 }
+
+export interface ClassInfoProps {
+  classId: number;
+}

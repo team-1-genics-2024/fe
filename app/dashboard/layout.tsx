@@ -4,7 +4,7 @@ export default function Layout1({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative w-full">
       <Layout withNavbar>
-        <main className=" mt-3">{children}</main>
+        <main>{children}</main>
       </Layout>
     </div>
   );

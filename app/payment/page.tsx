@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function PaymentPage() {
   return (
-    <Layout withNavbar withFooter withPadding>
+    <Layout withNavbar withFooter>
       <main className="flex relative min-h-[80vh] md:min-h-[60vh] items-center flex-col ">
         <div className="absolute top-[5%] right-[10%] hidden md:block">
           <Image

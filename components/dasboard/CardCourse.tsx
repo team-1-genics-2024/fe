@@ -49,7 +49,7 @@ const CardCourse = ({
           />
         </div>
         <CardHeader>
-          <CardTitle className="flex justify-between">
+          <CardTitle className="flex md:flex-col xl:flex-row 2xl:flex-col justify-between">
             <div className="text-xl md:text-2xl font-[500]">{name}</div>
             <div className="flex items-center gap-1">
               <Star />
@@ -61,7 +61,7 @@ const CardCourse = ({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Progress value={33} />
+          <Progress value={(totalUserProgress / totalSubtopics) * 100} />
           <p className="text-xs text-slate-500 mt-4">
             {totalUserProgress} of {totalSubtopics} Lesson Complete
           </p>

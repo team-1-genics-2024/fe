@@ -113,27 +113,25 @@ export default function SubClass({ slug }: { slug: number }) {
 
   return (
     <ProtectedRoute>
-      <Layout withNavbar={true} withFooter={false} withPadding={false}>
+      <Layout withNavbar>
         <main className="min-h-screen flex flex-col md:flex-row">
-          <SideMenuMobile topicId={data?.topicId} />
+          <SideMenuMobile classId={data?.classId} />
 
           <div className="flex w-full">
             <SideMenuDesktop />
 
             <CustomScrollbar className="lg:mr-32">
-              {/* SUBCLASS TIAP HALAMAN */}
               {data && (
                 <SubClassCard
                   judul={data.name}
                   textbook={data.description}
                   video={data.videoUrl}
-                  topicId={data.topicId}
+                  classId={data.classId}
                   subtopicId={data.subtopicId}
                 />
               )}
 
-              {/* BUTTON */}
-              <SubClassNextPage slug={slug} topicId={data?.topicId} />
+              <SubClassNextPage slug={slug} classId={data?.classId} />
             </CustomScrollbar>
           </div>
         </main>
