@@ -92,7 +92,7 @@ export default function Navigation() {
             console.error("Login error message:", result.error);
             showToast(result.error, "error");
           } else if (result.error && typeof result.error === "object") {
-            const errorMessage = result.error.errorMessage || "Login failed";
+            const errorMessage = result.error.errorMessage;
             console.error("Login error object:", result.error);
             showToast(errorMessage, "error");
           } else {

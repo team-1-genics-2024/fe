@@ -129,7 +129,7 @@ export const AnimatedTestimonials = ({
                   }}
                   animate={{
                     filter: "blur(0px)",
-                    opacity: 1,
+                    opacity: 0,
                     y: 0,
                   }}
                   transition={{

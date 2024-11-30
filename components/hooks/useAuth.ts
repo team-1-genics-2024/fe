@@ -42,18 +42,18 @@ export const useAuth = () => {
         }
       );
 
-      const data: AuthResponse = await response.json();
+      const data: any = await response.json();
 
       if (response.ok && data.resultCode === 200) {
         const { accessToken } = data.data;
 
         setAccessTokens(accessToken);
         setIsAuthenticated(true);
-        showToast("Successfully logged in", "success");
+
         return { success: true, data };
       } else {
-        showToast(data.resultMessage || "Login failed", "error");
-        return { success: false, error: data.resultMessage || "Login failed" };
+        showToast(data.errorMessage, "error");
+        return { success: false, error: data.errorMessage || "" };
       }
     } catch (error) {
       console.error("Login error:", error);
