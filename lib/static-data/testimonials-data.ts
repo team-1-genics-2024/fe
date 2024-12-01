@@ -83,7 +83,7 @@ export const testimonials: Testimonial[] = [
     id: 10,
     quote:
       "Saya sangat menghargai platform ini. Materi yang tersedia sangat mudah dipahami dan dapat diakses kapan saja.",
-    name: "Arsya Nueva",
+    name: "Jasmine Aziza",
     role: "UI/UX",
     image: "/image/photo/photo6.jpeg",
   },
@@ -99,7 +99,7 @@ export const testimonials: Testimonial[] = [
     id: 12,
     quote:
       "Belajar di sini sangat efektif. Materinya mudah dipahami dan saya bisa mengaksesnya kapan saja saya mau.",
-    name: "Jasmine Aziza",
+    name: "Arsya Nueva",
     role: "UI/UX",
     image: "/image/photo/photo7.jpeg",
   },
