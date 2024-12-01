@@ -5,7 +5,7 @@ export interface LoginResult {
       accessToken?: string;
     };
   };
-  error?: ServerError | string; // Update to accommodate the new error structure
+  error?: ServerError | string;
 }
 
 export interface ServerError {
