@@ -1,5 +1,5 @@
 import React from "react";
-import TopicsPage from "@/components/Topics";
+import TopicsPage from "@/app/topics/page";
 
 export default async function page({}: { params: { classId: string } }) {
   return <TopicsPage />;

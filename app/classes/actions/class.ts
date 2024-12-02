@@ -1,68 +1,36 @@
 "use server";
 import { Class, ClassDataResponse, ClassDetailResponse } from "@/types/class";
 
+const getApiBaseUrl = () => {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (!apiBaseUrl) throw new Error("API base URL is not defined");
+  return apiBaseUrl;
+};
+
 export const fetchClassData = async (): Promise<Class[]> => {
-  try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const response = await fetch(`${getApiBaseUrl()}api/class`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
 
-    if (!apiBaseUrl) {
-      throw new Error("API base URL is not defined");
-    }
+  if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-    const response = await fetch(`${apiBaseUrl}api/class`, {
-      method: "GET",
+  const jsonData: ClassDataResponse = await response.json();
+  if (jsonData.resultCode !== 200) throw new Error(jsonData.resultMessage);
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-
-    const jsonData: ClassDataResponse = await response.json();
-
-    if (jsonData.resultCode !== 200) {
-      throw new Error(`Error: ${jsonData.resultMessage}`);
-    }
-
-    return jsonData.data.classes;
-  } catch (error) {
-    console.error("Failed to fetch class data:", error);
-    throw error;
-  }
+  return jsonData.data.classes;
 };
 
 export const fetchClassById = async (id: number): Promise<Class> => {
-  try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const response = await fetch(`${getApiBaseUrl()}api/class/${id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
 
-    if (!apiBaseUrl) {
-      throw new Error("API base URL is not defined");
-    }
+  if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-    const response = await fetch(`${apiBaseUrl}api/class/${id}`, {
-      method: "GET",
+  const jsonData: ClassDetailResponse = await response.json();
+  if (jsonData.resultCode !== 200) throw new Error(jsonData.resultMessage);
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-
-    const jsonData: ClassDetailResponse = await response.json();
-
-    if (jsonData.resultCode !== 200) {
-      throw new Error(`Error: ${jsonData.resultMessage}`);
-    }
-
-    return jsonData.data.class;
-  } catch (error) {
-    console.error(`Failed to fetch class with ID ${id}:`, error);
-    throw error;
-  }
+  return jsonData.data.class;
 };

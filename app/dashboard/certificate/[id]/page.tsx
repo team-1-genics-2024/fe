@@ -33,10 +33,12 @@ export default function DetailSertifikat({
         Sertifikat ini adalah dokumen resmi yang valid dan dirilis oleh
         SinauPo&apos;o untuk member atas nama{" "}
         <span className="text-black font-bold">
-          {/* @ts-ignore */}
+          {/* @ts-expect-error: Ignore TypeScript error for class property */}
+
           {certificate?.data?.certificate?.user.name}
         </span>{" "}
-        karena telah menyelesaikan kursus {/* @ts-ignore */}
+        karena telah menyelesaikan kursus{" "}
+        {/* @ts-expect-error: Ignore TypeScript error for class property */}
         {certificate?.data?.certificate?.class.name}
       </p>
       <div className="mx-auto w-[300px] sm:w-[400px] md:w-[600px] lg:w-[800px] mt-6 relative">
@@ -45,11 +47,12 @@ export default function DetailSertifikat({
           className="sm:text-3xl md:text-5xl lg:text-6xl text-blue-950 font-semibold absolute top-[30%] transform  -translate-x-1/2 left-1/2"
         >
           {" "}
-          {/* @ts-ignore */}
+          {/* @ts-expect-error: Ignore TypeScript error for class property */}
           {certificate?.data?.certificate?.user.name}
         </p>
         <p className="text-xs md:text-sm lg:text-xl text-blue-950 font-semibold absolute top-[46%] transform  -translate-x-1/2 left-1/2">
-          {/* @ts-ignore */}
+          {/* @ts-expect-error: Ignore TypeScript error for class property */}
+
           {certificate?.data?.certificate?.class.name}
         </p>
         <Image

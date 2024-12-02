@@ -34,7 +34,6 @@ export default function SubClassNextPage({
       );
 
       const nextData = await response.json();
-      console.log("Subclass Next Data:", nextData.data);
 
       if (
         !response.ok ||
@@ -71,7 +70,6 @@ export default function SubClassNextPage({
       );
 
       const previousData = await response.json();
-      console.log("Subclass Previous Data:", previousData.data);
 
       if (
         !response.ok ||

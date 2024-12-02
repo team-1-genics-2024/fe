@@ -35,8 +35,6 @@ export default function AlertModal({
       },
     };
 
-    console.log("Payload:", payload);
-
     try {
       const response = await fetch(`${baseApiUrl}api/payment`, {
         method: "POST",
@@ -48,8 +46,6 @@ export default function AlertModal({
         body: JSON.stringify(payload),
       });
 
-      console.log("Response status:", response.status);
-
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error Response:", errorData);
@@ -58,7 +54,6 @@ export default function AlertModal({
       }
 
       const responseData = await response.json();
-      console.log("Response Data:", responseData);
 
       return { success: true, data: responseData.data };
     } catch (error) {
@@ -71,7 +66,6 @@ export default function AlertModal({
   async function handleBuy() {
     const result = await postPayment(grossAmount);
     if (result.success) {
-      console.log("Payment posted successfully:", result.data);
       const urlLink = result.data;
       if (urlLink) {
         window.location.href = urlLink;

@@ -1,5 +1,5 @@
 import React from "react";
-import Classes from "@/components/Classes";
+import Classes from "@/app/classes/page";
 
 export default async function page({}: { params: { classId: string } }) {
   return <Classes />;

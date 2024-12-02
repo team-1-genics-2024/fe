@@ -10,13 +10,12 @@ import {
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen } from "lucide-react";
-import Layout from "./layout/Layout";
+import Layout from "../../components/layout/Layout";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import ErrorNoTopicFound from "./layout/error/error-no-topic-found";
-import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
+import ErrorNoTopicFound from "../../components/layout/error/error-no-topic-found";
+import LoadingUnprotectedRoute from "../../components/layout/loading/loading-unprotected-route";
 import { Topic, TopicResponse } from "@/types/topics";
-
 import { toast } from "react-toastify";
 
 export default function TopicsPage() {
