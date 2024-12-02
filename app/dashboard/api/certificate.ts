@@ -27,7 +27,6 @@ export const fetchCertificate = async (): Promise<CertificateDataResponse> => {
       throw new Error(`Error: ${jsonData.resultMessage}`);
     }
 
-    // console.log(jsonData);
     return jsonData as CertificateDataResponse;
   } catch (error) {
     console.error("Failed to fetch class data:", error);
@@ -65,7 +64,6 @@ export const fetchCertificateDetail = async ({
       throw new Error(`Error: ${jsonData.resultMessage}`);
     }
 
-    // console.log(jsonData);
     return jsonData as CertificateDataResponse;
   } catch (error) {
     console.error("Failed to fetch class data:", error);

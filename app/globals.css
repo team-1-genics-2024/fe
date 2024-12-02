@@ -75,7 +75,7 @@
 }
 @font-face {
   font-family: "Holiday";
-  src: url("/font/Holiday.woff2") format("truetype"); /* atau gunakan woff/woff2 jika tersedia */
+  src: url("/font/Holiday.woff2") format("truetype");
   font-weight: 300;
   font-style: normal;
 }

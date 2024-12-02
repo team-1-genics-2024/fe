@@ -9,12 +9,10 @@ export const getStoredToken = (): string | null => {
 
 export const setAccessTokens = (accessToken: string): void => {
   localStorage.setItem("accessToken", accessToken);
-  console.log("Access Token saved to localStorage");
 };
 
 export const removeAccessTokens = (): void => {
   localStorage.removeItem("accessToken");
-  console.log("Tokens removed from local storage");
 };
 
 export const refreshUserToken =
@@ -40,7 +38,7 @@ export const refreshUserToken =
       setAccessTokens(tokens.accessToken);
       return tokens;
     } catch (error) {
-      console.log("Token refresh error:", error);
+      console.error(error);
       return null;
     }
   };

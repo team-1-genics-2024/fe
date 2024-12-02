@@ -11,7 +11,6 @@ const SidebarMenu = ({
   onClick: () => void;
   menuOpen: boolean;
 }) => {
-  // console.log(active);
   return (
     <div
       onClick={onClick}

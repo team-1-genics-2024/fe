@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { fetchClassById } from "../app/classes/actions/class";
+import { fetchClassById } from "./actions/class";
 import { FaStar } from "react-icons/fa6";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CountUp from "react-countup";
 import { showToast } from "@/lib/custom-toast/toast";
-import Layout from "./layout/Layout";
-import LoadingUnprotectedRoute from "./layout/loading/loading-unprotected-route";
-import ErrorNoClassFound from "./layout/error/error-no-class-found.tsx";
+import Layout from "../../components/layout/Layout";
+import LoadingUnprotectedRoute from "../../components/layout/loading/loading-unprotected-route";
+import ErrorNoClassFound from "../../components/layout/error/error-no-class-found.tsx";
 import { Class } from "@/types/class";
 import { Button } from "@nextui-org/react";
 
@@ -244,13 +244,13 @@ export default function ClassDetail() {
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">
                 <p className="text-xs text-gray-500 mb-1 truncate">Topics</p>
                 <p className="text-lg font-semibold text-gray-800">
-                  <CountUp end={classData.totalTopics} duration={4.5} />
+                  <CountUp end={classData.totalTopics} duration={3.5} />
                 </p>
               </div>
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">
                 <p className="text-xs text-gray-500 mb-1 truncate">Subtopics</p>
                 <p className="text-lg font-semibold text-gray-800">
-                  <CountUp end={classData.totalSubtopics} duration={4.5} />
+                  <CountUp end={classData.totalSubtopics} duration={3.5} />
                 </p>
               </div>
               <div className="bg-gray-50 p-4 rounded-xl text-center transition-all duration-300 hover:shadow-md">

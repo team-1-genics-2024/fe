@@ -5,7 +5,7 @@ import {
   setAccessTokens,
   removeAccessTokens,
 } from "@/lib/authentication/auth";
-import { LoginFormData, AuthResponse } from "@/types/auth";
+import { LoginFormData } from "@/types/auth";
 import { showToast } from "@/lib/custom-toast/toast";
 
 export const cleanProtectedPage = (errorMessage?: string) => {
@@ -80,6 +80,7 @@ export const useAuth = () => {
       if (response.ok) {
         cleanUpAuth();
         window.location.reload();
+        showToast("Successfully logged out", "success");
         return;
       }
 
@@ -131,6 +132,11 @@ export const useAuth = () => {
     } catch (error) {
       console.error("Logout error:", error);
       showToast("An unexpected error occurred during logout", "error");
+    } finally {
+      cleanUpAuth();
+      window.location.reload();
+
+      return;
     }
   };
 
