@@ -17,9 +17,6 @@ import {
 } from "@nextui-org/react";
 
 import React from "react";
-import { RxCross2 } from "react-icons/rx";
-
-// import clsxm from "@/lib/clsxm";
 
 type ContentProps = {
   className?: string;
