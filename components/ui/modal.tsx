@@ -1,8 +1,3 @@
-/* 
-  This component uses nextui as its base material.
-  Check for the documentation in https://nextui.org/docs/components/modal#modal
-*/
-
 import {
   Modal as NextModal,
   ModalBody,
@@ -23,31 +18,29 @@ type ContentProps = {
   children?: React.ReactNode;
 };
 type TitleProps = {
-  onClose: () => void; // Function to call on close button click
-  buttonCrossClassName?: string; // Custom class name for the close button
-  crossClassName?: string; // Custom class name for the cross icon within the close button
+  onClose: () => void;
+  buttonCrossClassName?: string;
+  crossClassName?: string;
 };
 type ModalRootProps = {
-  modelContainerClassName?: string; // Custom class name for the modal container
-  backdropClassName?: string; // Custom class name for the modal backdrop
+  modelContainerClassName?: string;
+  backdropClassName?: string;
 };
 
 export function ModalRoot({
-  //   className, // Class name for additional styling
-  //   modelContainerClassName, // Custom class name for the modal content container
-  children, // Children components to render inside the modal
-  isOpen, // Boolean to control the open state of the modal
-  onOpenChange, // Function to handle changes in the open state
-  scrollBehavior = "outside", // Scroll behavior of the modal
-  backdrop = "transparent", // Backdrop appearance
-  backdropClassName, // Custom class for the backdrop
-  ...rest // Rest of the props
+  children,
+  isOpen,
+  onOpenChange,
+  scrollBehavior = "outside",
+  backdrop = "transparent",
+  backdropClassName,
+  ...rest
 }: ModalRootProps & ContentProps & UseDisclosureProps & ModalProps) {
   return (
     <NextModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      hideCloseButton={true} // Hiding the default close button
+      hideCloseButton={true}
       scrollBehavior={scrollBehavior}
       backdrop={backdrop}
       classNames={{
@@ -68,11 +61,8 @@ export function ModalRoot({
 }
 
 export function Header({
-  //   className,
   children,
-  onClose, // Function to call when the close button is clicked
-  //   buttonCrossClassName, // Custom class name for the close button
-  //   crossClassName, // Custom class name for the cross icon
+
   ...rest
 }: ContentProps & TitleProps & ModalHeaderProps) {
   return (
